@@ -1,4 +1,8 @@
 #!/net/rozle/export/share/sol/bin/python
+# $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
+#
+# $Id: observerd.py 1.2 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+# Poskus narediti observer - ne dela. Nekaj je narobe z SocketServerjem po moje.
 
 import os, sys
 

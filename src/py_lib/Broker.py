@@ -1,3 +1,8 @@
+# $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
+#
+# $Id: Broker.py 1.2 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+#
+# Prevede podatke iz obrazca v zahtevek za trg.
 #import Apache
 import sys
 import cgi
@@ -7,13 +12,9 @@ import CheckForm
 import string
 
 def HandleForm(form):
-    print "Content-type: text/html; charset=iso-8859-2"
-    print 
-    
     if Market_Client.market_client.open()<0:
-	print "<H1>Zaprt trg</H1>"
-	print "Trg je trenutno zaprt\n"
-	return
+	return "<H1>Zaprt trg</H1>\n" + \
+	       "Trg je trenutno zaprt\n"
     
     # Preverimo veljavnost podatkov:
 
@@ -22,9 +23,8 @@ def HandleForm(form):
     reqfields = fields
 
     if not CheckForm.CheckForm(form, fields, reqfields):
-	print "<H1>Napaka</H1>"
-	print "Prosim izpolnite vsa polja..."
-	return
+	return "<H1>Napaka</H1>\n"  + \
+	       "Prosim izpolnite vsa polja..."
 
     try:
 	if form["Vrsta"].value == "Nakup":
@@ -45,20 +45,24 @@ def HandleForm(form):
 	ponudnik = form["Ponudnik"].value
 
 	zahtevek = "%(vrsta)s %(papir)s %(kol)s %(cena)s %(ponudnik)s" % locals()
+    except: 
+	# Tule bi moral poroèati kaj je narobe:
+	return "<H1>Napaka</H1>" + \
+	       sys.exc_type + sys.exc_value + sys.exc_traceback
+
+    msg =  "Po¹iljam: %s<P>" % zahtevek 
+
+    try:
+	Market_Client.market_client.send(zahtevek)
+	response = Market_Client.market_client.response()
+	msg = msg + "Odgovor je: %s<P>" % response
     except:
-	print "<H1>Napaka</H1>"
-	print sys.exc_type, sys.exc_value, sys.exc_traceback
-	return
-
-    print "Po¹iljam: %s<P>" % zahtevek 
-
-    Market_Client.market_client.send(zahtevek)
-    response = Market_Client.market_client.response()
-    print "Odgovor je: %s<P>" % response
+	msg = msg + "Trg se je zaprl...<P>"
 
     Count.increase()
-    print "©tevilka: %d<P>" % Count.value()
-
+    msg = msg + "©tevilka: %d<P>" % Count.value()
+    return msg
+    
 #sys.exit(0)
 
 # NOTREACHED:

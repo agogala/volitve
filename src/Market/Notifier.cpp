@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.5 Thu, 04 Sep 1997 16:58:57 +0200 andrej $
+ * $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
  *
- * $Id: Notifier.cpp 1.3 Thu, 04 Sep 1997 14:58:57 +0000 andrej $
+ * $Id: Notifier.cpp 1.4 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
  *
  * Po¹lji broadcast, èe se je zgodila kaka sprememba na trgu.
  */
@@ -69,13 +69,14 @@ int Notifier::notify ()
   ACE_DEBUG ((LM_DEBUG,
 		"(%P|%t) Handle output: %0*d\n", 
 	      NOTIFIER_MESSAGE_LENGTH, this->cnt));
-  ACE_DEBUG ((LM_DEBUG,
+  /*  ACE_DEBUG ((LM_DEBUG,
 	      "Broadcast address: %s, %d\n", 
 	      this->BroadcastAddr_.get_host_addr(),
 	      this->BroadcastAddr_.get_port_number()));
 
   ACE_DEBUG((LM_DEBUG,
 	     "msg len: %d\n", ACE_OS::strlen(msg)));
+	     */
 
   ACE_SOCK_Dgram_Bcast::send(msg, ACE_OS::strlen(msg), this->BroadcastAddr_);
 

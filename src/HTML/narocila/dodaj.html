@@ -5,40 +5,65 @@
     <title>Naroèilo</title>
   </head>
 
-  <body bgcolor="lightblue"> <!-- #ffe8b8 moccassin -->
+  <body bgcolor="#ffe8b8"> <!-- #ffe8b8 moccassin -->
+    <hr>
     <h1>Naroèilo</h1>
 
-    Tole je forma v pribli¾no takile obliki (kaj sem pozabil?):
+    Sem kaj pozabil na tem obrazcu?
 
-    <form action="/trg/broker"  >
-      Izberite papir:
-      <select NAME="Papir">
-	<OPTION>GERL
+    <center>
+      <form action="/trg/broker" method=post> <!--  enctype="multipart/form-data"-->
+	<table border="1" bgcolor="lightblue" cellspacing="1" cellpading="10">
+	  <tr>
+	    <td rowspan="3">	  
+	      Kandidat:<br>
+	      <select name="Papir" size="5" selected>
+		  <OPTION>GERL
 <OPTION>JSIH
 <OPTION>KUCA
 <OPTION>PDBN
 <OPTION>STOR
 
-      </select>
-      Vrsta naroèila:
-      <input type="radio" name="Vrsta" value="Prodaja" checked="checked">Prodaja
-      <input type="radio" name="Vrsta" Value="Nakup">Nakup<p>
-      Kolièina:
-      <input type="text" name="Kolicina" value=1 maxlength=2 size=2>
-      Cena:
-      <input type="text" name="Cena" value=50 maxlength=3 size=3> 0-100, decimalke s piko prosim. <p>
-	(Zaenkrat je overjanje takole enostavno :-)<br>
-	<select NAME="Ponudnik" >
-	  <OPTION>CRT       
+	      </select>
+	    </td>
+	    <td>
+	      Vrsta:
+	    <input type="radio" name="Vrsta" value="Prodaja" checked="checked">Prodaja
+	      <input type="radio" name="Vrsta" Value="Nakup">Nakup
+	    </td>
+	  <tr>
+	    <td>
+	      Kolièina:
+	      <input type="text" name="Kolicina" value=1 maxlength=2 size=2>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>
+	      Cena:
+	      <input type="text" name="Cena" value=50 maxlength=3 size=3><br>
+	      0-100, decimalke s piko prosim.
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan="2" align="center">
+	      (Zaenkrat je overjanje takole enostavno :-)
+	      <select NAME="Ponudnik" >
+		  <OPTION>CRT       
 <OPTION>JURE      
 <OPTION>LUKA      
 <OPTION>ZADN      
 
-	</select><p>
-      <center>
-	<input type="submit" value="            Dodaj             ">
-      </center>
+	      </select>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan="2" align="center">
+	      <input type="submit" value="            Dodaj             ">
+	    </td>
+	  </tr>
 <!--      <input type="reset" value="Zbri¹i">-->
-    </form>
+	</table>
+      </form>    
+    </center>
   </body>
 </html>

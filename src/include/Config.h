@@ -1,5 +1,11 @@
 // -*- C++ -*-
-/* Konfiguracija */
+/* 
+ * $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
+ *
+ * $Id: Config.h 1.7 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+ *
+ * Konfiguracija.
+*/
 
 #if !defined(CONFIG_H)
 #define CONFIG_H

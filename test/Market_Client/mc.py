@@ -12,6 +12,8 @@ sock = socket(AF_UNIX, SOCK_STREAM)
 
 sock.connect("/tmp/market")
 
+sock.setsockopt(SOL_SOCKET, SO_KEEPALIVE, 1)
+
 s="BUY KUCA 10 60.1 Crt"
 
 while 1:

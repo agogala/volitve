@@ -1,4 +1,10 @@
-// Default constructor.
+/*
+ * $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
+ *
+ * $Id: Market_Handler.cpp 1.5 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+ *
+ * Sprejema zahtevke od klientov.
+ */
 
 #include "marketd.h"
 #include "Market.h"
@@ -110,7 +116,8 @@ Market_Handler::open (void *)
   */
   else
     ACE_DEBUG ((LM_DEBUG,
-		"(%P|%t) connected to client %s\n", this->peer_name_));
+		"(%P|%t) connected to client %s (fd = %d)\n", 
+		this->peer_name_, this->get_handle() ));
       return 0;
 }
 

@@ -1,3 +1,13 @@
+0.6
+Malce popravil HTML strani, 
+Market::Add predelal tako, da ima malce bolj¹a sporoèila.
+Market_Client.py sedaj ugotovi, da se je trg sesul.
+Na Linuxu se zadeva ¹e vedno upira.
+Dodal zapis za 0.5 :-).
+
+0.5
+Delujoè Market, Observer, CGI skripti.
+
 0.4 
 Dodal Request, Market, market preimenoval v marketd. Dodal Query.
 Te¾ave z parametri v querijih.

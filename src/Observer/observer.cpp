@@ -1,6 +1,11 @@
-// $Id: observer.cpp 1.2 Thu, 04 Sep 1997 14:58:57 +0000 andrej $
-
-// This program connects to Market and waits for notifications of changes
+/* 
+ * $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
+ *
+ * $Id: observer.cpp 1.3 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+ *
+ * Èaka na obvestila o spremembah na trgu in potem zgenerira potrebne 
+ * dokumente in obve¹èa kliente, ki so se prikljuèili nanj.
+ */
 
 #include <ace/Reactor.h>
 #include <ace/Synch.h>

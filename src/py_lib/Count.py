@@ -1,4 +1,4 @@
-# $ProjectHeader: volitve 0.5 Thu, 04 Sep 1997 16:58:57 +0200 andrej $
+# $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
 #
 # $Id: Count.py 1.1 Fri, 29 Aug 1997 11:44:29 +0000 andrej $
 #

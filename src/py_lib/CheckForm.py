@@ -1,3 +1,7 @@
+# $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
+#
+# $Id: CheckForm.py 1.2 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+#
 # Preveri veljavnost obrazca:
 
 def CheckForm(form, fields, reqfields):

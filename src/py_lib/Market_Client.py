@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.5 Thu, 04 Sep 1997 16:58:57 +0200 andrej $
+# $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
 #
-# $Id: Market_Client.py 1.2 Thu, 04 Sep 1997 14:58:57 +0000 andrej $
+# $Id: Market_Client.py 1.3 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
 #
 # Objekt, ki definira povezavo s trgom
 import socket
@@ -17,16 +17,27 @@ class MarketClient:
             try:
                 self.sock.connect(cgi_config.MARKET_PATH)
             except:
+		self.sock = None
                 return -1
         return 0
 
     def send(self, msg):
         if len(msg)>255:
             raise "Message len>255"
-        self.sock.send(chr(len(msg))+msg)
-        pass
+	try:
+	    self.sock.send(chr(len(msg))+msg)
+	except:
+	    self.sock.close()
+	    self.sock = None
+	    raise sys.exc_type, sys.exc_value, sys.exc_traceback
 
     def response(self):
-        return self.sock.recv(1024)[1:]
+	resp = self.sock.recv(1024)
+	# Aha!, market se je odklopil
+	if resp == "":
+	    self.sock.close()
+	    self.sock = None
+	    resp = " Trg se je zaprl"
+	return resp[1:]
 
 market_client = MarketClient()

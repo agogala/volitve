@@ -1,4 +1,10 @@
-/* Imeplementacija enostavnega vektorja.
+/*
+ * $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
+ *
+ * $Id: VectorRequest.cpp 1.2 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+ *
+ * Implementacija enostavnega vektorja -- STL, ACE in g++ na Rozletu
+ * ne gredo skupaj.
  *
  */
 

@@ -1,4 +1,7 @@
-# Naredi dokument dodaj.html:
+# $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
+#
+# $Id: MakeDodaj.py 1.2 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+# Naredi dokument dodaj.html: zares opravi delo.
 
 import pg95
 import admin_cfg
@@ -10,7 +13,8 @@ def run(srcdir, destdir, templates):
     Papirji = ""
     for p in db_papirji:
 	Papirji = Papirji + "<OPTION>%s\n" % p
-#    print "Papirji:\n", Papirji
+    #    print "Papirji:\n", Papirji
+    DolzinaPapirjev=len(db_papirji)
 
     db_stranke = conn.query("SELECT stranka_id FROM stranke ORDER BY stranka_id")
     Ponudniki = ""

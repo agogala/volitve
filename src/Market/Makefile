@@ -1,8 +1,10 @@
 #----------------------------------------------------------------------------
-#	@(#)Makefile	1.1	10/18/96
+# $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
 #
-#	Makefile for the Reactor version of the Market Deamon
-# 	Heavily borrowed from Logging Server Deamon
+# $Id: Makefile 1.6 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+#
+# Makefile za market deamon.
+# 
 #----------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------
