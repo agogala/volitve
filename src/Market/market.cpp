@@ -1,7 +1,7 @@
 /*
  * $ProjectId$
  *
- * $Id: market.cpp 1.2 Fri, 29 Aug 1997 11:44:29 +0000 andrej $
+ * $Id: market.cpp 1.3 Tue, 02 Sep 1997 05:42:33 +0000 andrej $
  *
  */
 
@@ -88,6 +88,11 @@ main (int argc, char *argv[])
   // We need to pass in REACTOR::instance () here so that we don't use
   // the default ACE_Reactor::instance ().
 
+  // Pove¾i se z bazo [...] Bolj opisna napaka?
+  if (REQUEST::instance ()->open()==-1)
+    ACE_ERROR_RETURN ((LM_ERROR, 
+		       "Error opening Database connection\n"), -1);
+
   if (peer_acceptor.open
       (ACE_UNIX_Addr (OPTIONS::instance ()->market_path ()),
        REACTOR::instance ()) == -1)
@@ -107,9 +112,11 @@ main (int argc, char *argv[])
 		       "registering service with ACE_Reactor\n"), -1);
   
   // Open Notifier:
-  else if (NOTIFIER::instance ()->open
-	   (ACE_INET_Addr(50000), 
-	    NOTIFIER_DEFAULT_PORT) == -1)
+  /*  else if (NOTIFIER::instance ()->open
+      //	   (ACE_INET_Addr(50000), 
+      //	    NOTIFIER_DEFAULT_PORT) == -1)
+      (ACE_INET_Addr(NOTIFIER_DEFAULT_PORT),
+       ACE_INET_Addr(NOTIFIER_DEFAULT_PORT)) == -1)
     ACE_ERROR_RETURN ((LM_ERROR, "%p\n", "open"), -1);
   // Register Notifier
   else if (REACTOR::instance ()->register_handler
@@ -119,8 +126,13 @@ main (int argc, char *argv[])
 
   // Disable Notifier
   REACTOR::instance ()->suspend_handler( NOTIFIER::instance () );
-
-  REQUEST::instance ()->open();
+  */
+  
+  // Notifierja klièemo kar direktno, ne bomo ga klicali prek reactorja
+  else if (NOTIFIER::instance ()->open
+	   (ACE_INET_Addr(NOTIFIER_DEFAULT_PORT),
+	    ACE_INET_Addr(NOTIFIER_DEFAULT_PORT)) == -1)
+    ACE_ERROR_RETURN ((LM_ERROR, "%p\n", "open notifier"), -1);
 
   // Run forever, performing market service.
 

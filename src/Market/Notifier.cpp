@@ -1,7 +1,7 @@
 /*
  * $ProjectId$
  *
- * $Id: Notifier.cpp 1.1 Thu, 28 Aug 1997 17:15:39 +0000 andrej $
+ * $Id: Notifier.cpp 1.2 Tue, 02 Sep 1997 05:42:33 +0000 andrej $
  *
  * Po¹lji broadcast, èe se je zgodila kaka sprememba na trgu.
  */
@@ -11,19 +11,23 @@
 
 Notifier::Notifier (void)
 {
-  this->BroadcastPort_ = 0;
+  //  this->BroadcastAddr_ = 0;
   this->cnt = 0;
 }
 
 int Notifier::open
-(const ACE_INET_Addr &local_addr, const u_short BroadcastPort)
+(const ACE_INET_Addr &local_addr, const ACE_INET_Addr BroadcastAddr)
 {
-   if (ACE_SOCK_Dgram_Bcast::open (local_addr)==-1)
+   if (ACE_SOCK_Dgram_Bcast::open (local_addr, PF_INET, 0, 1 )==-1)
      return -1;
+   /*
    char optval = 1;
 
    ACE_SOCK_Dgram_Bcast::set_option(SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
-   this->BroadcastPort_ = BroadcastPort;
+   */
+   this->BroadcastAddr_ = BroadcastAddr;
+
+   return 0;
 }
 
 ACE_HANDLE Notifier::get_handle (void) const
@@ -31,7 +35,7 @@ ACE_HANDLE Notifier::get_handle (void) const
   return ACE_SOCK_Dgram_Bcast::get_handle();
 }
  
-int Notifier::handle_output (ACE_HANDLE handle)
+/*int Notifier::handle_output (ACE_HANDLE handle)
 {
   char msg[NOTIFIER_MESSAGE_SIZE];
 
@@ -39,12 +43,30 @@ int Notifier::handle_output (ACE_HANDLE handle)
 
   ACE_DEBUG ((LM_DEBUG,
 		"(%P|%t) Handle output: %08d\n", this->cnt));
-  ACE_SOCK_Dgram_Bcast::send(msg, ACE_OS::strlen(msg), this->BroadcastPort_);
-  REACTOR::instance ()->suspend_handler( NOTIFIER::instance () );
+  ACE_SOCK_Dgram_Bcast::send(msg, ACE_OS::strlen(msg), this->BroadcastAddr_);
+  REACTOR::instance ()->suspend_handler( this );
 
   this->cnt++;
 
   return 0;
+}
+*/
+// Tole lahko kaj hitro spremenimo v funkcijo, ki nastavi flag, 
+// vsake toliko èasa pa pregledamo flag in obvestimo dotiène...
+int Notifier::notify ()
+{
+  char msg[NOTIFIER_MESSAGE_SIZE];
+
+  ACE_OS::sprintf(msg, "%08d", this->cnt);
+
+  ACE_DEBUG ((LM_DEBUG,
+		"(%P|%t) Handle output: %08d\n", this->cnt));
+  ACE_SOCK_Dgram_Bcast::send(msg, ACE_OS::strlen(msg), this->BroadcastAddr_);
+
+  this->cnt++;
+
+  return 0;
+
 }
 
 #if defined (ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION)

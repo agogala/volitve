@@ -17,7 +17,7 @@
 #define NOTIFIER_DEFAULT_PATH "/tmp/market_notify"
 
 /* Define broadcast message size */
-#define NOTIFIER_MESSAGE_SIZE 8
+#define NOTIFIER_MESSAGE_SIZE 9
 
 /* Some sizes */
 #define MAX_KIND 4

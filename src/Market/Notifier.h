@@ -2,7 +2,7 @@
 /* 
  * $ProjectId$
  *
- * $Id: Notifier.h 1.1 Thu, 28 Aug 1997 17:15:39 +0000 andrej $
+ * $Id: Notifier.h 1.2 Tue, 02 Sep 1997 05:42:33 +0000 andrej $
  *
  * Zaznava spremembe na trgu in po¹ilja broadcast sporoèila o tem.
  */
@@ -26,16 +26,19 @@ class Notifier : public ACE_Event_Handler, public ACE_SOCK_Dgram_Bcast
 public:
   Notifier (void);
 
-  int open (const ACE_INET_Addr &local_addr, const u_short BroadcastPort);
+  int open (const ACE_INET_Addr &local_addr, const ACE_INET_Addr BroadcastAddr);
+ 
+  //  int open (const ACE_UNIX_Addr &local_addr, const ACE_UNIX_Addr BroadcastAddr);
  
   virtual ACE_HANDLE get_handle (void) const;
  
-  virtual int handle_output (ACE_HANDLE handle);
+  //  virtual int handle_output (ACE_HANDLE handle);
+  int notify();
  
   /*  virtual int handle_timeout (const ACE_Time_Value & tv, 
                               const void *arg = 0);*/
 private:
-  u_short BroadcastPort_;
+  ACE_Addr BroadcastAddr_;
   int cnt;
 };
 

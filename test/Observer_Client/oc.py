@@ -1,22 +1,19 @@
 #!/net/rozle/export/share/sol/bin/python
 
-from socket import *
-import string
+import socket
+import SocketServer
 
-HOST="rozle"
 PORT=5002
 
-sock = socket(AF_INET, SOCK_STREAM)
+class Handler(SocketServer.DatagramRequestHandler):
+    def handle(self):
+	print "Got: %s\n" % self.rfile.readline()
 
-sock.setblocking(0)
+class ObserverServer(SocketServer.UDPServer):
+    def server_bind(self):
+	SocketServer.UDPServer.server_bind(self)
+	self.socket.setsockopt(socket.SOL_SOCK, socket.SO_REUSADDR, 1)
 
-sock.connect(HOST, PORT)
+server = SocketServer.UDPServer(('', PORT),Handler)
 
-while 1:
-    select([sock],[],[]) 
-    response = sock.recv(1024)
-    print response[1:] + "\n"
-
-sock.close()
-
-print "Response was: %s" % response
+server.serve_forever()

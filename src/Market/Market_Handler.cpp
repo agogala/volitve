@@ -46,7 +46,8 @@ Market_Handler::handle_input (ACE_HANDLE)
       {
 	char rs[256]; /* Request string */
 
-        len = ntohl (len);
+	// To je odveè, saj je len samo en byte!
+	//        len = ntohl (len);
 	n = this->peer ().recv_n ((void *) &rs, len);
 
 	rs[n] = '\0';
@@ -69,8 +70,7 @@ Market_Handler::handle_input (ACE_HANDLE)
 
 	    if (rc == 0) {
 	      /* notify observers */
-	      //	      MARKET_CHANGED::instance ()-> set(1);
-	      REACTOR::instance ()->resume_handler( NOTIFIER::instance () );
+	      NOTIFIER::instance ()-> notify();
 	    } 
 	  }
 	else

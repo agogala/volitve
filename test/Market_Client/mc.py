@@ -1,4 +1,4 @@
-#!/net/rozle/export/share/sol/bin/python
+#!/usr/bin/python
 
 from socket import *
 import string
