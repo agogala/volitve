@@ -1,5 +1,5 @@
 /*
- * $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
+ * $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
  *
  * $Id: StrSet.cpp 1.2 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
  *

@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
-# $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
+# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
 #
-# $Id: Makefile 1.8 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
+# $Id: Makefile 1.9 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
 #
 # Makefile za opazovalca.
 #----------------------------------------------------------------------------
@@ -36,6 +36,10 @@ INCLDIRS += -I$(PYTHON_ROOT)/include/python1.4 -I$(PYTHON_ROOT)/lib/python1.4/co
 
 LDLIBS  += -lpq++ -lpq -lg++ -lbb
 LDFLAGS += -L$(PG_ROOT)/lib -L../lib
+
+ifeq ($(DEHROSC),1)
+CCFLAGS += -DDEHROSC
+endif
 
 ifeq ($(OS),Linux)
 LDLIBS  += -lreadline -ltermcap

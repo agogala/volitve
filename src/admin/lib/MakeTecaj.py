@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
+# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
 #
-# $Id: MakeTecaj.py 1.6 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
+# $Id: MakeTecaj.py 1.7 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
 #
 # Pripravi teèajnico.
 
@@ -168,10 +168,14 @@ def HTMLTecaji(dan='yesterday'):
     tb = "<thead><tr><th>Kandidat<th>Poravnalna cena<th>Najni¾ja cena<th>Najvi¹ja cena<th>Obseg\n<tbody>"
     # Naredi tabelo:
     # Mogoèe dodati ¹e spremembo teèaja v procentih?
+    vsota_t=0.0
+    vsota_o=0
     for k in db_pap:
 	tb = tb + '<tr><th align="left">%s\n' % k
 	if tecaji.has_key(k[0]):
 	    tb = tb + makeline("fffi",tecaji[k[0]]) 
+	    vsota_t = vsota_t + tecaji[k[0]][0]
+	    vsota_o = vsota_o + tecaji[k[0]][3]
 	else:
 	    tb = tb + '<td><td><td><td>'
 ##	if odprti.has_key(k[0]):
@@ -179,6 +183,7 @@ def HTMLTecaji(dan='yesterday'):
 ##	else:
 ##	    tb = tb + '<td>\n'
 	tb = tb + '\n'
+    tb = tb + '<tr><th align="left">Vsota<td align="right">%s<td><td><td>%d\n' % (Util.FormatFloat(vsota_t), vsota_o)
 
     datum = conn.query("SELECT '%s'::date AS datum" % dan)[0][0]
     datum = Util.RewriteDate(datum)

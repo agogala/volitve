@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
+ * $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
  *
- * $Id: Notification_Handler.cpp 1.1.2.3 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
+ * $Id: Notification_Handler.cpp 1.1.2.4 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
  *
  * Zaznava spremembe na trgu.
  */
@@ -85,6 +85,7 @@ Notification_Handler::handle_input (ACE_HANDLE)
 	    
 	    ACE_Tokenizer tokens(buff);
 	    tokens.delimiter_replace(' ', '\0');
+	    tokens.preserve_designators('"','"');
 	    
 	    char *cmd = tokens.next();
 	    char *ime;

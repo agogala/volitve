@@ -1,4 +1,4 @@
-# $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
+# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
 #
 # $Id: Okroznica.py 1.1 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
 #

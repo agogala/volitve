@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
+# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
 #
-# $Id: MakePregled.py 1.11 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
+# $Id: MakePregled.py 1.12 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
 # Naredi dokument pregled.html: zares opravi delo.
 
 import pg95
@@ -10,7 +10,7 @@ import DBConn
 import Registrator
 import string
 import time
-from MakeTecaj import Tecaji
+import MakeTecaj
 
 # Imamo kar stalno povezavo z bazo:
 conn = DBConn.db_conn
@@ -34,12 +34,13 @@ def run(srcdir, destdir, templates):
 
     db_pap = conn.query("SELECT papir_id FROM papirji ORDER BY papir_id")
 
-    tecaj = Tecaji('today', 1)
+    tecaj = MakeTecaj.Tecaji('today', 1)
 
     html_head="<thead><tr><th>"
     html_pon="\n<tbody><tr><th align=left>Ponudbe"
-    html_povp="\n<tr><th align=left>Povpra¹evanja"
+    html_povp="\n<tr><th align=left>Povpr."
     html_cena="\n<tr><th align=left>Por. cena"
+    vsota=0
     for p in db_pap:
 	html_head=html_head + '<th>' + p[0] + '\n'
 	html_pon = html_pon + '<td align="right">' 
@@ -51,6 +52,7 @@ def run(srcdir, destdir, templates):
 	    html_povp=html_povp + Util.FormatFloat(string.atof(povpr[p[0]]))
 	if tecaj.has_key(p[0]):
 	    html_cena=html_cena + Util.FormatFloat(tecaj[p[0]][0])
+	    vsota = vsota + tecaj[p[0]][0]
 
 ##     FIFO = "<thead><tr><th><th>Ponudba<th>Povpra¹evanje</tr>\n<tbody><tr>\n"
 ##     for p in db_pap:
@@ -64,11 +66,12 @@ def run(srcdir, destdir, templates):
 ## 	    pov = ""
 ## 	FIFO = FIFO + '<tr>\n<th align="left">%s\n<td align="right">%s\n<td align="right">%s\n</tr>\n' % (p[0], pon, pov)
 
+    html_head = html_head + '<th>Vsota\n'
+    html_cena = html_cena + '<td align="right">' + Util.FormatFloat(vsota)
     FIFO = html_head + html_pon + html_povp + html_cena
     t = time.localtime(time.time())
     datum = time.strftime('%d.%m.%y',t)
     ura = time.strftime('%H:%M',t)
-
 
     # Preberi obrazec:
     templname = srcdir + '/' + templates['Pregled']['ime'] + '.in'
@@ -126,12 +129,14 @@ def updateuser(srcdir, destdir, templates, user):
     Papirji = ['']
     Kolicine = []
     Cena = []
-    tecaj = Tecaji('today')
+    tecaj = MakeTecaj.Tecaji('today')
     denar = 0
+    vsota = 0
     for f in usr_stanje:
 	if string.strip(f[1])<>"denar":
 	    Papirji.append(f[1])
 	    Kolicine.append(f[2])
+	    vsota = vsota + abs(string.atoi(f[2]))
 	    if tecaj.has_key(f[1]):
 		Cena.append(Util.FormatFloat(tecaj[f[1]][0]))
 		denar = denar + string.atof(f[2]) * tecaj[f[1]][0]
@@ -141,7 +146,12 @@ def updateuser(srcdir, destdir, templates, user):
 	    denar = denar + string.atof(f[2])
 	    posli = Util.FormatFloat(string.atof(f[2]))
 
-    # Izraèunaj stanje:
+    # Vsota kolièin:
+    Papirji.append("Vsota")
+    Kolicine.append("%d" % vsota)
+    Cena.append('')
+
+    # Stanje:
     Papirji.append("SIT")
     Kolicine.append(posli)
     Cena.append(Util.FormatFloat(denar))

@@ -20,13 +20,15 @@ sock.connect("/tmp/market-d")
 
 sock.setsockopt(SOL_SOCKET, SO_KEEPALIVE, 1)
 
-send(sock, "BUY KUCA 4 50 Tomo")
+#send(sock, "BUY KUCA 4 50 Tomo")
 
 #send(sock, "SELL KUCA 72 1 Mitja")
 
 #send(sock, "SELL PERS 72 25 Mitja")
 
-send(sock, "BUY PERS 5 25 Bostjan")
+send(sock, 'BUY PERS 5 25 "Matej Nova"')
+
+#send(sock, "CANCEL 627458 Tomo")
 
 
 ## while 1:

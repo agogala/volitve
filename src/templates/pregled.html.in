@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<!-- $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $ $Id: pregled.html.in 1.6 Tue, 04 Nov 1997 18:56:32 +0000 andrej $ -->
+<!-- $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $ $Id: pregled.html.in 1.7 Sat, 08 Nov 1997 07:02:11 +0000 andrej $ -->
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
@@ -18,11 +18,18 @@
       <font size="-1">	
 	Najugodnejša ponudba je tista z najmanjšo ceno, najugodnejše
 	povpraševanje je tisto z najvišjo ceno.
-	Poravnalne cene so izračunane dne <b>%(datum)s</b> ob
-	<b>%(ura)s</b>.
+	Poravnalna cena je uravnoteženo povprečje sklenjenih
+      pogodb. Izračunane so dne <b>%(datum)s</b> ob
+	<b>%(ura)s</b>. <b>Vsota</b> je vsota vseh poravnalnih
+      cen. Njeno odstopanje od <b>100</b> kaže precenjenost ali
+      podcenjenost pogodb na trgu.  
       </font>
-
-    
+    <br>
+    <center>
+      <font color="red">
+    <a href="/spisek.html" target="_top">Prijavite</a> se na elektronski spisek o borzi predsedniških kandidatov.
+	</font>
+    </center>
     
   </body>
 </html>

@@ -1,8 +1,8 @@
 // -*- C++ -*-
 /* 
- * $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
+ * $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
  *
- * $Id: Config.h 1.14 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
+ * $Id: Config.h 1.15 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
  *
  * Konfiguracija.
 */
@@ -10,7 +10,7 @@
 #if !defined(CONFIG_H)
 #define CONFIG_H
 
-#if defined(DEBUG)
+#if defined(DEHROSC)
 /* Privzeta pot za administratorja */
 #define ADMIN_DEFAULT_PATH "/tmp/admin_market-d"
 

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
+# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
 #
-# $Id: Broker.py 1.8 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
+# $Id: Broker.py 1.9 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
 #
 # Prevede podatke iz obrazca v zahtevek za trg.
 #import Apache
@@ -89,14 +89,14 @@ def HandleForm(form):
 	Market_Client.market_client.send(zahtevek)
 	response = Market_Client.market_client.response()
 	if response=="000":
-	    import Formater_Client
-	    try:
-		if Formater_Client.formater_client.open()>=0:
-		    Formater_Client.formater_client.send("MakePregled")
-		    # Get response, but ignore it:
-		    Formater_Client.formater_client.response()
-	    except:
-		pass
+##	    import Formater_Client
+##	    try:
+##		if Formater_Client.formater_client.open()>=0:
+##		    Formater_Client.formater_client.send("MakePregled")
+##		    # Get response, but ignore it:
+##		    Formater_Client.formater_client.response()
+##	    except:
+##		pass
 ## 	    try:
 ## 		f = open(cgi_config.htmldir + '/narocila/pregled.html', "r")
 ## 		msg = f.read()

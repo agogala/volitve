@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
+ * $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
  *
- * $Id: Formater.cpp 1.1.2.5 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
+ * $Id: Formater.cpp 1.1.2.6 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
  *
  * Oblikuje HTML datoteke.
  */
@@ -118,6 +118,26 @@ Formater::mkUser(const char *User)
   return rc;
 }
 
+int
+Formater::mkContracts(const char *User, const char *Paper)
+{
+  int rc=0;
+
+  if (!initialized_)
+    init();
+
+  char cmd[500];
+
+  ACE_OS::sprintf(cmd, "MakePogodbe.defaultrun('%s','%s')", User, Paper);
+  ACE_DEBUG((LM_DEBUG, "Formatting contract: %s %s\n", User, Paper));
+  if (PyRun_SimpleString(cmd)) {
+    ACE_ERROR((LM_ERROR, "Error running MakePogodbe.defaultrun\n"));
+    rc = 100;
+  }
+
+  return rc;
+}
+
 // Handler:
 
 int
@@ -177,6 +197,12 @@ Formater_Handler::handle_input (ACE_HANDLE)
 	    else if (!ACE_OS::strcasecmp(cmd, "MakeUser")) {
 	      char *username = tokens.next();	      
 	      int rc=formater->mkUser(username);
+	      int2code(rc, &rs[1]);
+	    }
+	    else if (!ACE_OS::strcasecmp(cmd, "Contracts")) {
+	      char *username = tokens.next();
+	      char *paper = tokens.next();
+	      int rc=formater->mkContracts(username, paper);
 	      int2code(rc, &rs[1]);
 	    }
 	    else {

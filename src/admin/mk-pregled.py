@@ -1,5 +1,5 @@
 #!/net/rozle/export/share/sol/bin/python
-# $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
+# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
 #
 # $Id: mk-pregled.py 1.3 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
 # Naredi pregled.html

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
+# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
 #
-# $Id: admin_cfg.py 1.2.2.5 Sun, 26 Oct 1997 21:47:33 +0000 andrej $
+# $Id: admin_cfg.py 1.2.2.6 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
 #
 # Konfiguracija za administracijo:
 
@@ -19,10 +19,11 @@ templates = {"Dodaj": {'dir': '/narocila', 'ime': 'dodaj.html'},
 	     "HTAccess": {'dir': '/uporabniki', 'ime': 'htaccess'},
 	     "Stanje": {'dir': '/uporabniki', 'ime': 'stanje.html'},
 	     "Tecaj": {'dir': '/pregled/tecaji', 'ime': 'tecaj.html'},
-	     "IndexTecaji": {'dir': '/pregled', 'ime': 'tecaji.html'}}
+	     "IndexTecaji": {'dir': '/pregled', 'ime': 'tecaji.html'},
+	     "Pogodbe": {'dir': '/uporabniki', 'ime': 'pogodbe.html'}}
 
 # Baza:
-DB_Name = "volitve"
+DB_Name = "volitve_d"
 
 # Sendmail
 SENDMAIL = "/usr/lib/sendmail -t -em"

@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
+ * $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
  *
- * $Id: Formater.h 1.3 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
+ * $Id: Formater.h 1.4 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
  *
  * Oblikuje HTML datoteke. Se spro¾a ob regularnih èasovnih razmikih.
  * Datoteke formatira python script, s katerim tale objekt komunicira
@@ -35,6 +35,7 @@ class Formater: public ACE_Event_Handler
 
   int mkPregled();
   int mkUser(const char *User);
+  int mkContracts(const char *User, const char *Paper);
 
 private:
   State *state_;

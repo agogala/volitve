@@ -1,3 +1,8 @@
+0.26
+Dodal izracun pogodb. Manjkajo se povezave v stanju na pogodbe.
+Dodal maliing listo. 
+Dodal racunanje raznih vsot.
+ 
 0.25
 Izognil sem se shrambi stanj.
 Odpravil nekaj napak pri uporabnikih (pozabil sem, da sem omejil dolzino na 10 znakov).

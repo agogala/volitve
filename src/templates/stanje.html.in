@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//Microsoft//DTD Internet Explorer 3.0 HTML//EN">
-<!-- $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $ $Id: stanje.html.in 1.5 Tue, 28 Oct 1997 20:15:29 +0000 andrej $ -->
+<!-- $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $ $Id: stanje.html.in 1.6 Sat, 08 Nov 1997 07:02:11 +0000 andrej $ -->
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
@@ -19,9 +19,9 @@
 
     <font size="-1">
       Negativna količina kandidata pomeni prodajo, pozitivna pa
-      nakup. Zadnji stolpec (<b>SIT</b>) vsebuje v prvi vrstici vsoto
+      nakup. <b>Vsota</b> je seštevek količin na računu in je lahko največ <a href="/navodila/index.html#omejitev">25</a>. Zadnji stolpec (<b>SIT</b>) vsebuje v prvi vrstici vsoto
       vseh sklenjenih pogodb, v drugi vrstici pa vrednost glede na
-      trenutne poravnalne cene.
+      trenutne poravnalne cene. 
     </font>
 
     <hr>

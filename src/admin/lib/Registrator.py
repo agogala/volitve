@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
+# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
 #
-# $Id: Registrator.py 1.8 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
+# $Id: Registrator.py 1.9 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
 # Se ukvarja z registracijo uporabnikov
 
 import pg95
@@ -31,8 +31,6 @@ def Validate(hash):
     if accessed=='t':
 	return AdminConst.Validate.HashAccessed
 
-    # Oznaèimo spremembo
-    db_conn.query("UPDATE registracije SET accessed='t' WHERE hash='%s'" % hash)
     return AdminConst.Validate.OK
 
 # Vrni ID za danega uporabnika
@@ -108,6 +106,20 @@ AS Stranka_ID, Papir_ID, 0 AS kolicina FROM Papirji" % username)
 	    "INSERT INTO stanje (stranka_id, papir_id, kolicina) \
 VALUES('%s','denar',0)" % username)
 
+        # Oznaèimo spremembo
+	db_conn.query("UPDATE registracije SET accessed='t' WHERE hash='%s'" % hash)
+	# Ustvari home direktorij:
+	rc, ID = UserID(username)
+	userroot = admin_cfg.htmldir + \
+		   admin_cfg.templates['Stanje']['dir'] 
+	userdir = userroot + '/' + ID
+	os.mkdir(userdir)
+
+	templname = admin_cfg.tempdir + '/' + \
+		    admin_cfg.templates['HTAccess']['ime'] + '.in'
+	destname = userdir + '/.htaccess'
+	Util.MakeTemplate(templname, destname, {'username': username})
+
 	# Dodaj password v htpasswd:
 	cpasswd = EncryptPasswd(passwd)
 	fname = admin_cfg.PasswdFile
@@ -146,17 +158,6 @@ VALUES('%s','denar',0)" % username)
 	os.system('cp %s %s' % (tmpname, fname))
 	os.unlink(tmpname)
 
-	# Ustvari home direktorij:
-	rc, ID = UserID(username)
-	userroot = admin_cfg.htmldir + \
-		   admin_cfg.templates['Stanje']['dir'] 
-	userdir = userroot + '/' + ID
-	os.mkdir(userdir)
-
-	templname = admin_cfg.tempdir + '/' + \
-		    admin_cfg.templates['HTAccess']['ime'] + '.in'
-	destname = userdir + '/.htaccess'
-	Util.MakeTemplate(templname, destname, {'username': username})
 	db_conn.query("COMMIT")
     except:
 	db_conn.query("ROLLBACK")
