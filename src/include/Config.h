@@ -1,6 +1,6 @@
 // -*- C++ -*-
 /* 
- * $ProjectHeader: volitve 0.18 Sun, 05 Oct 1997 22:53:12 +0200 andrej $
+ * $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
  *
  * $Id: Config.h 1.10 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
  *

@@ -1,17 +1,18 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 3 3)
 (Project-Description "Blagovna borza predsednikov")
-(Project-Version volitve 0 18)
-(Parent-Version volitve 0 17)
+(Project-Version volitve 0 19)
+(Parent-Version volitve 0 18)
 
-(Version-Log "Spremenil izgled HTML strani.")
+(Version-Log "Pri trgovanju vidimo najbolj¹o ponudbo in povpra¹evanje")
 (New-Version-Log "")
-(Checkin-Time "Sun, 05 Oct 1997 22:53:12 +0200")
+(Checkin-Time "Thu, 09 Oct 1997 15:19:34 +0200")
 (Checkin-Login andrej)
 (Populate-Ignore ("~$" "^apache" "^Proto/" "^Tmp/"
                   "^test-cpp/" ".obj/"  ".shobj/" "^Bookmarks"
                   ".old/" ".bak$" "^doc/ODBC/" "Market.simple" 
-                  ".pyc$" "^OLD/" "/HTML/uporabniki/"))
+                  ".pyc$" "^OLD/" "/HTML/uporabniki/" "^/test/"
+		  "^src/Log/"))
 (Project-Keywords)
 (Files
 ;; This is a comment.  Fill in files here.
@@ -20,7 +21,7 @@
 ;; Files added by populate at Thu, 28 Aug 1997 18:56:22 +0200:
 
 ;; Kronologija in TODO
-  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.17 644))
+  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.18 644))
   (TODO (volitve/32_TODO 1.2 644))
   (tips (volitve/41_tips 1.1 644))
 
@@ -43,7 +44,7 @@
   (SQL/zah2fifo.sql (volitve/b/0_zah2fifo.sql 1.1 644))
  
 ;; Testni podatki
-  (SQL/fifo.txt (volitve/5_fifo.txt 1.1 640))
+  (SQL/fifo.txt (volitve/5_fifo.txt 1.1 644))
   (SQL/stranke.txt (volitve/6_stranke.tx 1.2 644))
   (SQL/papirji.txt (volitve/b/8_papirji.tx 1.1 644))
 
@@ -78,18 +79,18 @@
   (src/Observer/Makefile (volitve/17_Makefile 1.6 644))
 
 ;; HTML:
-  (src/HTML/index.html (volitve/18_index.html 1.4.2.2 644))
+  (src/HTML/index.html (volitve/18_index.html 1.4.2.3 644))
   (src/HTML/pregled/.htaccess (volitve/b/9_.htaccess 1.3 644))
-  (src/HTML/pregled/index.html (volitve/b/12_index.html 1.3 644))
-  (src/HTML/registracija.html (volitve/b/15_index.html 1.1.2.3 644))
-  (src/HTML/narocila/kazalo.html (volitve/b/17_kazalo.htm 1.3 644))
-  (src/HTML/narocila/index.html (volitve/b/18_index.html 1.4 644))
-  (src/HTML/narocila/dodaj.html (volitve/b/19_dodaj.html 1.4 644))
-  (src/HTML/narocila/pregled.html (volitve/b/10_pregled.ht 1.11 644))
+  (src/HTML/pregled/index.html (volitve/b/12_index.html 1.4 644))
+  (src/HTML/registracija.html (volitve/b/15_index.html 1.1.2.4 644))
+  (src/HTML/narocila/kazalo.html (volitve/b/17_kazalo.htm 1.4 644))
+  (src/HTML/narocila/index.html (volitve/b/18_index.html 1.5 644))
+  (src/HTML/narocila/dodaj.html (volitve/b/19_dodaj.html 1.5 644))
+  (src/HTML/narocila/pregled.html (volitve/b/10_pregled.ht 1.12 644))
   (src/HTML/uporabniki/.htaccess (volitve/c/0_.htaccess 1.2 644))
   (src/HTML/stanje/kazalo.html (../narocila/kazalo.html) :symlink)
-  (src/HTML/stanje/index.html (volitve/c/0_index.html 1.1 644))
-  (src/HTML/navodila/index.html (volitve/c/21_index.html 1.1 664))
+  (src/HTML/stanje/index.html (volitve/c/0_index.html 1.2 644))
+  (src/HTML/navodila/index.html (volitve/c/21_index.html 1.1 644))
 
 
 
@@ -148,23 +149,25 @@
   (src/cgi/.htaccess (volitve/35_.htaccess 1.3.2.3 644))
   (src/cgi/broker (volitve/b/20_broker 1.2 755))
   (src/cgi/vhod (volitve/c/4_vhod 1.1 755))
+  (src/cgi/preklici (volitve/b/0_preklici 1.1 755))
 ;; Javno dostopen cgi:
   (src/pub_cgi () :directory)
   (src/pub_cgi/.htaccess (volitve/b/0_.htaccess 1.1 644))
   (src/pub_cgi/registriraj (volitve/b/2_registrira 1.2 755))
 
 ;; Knji¾nica za CGI
-  (src/py_lib/Broker.py (volitve/b/21_Broker.py 1.3 644))
+  (src/py_lib/Broker.py (volitve/b/21_Broker.py 1.4 644))
   (src/py_lib/CheckForm.py (volitve/b/22_CheckForm. 1.2 644))
   (src/py_lib/Count.py (volitve/37_Count.py 1.1 644))
   (src/py_lib/Market_Client.py (volitve/38_Market_Cli 1.3 644))
   (src/py_lib/cgi_config.py (volitve/39_config.py 1.3.2.3 644))
-  (src/py_lib/FormatResponse.py (volitve/b/0_FormatResponse.py 1.2 644))
+  (src/py_lib/FormatResponse.py (volitve/b/0_FormatResponse.py 1.3 644))
 ;; Preusmeri uporabnika:
-  (src/py_lib/Redirect.py (volitve/c/5_Redirect.p 1.1 644))
+  (src/py_lib/Redirect.py (volitve/c/5_Redirect.p 1.2 644))
   (src/py_lib/Uporabniki.py (volitve/c/6_Uporabniki 1.4 644))
   (src/py_lib/Admin_Client.py (volitve/c/18_Admin_Clie 1.1 644))
-  (src/py_lib/Reg_Client.py (volitve/b/3_Reg_Client 1.3 644))
+  (src/py_lib/Reg_Client.py (volitve/b/3_Reg_Client 1.4 644))
+  (src/py_lib/Preklic.py (volitve/c/0_Preklic.py 1.1 644))
 ;; Gesla:
   (src/admin/cfg/htpasswd (volitve/c/7_.htpasswd 1.6 644))
 
@@ -172,7 +175,7 @@
   (test/Observer_Client/oc.py (volitve/30_oc.py 1.2 755))
   (test/Market_Client/mc.py (volitve/31_mc.py 1.7 755))
   (src/cgi/testpy.py (volitve/40_testpy.py 1.1 755))
-  (test/Sock-Test/sock.cpp (volitve/42_sock.cpp 1.1 664))
+  (test/Sock-Test/sock.cpp (volitve/42_sock.cpp 1.1 644))
   (test/Sock-Test/Makefile (volitve/43_Makefile 1.1 644))
 ;; Request:
   (test/Request/testR.cpp (volitve/33_testR.cpp 1.5 644))
@@ -201,30 +204,29 @@
 ;; Konfiguracija
   (src/admin/cfg/admin_cfg.py (volitve/b/27_admin_cfg. 1.2.2.3 644))
 ;; Knji¾nica
-  (src/admin/lib/MakePregled.py (volitve/b/28_MakePregle 1.5 644))
+  (src/admin/lib/MakePregled.py (volitve/b/28_MakePregle 1.6 644))
   (src/admin/lib/Observer.py (volitve/b/29_Observer.p 1.2 644))
   (src/admin/lib/MakeDodaj.py (volitve/b/30_MakeDodaj. 1.4 644))
-  (src/admin/lib/RegisterReply.py (volitve/c/9_RegisterRe 1.4 644))
+  (src/admin/lib/RegisterReply.py (volitve/c/9_RegisterRe 1.5 644))
   (src/admin/lib/Registrator.py (volitve/c/19_Registrato 1.6 644))
-  (src/admin/lib/Util.py (volitve/51_Util.py 1.1 664))
+  (src/admin/lib/Util.py (volitve/51_Util.py 1.1 644))
   (src/admin/lib/AdminConst.py (volitve/b/46_AdminConst 1.1 644))
   (src/admin/lib/DBConn.py (volitve/c/20_DBConn.py 1.1 644))
 
 ;; Obrazci:
-  (src/templates/pregled.html.in (volitve/b/31_pregled.ht 1.2 644))
-  (src/templates/dodaj.html.in (volitve/b/32_dodaj.html 1.3 644))
+  (src/templates/pregled.html.in (volitve/b/31_pregled.ht 1.3 644))
+  (src/templates/dodaj.html.in (volitve/b/32_dodaj.html 1.4 644))
   (src/templates/register-old.txt (volitve/c/10_register-o 1.1 644))
-  (src/templates/register-new.txt (volitve/c/11_register-n 1.1 644))
-  (src/templates/stanje.html.in (volitve/b/0_stanje.html.in 1.3 644))
+  (src/templates/register-new.txt (volitve/c/11_register-n 1.2 644))
+  (src/templates/stanje.html.in (volitve/b/0_stanje.html.in 1.4 644))
   (src/templates/htaccess.in (volitve/b/1_htaccess.i 1.2 644))
-  (src/templates/reg_form.html.in (volitve/b/47_reg_form.h 1.1 644))
+  (src/templates/reg_form.html.in (volitve/b/47_reg_form.h 1.2 644))
 
 ;; HTTP konfiguracija:
   (apache_1.2.4/conf/httpd.conf (volitve/b/33_httpd.conf 1.1 644))
   (apache_1.2.4/conf/srm.conf (volitve/b/34_srm.conf 1.4 644))
   (apache_1.2.4/conf/access.conf (volitve/b/35_access.con 1.2 644))
   (apache_1.2.4/conf/mime.types (volitve/b/36_mime.types 1.1 644))
-
 )
 (Merge-Parents)
 (New-Merge-Parents)

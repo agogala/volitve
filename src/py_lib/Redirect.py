@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.18 Sun, 05 Oct 1997 22:53:12 +0200 andrej $
+# $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
 #
-# $Id: Redirect.py 1.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
+# $Id: Redirect.py 1.2 Thu, 09 Oct 1997 13:19:34 +0000 andrej $
 #
 # Preusmeri uporabnika v njegov direktorij.
 
@@ -9,7 +9,7 @@ import os
 
 rel_msg = \
 "Status: 302 relocate\n" \
-"Location: /uporabniki/%s\n" \
+"Location: /uporabniki/%s/\n" \
 "Content-Type: text/plain\n" \
 "\n" \
 "Document relocated\n" \

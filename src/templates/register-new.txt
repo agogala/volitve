@@ -7,7 +7,7 @@ Content-transfer-encoding: Quoted-Printable
 
 Spo=B9tovani,
 
-priklju=E8ite se na URL: %(url)s
+klju=E8 je: %(hash)s
 
 Lep pozdrav,
 

@@ -1,3 +1,16 @@
+0.19
+Pregled trga ka¾e najbolj¹o ponudbo in povpra¹evanje.
+Pri stanju je vse nastavljeno za preklic.
+Preostane ¹e:
+* CGI za preklic
+* Manager za procese, zapiranje in odpiranje trga
+* Ureditev sporoèil o napakah in odgovorov na po¹iljanje obrazcev
+* Ureditev HTML strani:
+	* Teèajnice in grafi
+	* Navodila
+* MakeHash v administratorju
+* Dokumentacija za Krisperja
+
 0.18
 Spremenil strani - pregled trga je sedaj zdru¾en z obrazcem za dodajanje.
 VectorRequest sedaj spro¹èa spomin.

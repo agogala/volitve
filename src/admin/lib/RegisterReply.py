@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.18 Sun, 05 Oct 1997 22:53:12 +0200 andrej $
+# $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
 #
-# $Id: RegisterReply.py 1.4 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
+# $Id: RegisterReply.py 1.5 Thu, 09 Oct 1997 13:19:34 +0000 andrej $
 # Pripravi vse za registracijo - direktorij + odgovor
 
 import rfc822
@@ -73,7 +73,7 @@ def run(srcdir, templates):
 
     message = content % {
 	'replyto': replyto,
-	'url': url,
+	'hash': urlkey,
 	'serveradmin': 'andrej@e5.ijs.si'
 	}
     pipe = os.popen(admin_cfg.SENDMAIL, "w")

@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<!-- $ProjectHeader: volitve 0.18 Sun, 05 Oct 1997 22:53:12 +0200 andrej $ $Id: registracija.html 1.1.2.3 Sun, 05 Oct 1997 20:53:12 +0000 andrej $ -->
+<!-- $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $ $Id: registracija.html 1.1.2.4 Thu, 09 Oct 1997 13:19:34 +0000 andrej $ -->
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
@@ -15,6 +15,12 @@
 	    <tr>
 	      <td>
 		<table>
+		  <tr>
+		    <td>
+		      <font size="-1"> 
+			<a href="/" target="_top">Prva stran</a>
+		      </font>
+
 		  <tr>
 		    <td>
 		      <font size="-1"> 
@@ -52,6 +58,7 @@
 		<br>
 		
 	  </table>
+	<td width="4">	  
 	<td align="left" valign="top">
 
 	  <h1>Registracija</h1>
@@ -66,14 +73,38 @@
 	  <ol>
 	    <li>Pošljete el. pošto na naslov <a
 		href="mailto:volitve-reg@e5.ijs.si" >volitve-reg@e5.ijs.si</a>
-	    <li>Odgovor na to pismo bo vseboval naslov, na katerem vpišete
-	      uporabniško ime in geslo. Na ta naslov se lahko
-	      priključite samo enkrat. 
+	    <li>Odgovor na to pismo bo vseboval ključ, ki ga vnesete v
+	      spodnji obrazec in pritisnete tipko Naprej. Ključ
+	      velja samo enkrat.
 	    <li>Po uspešnem posredovanju uporabniškega imena in gesla, lahko
 	      pričnete s trgovanjem.
 	  </ol>
+	  
+	  V določenih primerih brkljalnik Netscape 3.0 po izpolnitvi
+	  spodnjega obrazca poskuša ponovno poslati podatke. <b>V tem
+	    primeru izberite Prekliči oziroma Cancel.</b>
 
+	  <center>
+	    <form action="/registriraj" method="post">
+	      <input type="hidden" name="op" value="hash">
+	      <table border="1" bgcolor="lightblue">
+		<tr><td>
+		    <table cellspacing="1" cellpading="10">
+		      <tr>
+			<td><br>
+			  Ključ: 
+			  <input type="text" name="hash" size="40"
+			    maxlength="32"><br>
+			  <br>
+		      <tr>
+			<td align="center">
+			  <input type="submit" value="   Naprej >>   ">
+		    </table>
+	      </table>
+	    </form>
+	    
+	  </center>
     </table>
-
+    
   </body>
 </html>

@@ -1,8 +1,8 @@
 # $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
 #
-# $Id: Broker.py 1.4 Thu, 09 Oct 1997 13:19:34 +0000 andrej $
+# $Id: Preklic.py 1.1 Thu, 09 Oct 1997 13:19:34 +0000 andrej $
 #
-# Prevede podatke iz obrazca v zahtevek za trg.
+# Poskrbi za preklic naroèila.
 #import Apache
 import sys
 import os

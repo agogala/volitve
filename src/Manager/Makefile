@@ -1,5 +1,5 @@
 #----------------------------------------------------------------------------
-# $ProjectHeader: volitve 0.18 Sun, 05 Oct 1997 22:53:12 +0200 andrej $
+# $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
 #
 # $Id: Makefile 1.1 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
 #

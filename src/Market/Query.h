@@ -1,6 +1,6 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.18 Sun, 05 Oct 1997 22:53:12 +0200 andrej $
+ * $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
  *
  * $Id: Query.h 1.1 Wed, 03 Sep 1997 05:39:11 +0000 andrej $
  *
