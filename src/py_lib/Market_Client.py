@@ -1,10 +1,10 @@
-# $ProjectHeader: volitve 0.4 Thu, 04 Sep 1997 04:15:14 +0200 andrej $
+# $ProjectHeader: volitve 0.5 Thu, 04 Sep 1997 16:58:57 +0200 andrej $
 #
-# $Id: Market_Client.py 1.1 Fri, 29 Aug 1997 11:44:29 +0000 andrej $
+# $Id: Market_Client.py 1.2 Thu, 04 Sep 1997 14:58:57 +0000 andrej $
 #
 # Objekt, ki definira povezavo s trgom
 import socket
-import config
+import cgi_config
 
 class MarketClient:
     def __init__(self):
@@ -15,7 +15,7 @@ class MarketClient:
         if self.sock==None:         
             self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             try:
-                self.sock.connect(config.MARKET_PATH)
+                self.sock.connect(cgi_config.MARKET_PATH)
             except:
                 return -1
         return 0

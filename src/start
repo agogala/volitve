@@ -1,0 +1,3 @@
+#!/bin/zsh
+Observer/observer >& Log/observer.log &
+Market/marketd >& Log/market.log &

@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.4 Thu, 04 Sep 1997 04:15:14 +0200 andrej $
+ * $ProjectHeader: volitve 0.5 Thu, 04 Sep 1997 16:58:57 +0200 andrej $
  *
- * $Id: marketd.cpp 1.5 Thu, 04 Sep 1997 02:15:14 +0000 andrej $
+ * $Id: marketd.cpp 1.6 Thu, 04 Sep 1997 14:58:57 +0000 andrej $
  *
  */
 
@@ -105,7 +105,7 @@ int ReactorLoop()
   
   // Notifierja klièemo kar direktno, ne bomo ga klicali prek reactorja
   else if (NOTIFIER::instance ()->open
-	   (ACE_INET_Addr(NOTIFIER_DEFAULT_PORT),
+	   (ACE_INET_Addr(NOTIFIER_LOCAL_PORT),
 	    ACE_INET_Addr(NOTIFIER_DEFAULT_PORT)) == -1)
     ACE_ERROR_RETURN ((LM_ERROR, "%p\n", "open notifier"), -1);
 

@@ -1,0 +1,7 @@
+# -*- python -*-
+import Broker
+import cgi
+
+# Preberi zahtevek
+form = cgi.FieldStorage()
+Broker.HandleForm(form)

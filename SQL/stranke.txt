@@ -1,7 +1,5 @@
 LUKA,©mentana muha,luka@nowhere.com
 JURE,®iberna,jure@miha.com
-LIKO,Abc,nikjer@siol.net
-BIZGO,Èerin,nema@nema.si
-LAST,Grega,lepotec@beaty.com
-TEST,Janez,jj@sds.si
 ZADN,Zadnji, alipatudine@jek.si
+CRT,Crt Jakhel, crt@geocities.com
+LANA,Lana Milenkovic,neznano@neznano.si

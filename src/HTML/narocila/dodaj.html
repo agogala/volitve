@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
+    <title>Naročilo</title>
+  </head>
+
+  <body bgcolor="lightblue"> <!-- #ffe8b8 moccassin -->
+    <h1>Naročilo</h1>
+
+    Tole je forma v približno takile obliki (kaj sem pozabil?):
+
+    <form action="/trg/broker"  >
+      Izberite papir:
+      <select NAME="Papir">
+	<OPTION>GERL
+<OPTION>JSIH
+<OPTION>KUCA
+<OPTION>PDBN
+<OPTION>STOR
+
+      </select>
+      Vrsta naročila:
+      <input type="radio" name="Vrsta" value="Prodaja" checked="checked">Prodaja
+      <input type="radio" name="Vrsta" Value="Nakup">Nakup<p>
+      Količina:
+      <input type="text" name="Kolicina" value=1 maxlength=2 size=2>
+      Cena:
+      <input type="text" name="Cena" value=50 maxlength=3 size=3> 0-100, decimalke s piko prosim. <p>
+	(Zaenkrat je overjanje takole enostavno :-)<br>
+	<select NAME="Ponudnik" >
+	  <OPTION>CRT       
+<OPTION>JURE      
+<OPTION>LUKA      
+<OPTION>ZADN      
+
+	</select><p>
+      <center>
+	<input type="submit" value="            Dodaj             ">
+      </center>
+<!--      <input type="reset" value="Zbriši">-->
+    </form>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
+    <title>Pregled trga</title>
+  </head>
+
+  <body>
+    <h1>Pregled trga</h1>
+    
+    Zaenkrat kaže ves FIFO in zadnjih 30 poslov.
+    <p>
+
+    Fifo:
+    <table border='1' bgcolor="lightblue">
+      %(FIFO)s
+    </table>
+
+    <hr>
+    Posli:
+    <table border='1' bgcolor="lightblue">
+      %(Posli)s
+    </table>
+
+  </body>
+</html>

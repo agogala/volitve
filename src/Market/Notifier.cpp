@@ -1,24 +1,26 @@
 /*
- * $ProjectId$
+ * $ProjectHeader: volitve 0.5 Thu, 04 Sep 1997 16:58:57 +0200 andrej $
  *
- * $Id: Notifier.cpp 1.2 Tue, 02 Sep 1997 05:42:33 +0000 andrej $
+ * $Id: Notifier.cpp 1.3 Thu, 04 Sep 1997 14:58:57 +0000 andrej $
  *
  * Po¹lji broadcast, èe se je zgodila kaka sprememba na trgu.
  */
 
-#include "market.h"
+#include "marketd.h"
 #include "Notifier.h"
+#include "Config.h"
 
 Notifier::Notifier (void)
 {
   //  this->BroadcastAddr_ = 0;
   this->cnt = 0;
+  this->opened = false;
 }
 
 int Notifier::open
 (const ACE_INET_Addr &local_addr, const ACE_INET_Addr BroadcastAddr)
 {
-   if (ACE_SOCK_Dgram_Bcast::open (local_addr, PF_INET, 0, 1 )==-1)
+   if (ACE_SOCK_Dgram_Bcast::open (local_addr)==-1)
      return -1;
    /*
    char optval = 1;
@@ -26,6 +28,8 @@ int Notifier::open
    ACE_SOCK_Dgram_Bcast::set_option(SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
    */
    this->BroadcastAddr_ = BroadcastAddr;
+
+   this->opened = true;
 
    return 0;
 }
@@ -55,18 +59,29 @@ ACE_HANDLE Notifier::get_handle (void) const
 // vsake toliko èasa pa pregledamo flag in obvestimo dotiène...
 int Notifier::notify ()
 {
-  char msg[NOTIFIER_MESSAGE_SIZE];
+  if (!opened)
+    ACE_ERROR_RETURN((LM_ERROR, "Notifier not opened\n"), -1);
+  
+  char msg[NOTIFIER_MESSAGE_LENGTH+1];
 
-  ACE_OS::sprintf(msg, "%08d", this->cnt);
+  ACE_OS::sprintf(msg, "%0*d", NOTIFIER_MESSAGE_LENGTH, this->cnt);
 
   ACE_DEBUG ((LM_DEBUG,
-		"(%P|%t) Handle output: %08d\n", this->cnt));
+		"(%P|%t) Handle output: %0*d\n", 
+	      NOTIFIER_MESSAGE_LENGTH, this->cnt));
+  ACE_DEBUG ((LM_DEBUG,
+	      "Broadcast address: %s, %d\n", 
+	      this->BroadcastAddr_.get_host_addr(),
+	      this->BroadcastAddr_.get_port_number()));
+
+  ACE_DEBUG((LM_DEBUG,
+	     "msg len: %d\n", ACE_OS::strlen(msg)));
+
   ACE_SOCK_Dgram_Bcast::send(msg, ACE_OS::strlen(msg), this->BroadcastAddr_);
 
   this->cnt++;
 
   return 0;
-
 }
 
 #if defined (ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION)

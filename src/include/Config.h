@@ -5,7 +5,7 @@
 #define CONFIG_H
 
 /* Port za marketd (se trenutno ne uporablja) */
-#define MARKET_DEFAULT_PORT 5001
+//#define MARKET_DEFAULT_PORT 5001
 
 /* Privzeta pot za marketd */
 #define MARKET_DEFAULT_PATH "/tmp/market"
@@ -13,11 +13,14 @@
 /* Opazovalci uporabljajo tale port */
 #define NOTIFIER_DEFAULT_PORT 5002
 
+/* Tale port uporablja notifier */
+#define NOTIFIER_LOCAL_PORT 5001
+
 /* Pot za opazovalce (se ne uprablja) */
-#define NOTIFIER_DEFAULT_PATH "/tmp/market_notify"
+//#define NOTIFIER_DEFAULT_PATH "/tmp/market_notify"
 
 /* Velikost sporoèila za opazovalce */
-#define NOTIFIER_MESSAGE_SIZE 9
+#define NOTIFIER_MESSAGE_LENGTH 8
 
 /* Velikosti polj: */
 // Papirji:

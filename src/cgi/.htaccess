@@ -1,4 +1,4 @@
 # Don't turn off the interpreter:
 PythonPersistent On
-
-PythonPath /home/andrej/sola/volitve/src/Client
+SetHandler python-cgi-script
+PythonPath /home/andrej/sola/volitve/src/py_lib

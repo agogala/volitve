@@ -14,11 +14,9 @@ BIN   	= marketd
 FILES 	= Market_Handler \
 	  Market \
 	  Request \
-	  Notifier
-
-#BIN	= testR
-
-#FILES	= Request
+	  VectorRequest \
+	  Notifier \
+	  Query
 
 LSRC	= $(addsuffix .cpp,$(FILES))
 LOBJ	= $(addsuffix .o,$(FILES))
@@ -34,8 +32,7 @@ INCLDIRS += -I$(PG_ROOT)/include
 
 LDLIBS += -lpq++ -lpq -lg++
 
-LDFLAGS += -L$(PG_ROOT)/lib
-
+LDFLAGS += -L$(PG_ROOT)/lib -R$(ACE_ROOT)/ace
 INCLDIRS += -I../include
 
 #----------------------------------------------------------------------------
@@ -61,10 +58,13 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 # DO NOT DELETE THIS LINE -- g++dep uses it.
 # DO NOT PUT ANYTHING AFTER THIS LINE, IT WILL GO AWAY.
 
-.obj/Market_Handler.o .shobj/Market_Handler.so: Market_Handler.cpp market.h ../include/Config.h \
- Request.h
-.obj/Request.o .shobj/Request.so: Request.cpp Request.h
-.obj/Observer_Handler.o .shobj/Observer_Handler.so: Observer_Handler.cpp market.h ../include/Config.h \
- Observer.h
+.obj/Market_Handler.o .shobj/Market_Handler.so: Market_Handler.cpp marketd.h Market.h Request.h \
+ ../include/Config.h Market_Handler.h Notifier.h
+.obj/Market.o .shobj/Market.so: Market.cpp VectorRequest.h Request.h ../include/Config.h \
+ Market.h Query.h
+.obj/Request.o .shobj/Request.so: Request.cpp Request.h ../include/Config.h Query.h
+.obj/VectorRequest.o .shobj/VectorRequest.so: VectorRequest.cpp VectorRequest.h Request.h \
+ ../include/Config.h
+.obj/Query.o .shobj/Query.so: Query.cpp Query.h
 
 # IF YOU PUT ANYTHING HERE IT WILL GO AWAY

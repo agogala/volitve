@@ -1,4 +1,4 @@
-// $Id: observer.cpp 1.1 Thu, 28 Aug 1997 17:15:39 +0000 andrej $
+// $Id: observer.cpp 1.2 Thu, 04 Sep 1997 14:58:57 +0000 andrej $
 
 // This program connects to Market and waits for notifications of changes
 
@@ -8,6 +8,7 @@
 /*#include <ace/Log_Msg.h>*/
 #include <ace/SOCK_Dgram.h>
 #include <ace/INET_Addr.h>
+#include <ace/Process.h>
 
 #if defined (ACE_HAS_MINIMUM_IOSTREAMH_INCLUSION)
 # include <iostream.h>
@@ -30,7 +31,12 @@ public:
   virtual ACE_HANDLE get_handle (void) const;
  
   virtual int handle_input (ACE_HANDLE handle);
+  
+  int mkpregled(void);
 
+private:
+  ACE_Process_Options proc_opt;
+  ACE_Process proc;
 };
 
 
@@ -52,11 +58,15 @@ typedef ACE_Singleton<ACE_Test_and_Set <ACE_Null_Mutex, sig_atomic_t>, ACE_Null_
 
 
 Observer_Handler::Observer_Handler (const ACE_INET_Addr &local_addr)
-  : ACE_SOCK_Dgram (local_addr)
+  : ACE_SOCK_Dgram (local_addr, PF_INET, 0, 1)
 {
   char optval = 1;
 
   ACE_SOCK_Dgram::set_option(SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+  // Nekoè bomo tole prebrali iz konfiguracije?
+  proc_opt.command_line("/home/andrej/sola/volitve/src/admin/mk-pregled.py");
+  //  proc_opt.setenv("PATH", "/home/andrej/sola/volitve/admin");
+  proc_opt.working_directory("/home/andrej/sola/volitve/src/admin");
 
 };
 
@@ -92,12 +102,12 @@ Observer_Handler::handle_input (ACE_HANDLE)
 
   ACE_INET_Addr from_addr;
 
-  char buff[NOTIFIER_MESSAGE_SIZE+1];
+  char buff[NOTIFIER_MESSAGE_LENGTH+1];
 
-  ssize_t n = ACE_SOCK_Dgram::recv ((void *) &buff, NOTIFIER_MESSAGE_SIZE, 
+  ssize_t n = ACE_SOCK_Dgram::recv ((void *) &buff, NOTIFIER_MESSAGE_LENGTH, 
 				    from_addr);
     
-  buff[n+1] = '\0';
+  buff[n] = '\0';
 
   switch (n)
     {
@@ -110,11 +120,12 @@ Observer_Handler::handle_input (ACE_HANDLE)
 			 "(%P|%t) closing connection to host %s (fd = %d)\n",
 			from_addr.get_host_name(), this->get_handle ()), 0);
       /* NOTREACHED */
-    case NOTIFIER_MESSAGE_SIZE:
+    case NOTIFIER_MESSAGE_LENGTH:
       {	
 	if (strlen (buff) == n)
 	  {
 	    ACE_DEBUG ((LM_DEBUG, "(%P|%t) Notification: length %d content '%s'\n", n, buff));
+	    mkpregled();
 	  }
 	else
 	  ACE_ERROR ((LM_ERROR, "(%P|%t) error, strlen(buff) = %d, n = %d\n",
@@ -130,6 +141,12 @@ Observer_Handler::handle_input (ACE_HANDLE)
   return 0;
 }
 
+int Observer_Handler::mkpregled(void) {
+  if (proc.spawn(proc_opt) == -1) 
+    ACE_ERROR_RETURN((LM_ERROR, "Process spawn returned -1\n"), -1);
+  proc.wait();
+}
+
 // ---------------------------------------------
 
 int 
@@ -137,6 +154,8 @@ main (int argc, char *argv[])
 {  
 
   Observer_Handler observer(ACE_INET_Addr(NOTIFIER_DEFAULT_PORT));
+
+  observer.mkpregled();
 
   if (REACTOR::instance ()->register_handler
       (SIGINT, QUIT_HANDLER::instance()) == -1)
