@@ -1,8 +1,8 @@
 // -*- C++ -*-
 /* 
- * $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+ * $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
  *
- * $Id: Config.h 1.11 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
+ * $Id: Config.h 1.12 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
  *
  * Konfiguracija.
 */
@@ -27,6 +27,9 @@
 
 /* Pot za opazovalce (se ne uprablja) */
 //#define NOTIFIER_DEFAULT_PATH "/tmp/market_notify"
+
+/* Pot za formaterja */
+#define FORMATER_DEFAULT_PATH "/tmp/format_market"
 
 /* Velikosti polj: */
 // Papirji:

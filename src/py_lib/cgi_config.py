@@ -1,12 +1,14 @@
-# $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
 #
-# $Id: cgi_config.py 1.3.2.3 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
+# $Id: cgi_config.py 1.3.2.4 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
 #
 # Konfiguracija (nekoè bi se lahko avtomatièno generirala... HMM)
 
 MARKET_PATH="/tmp/market"
 
 ADMIN_PATH="/tmp/admin_market"
+
+FORMATER_PATH="/tmp/format_market"
 
 NOTIFIER_PORT=5002
 

@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
-# $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
 #
-# $Id: Makefile 1.7 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
+# $Id: Makefile 1.8 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
 #
 # Makefile za opazovalca.
 #----------------------------------------------------------------------------
@@ -65,7 +65,7 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 #	Local targets
 #----------------------------------------------------------------------------
 
-.obj/.obj/config.o .shobj/config.so: $(PYTHON_ROOT)/lib/python1.4/config/config.c
+.obj/config.o .shobj/config.so: $(PYTHON_ROOT)/lib/python1.4/config/config.c
 	$(CC) $(CFLAGS) $(INCLDIRS) -DHAVE_CONFIG -DNO_MAIN -c $(PYTHON_ROOT)/lib/python1.4/config/config.c -o .obj/config.o
 
  
@@ -78,9 +78,9 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 
 .obj/Notification_Handler.o .shobj/Notification_Handler.so: Notification_Handler.cpp \
  Notification_Handler.h State.h ../include/StrSet.h ../include/Utils.h \
- Formater.h ../include/Config.h
+ ../include/Config.h
 .obj/Formater.o .shobj/Formater.so: Formater.cpp ../include/Config.h Formater.h State.h \
- ../include/StrSet.h ../include/Utils.h
+ ../include/StrSet.h ../include/Utils.h observerd.h
 .obj/State.o .shobj/State.so: State.cpp State.h
 
 # IF YOU PUT ANYTHING HERE IT WILL GO AWAY

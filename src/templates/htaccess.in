@@ -12,6 +12,6 @@ require user %(username)s
 allow from all
 
 <files index.html>
-header set Refresh 10
+header set Refresh 60
 header set Pragma no-cache
 </files>

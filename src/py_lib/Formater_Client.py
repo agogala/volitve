@@ -1,12 +1,12 @@
 # $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
 #
-# $Id: Admin_Client.py 1.1 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
+# $Id: Formater_Client.py 1.1 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
 #
-# Objekt, ki definira povezavo s trgom
+# Objekt, ki definira povezavo z oblikovalcem
 import socket
 import cgi_config
 
-class AdminClient:
+class FormaterClient:
     def __init__(self):
         self.sock = None
         pass
@@ -15,7 +15,7 @@ class AdminClient:
         if self.sock==None:         
             self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             try:
-                self.sock.connect(cgi_config.ADMIN_PATH)
+                self.sock.connect(cgi_config.FORMATER_PATH)
             except:
 		self.sock = None
                 return -1
@@ -37,7 +37,7 @@ class AdminClient:
 	if resp == "":
 	    self.sock.close()
 	    self.sock = None
-	    raise "Administrator ne teèe"
+	    raise "Formater ne teèe"
 	return resp[1:]
 
-admin_client = AdminClient()
+formater_client = FormaterClient()

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
 #
-# $Id: Preklic.py 1.2 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
+# $Id: Preklic.py 1.3 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
 #
 # Poskrbi za preklic naroèila.
 import sys
@@ -9,6 +9,7 @@ import cgi
 import time
 import Market_Client
 import FormatResponse
+import Formater_Client
 
 def HandleForm(form):
     if Market_Client.market_client.open()<0:
@@ -25,8 +26,12 @@ def HandleForm(form):
 		# Ignoriramo vse napake...
     except:
 	pass
+
+    if Formater_Client.formater_client.open()>=0:
+	Formater_Client.formater_client.send("MakeUser %s" % uporabnik)
+	# Get response, but ignore it:
+	Formater_Client.formater_client.response()
     
-    time.sleep(2)
     return FormatResponse.FormatResponse(
 	"<H1>Preseljen dokument</H1>\n" + \
 	"Dokument je preseljen na drugo lokacijo",

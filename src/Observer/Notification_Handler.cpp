@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+ * $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
  *
- * $Id: Notification_Handler.cpp 1.1.2.2 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
+ * $Id: Notification_Handler.cpp 1.1.2.3 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
  *
  * Zaznava spremembe na trgu.
  */
@@ -11,7 +11,7 @@
 #include <ace/Process.h>
 
 #include "Notification_Handler.h"
-#include "Formater.h"
+//#include "Formater.h"
 
 #include "Config.h"
 

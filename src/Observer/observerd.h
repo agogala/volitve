@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+ * $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
  *
- * $Id: observerd.h 1.1 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
+ * $Id: observerd.h 1.2 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
  *
  * Observer deamon.
  */
@@ -12,6 +12,8 @@
 #include <ace/Reactor.h>
 #include <ace/Synch.h>
 #include <ace/Singleton.h>
+
+#include "Formater.h"
 
 // ---------------------------------------------
 
@@ -26,6 +28,8 @@ typedef ACE_Singleton<ACE_Test_and_Set <ACE_Null_Mutex, sig_atomic_t>, ACE_Null_
 	QUIT_HANDLER;
 
 // ---------------------------------------------
+extern Formater *formater;
+
 
 
 #endif // OBSERVERD_H

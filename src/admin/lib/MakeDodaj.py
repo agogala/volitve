@@ -1,4 +1,4 @@
-# $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
 #
 # $Id: MakeDodaj.py 1.5 Sun, 26 Oct 1997 21:47:33 +0000 andrej $
 # Naredi dokument dodaj.html: zares opravi delo.

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
 #
-# $Id: Broker.py 1.5 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
+# $Id: Broker.py 1.6 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
 #
 # Prevede podatke iz obrazca v zahtevek za trg.
 #import Apache
@@ -11,14 +11,17 @@ import Market_Client
 import CheckForm
 import string
 import FormatResponse
+from ErrorText import MarketErrorText
 
 rel_msg = \
 	"<H1>Preseljen dokument</H1>\n" + \
 	"Dokument je preseljen na drugo lokacijo"
 rel_title = "Preseljen dokument",
 rel_headers = {'Status' : '302 relocate',
-	       'Location' : '/narocila/dodaj.html'}
+	       'Location' : '/narocila/pregled.html',
+	       'Window-target': 'pregled'}
 
+back_msg = '<hr><a href="/narocila/dodaj.html">Nazaj</a>'
 
 def HandleForm(form):
     if Market_Client.market_client.open()<0:
@@ -36,7 +39,7 @@ def HandleForm(form):
     if not CheckForm.CheckForm(form, fields, reqfields):
 	return FormatResponse.FormatResponse(
 	    "<H1>Napaka</H1>\n"  + \
-	    "Prosim izpolnite vsa polja...",
+	    "Prosim izpolnite vsa polja." + back_msg,
 	    "Napaka")
 
     try:
@@ -76,16 +79,27 @@ def HandleForm(form):
 	Market_Client.market_client.send(zahtevek)
 	response = Market_Client.market_client.response()
 	if response=="000":
+	    import Formater_Client
+	    try:
+		if Formater_Client.formater_client.open()>=0:
+		    Formater_Client.formater_client.send("MakePregled")
+		    # Get response, but ignore it:
+		    Formater_Client.formater_client.response()
+	    except:
+		pass
 	    msg = rel_msg
 	    title = rel_title
 	    headers = rel_headers
 	else:
 	    # Obrazlo¾itve...
-	    msg = '<H1>Napaka</H1>\n %s' % response
+	    try:
+		msg = '<H1>Napaka</H1>\n' + MarketErrorText[response] + back_msg
+	    except:
+		msg = '<H1>Napaka</H1>\n Pri¹lo je do neznane napake: %s' % response + back_msg
     except:
 	#	pass
 	msg = "<H1>Zaprt trg</H1>\n" + \
-	      "Trg je trenutno zaprt\n"
+	      "Trg je trenutno zaprt. Poskusite kasneje." + back_msg
 	
     #    Count.increase()
     #    msg = msg + "©tevilka: %d<P>" % Count.value()

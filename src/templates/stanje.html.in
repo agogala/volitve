@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//Microsoft//DTD Internet Explorer 3.0 HTML//EN">
-<!-- $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $ $Id: stanje.html.in 1.4 Thu, 09 Oct 1997 13:19:34 +0000 andrej $ -->
+<!-- $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $ $Id: stanje.html.in 1.5 Tue, 28 Oct 1997 20:15:29 +0000 andrej $ -->
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
@@ -7,11 +7,22 @@
   </head>
 
   <body bgcolor="#ffe8b8">
-    <h1>Stanje %(username)s</h1>
+    <h1>%(username)s: %(Datum)s ob %(Ura)s</h1>
 
-    <table border="1" cellspacing="1" bgcolor="lightblue">
+    <table border="1" cellspacing="1" bgcolor="lightblue" frame="box" rules="Groups">
       %(Stanje)s
     </table>
+
+    <form action="/trg/izracun" method="get">
+      <input type="submit" value="Ponoven izračun">
+    </form>
+
+    <font size="-1">
+      Negativna količina kandidata pomeni prodajo, pozitivna pa
+      nakup. Zadnji stolpec (<b>SIT</b>) vsebuje v prvi vrstici vsoto
+      vseh sklenjenih pogodb, v drugi vrstici pa vrednost glede na
+      trenutne poravnalne cene.
+    </font>
 
     <hr>
     <form action="/trg/preklici" method="post">

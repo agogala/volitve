@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+ * $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
  *
- * $Id: Market.cpp 1.11 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
+ * $Id: Market.cpp 1.12 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
  *
  * Trg. Zna dodajati zahtevke.
  */
@@ -14,6 +14,22 @@
 #include "Request.h"
 #include "Query.h"
 #include "Config.h"
+
+int AddLog(PgDatabase &db, Request &req, char* Razlog, ...)
+{
+  /*  char buff[256];
+
+  va_list ap;
+  va_start(ap, first);
+
+  vsprintf(buff, Razlog, ap);
+
+  va_end(ap);
+
+  //  [...]
+  */
+  return 0;
+}
 
 Market::Market()
 {
@@ -359,10 +375,12 @@ int Market::Cancel(Request &req, strset *userset = NULL)
     // Preberemo zahtevek:
     Request freq(*db, 0);
 
-    if (error = !freq.IsValid(*db)) {
-      ACE_ERROR((LM_ERROR, "FIFO Request not valid: %s\n",
+    // Preverjamo ¹e vedno, le ukrepamo ne. Èe je zahtevek neveljaven, toliko
+    // bolje da ga zbri¹emo!
+    if (/*error =*/ !freq.IsValid(*db)) {
+      ACE_ERROR((LM_ERROR, "FIFO Request not valid: %d\n",
 		 freq.LastError()));
-      break;
+      //      break;
     }
 
     // Zbri¹i iz FIFO:

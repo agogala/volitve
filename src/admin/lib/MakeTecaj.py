@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
 #
-# $Id: MakeTecaj.py 1.3 Sun, 26 Oct 1997 21:47:33 +0000 andrej $
+# $Id: MakeTecaj.py 1.4 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
 #
 # Pripravi teèajnico.
 
@@ -30,11 +30,13 @@ def IzracunajTecaj(dan='yesterday'):
 	    "min(cena) as MinCena,\n" + 
 	    "max(cena) as MaxCena,\n" +
 	    "count(kolicina) AS obseg,\n" +
-	    "sum(kolicina) AS promet\n" +
+	    "sum(float8(kolicina) * cena) AS promet\n" +
 	    "FROM posli\n" +
 	    "WHERE datum='%(dan)s' and kupec!=prodajalec\n" +
 	    "GROUP BY papir_id") % {'dan': dan})
 	vstavil = 0
+	# Pobri¹i prej¹nje teèaje:
+	conn.query("DELETE FROM Tecajnica WHERE datum='%s'" % dan)
 	for f in db_tecaji:
 	    if f[1]<>"":
 		conn.query(
@@ -106,14 +108,21 @@ def makeline(fmt, tuple):
 
 # Vrne teèajnico za dani dan:
 # za vsako pogodbo vrne n-terico z naslednjimi polji:
-# (povp. teèaj, najni¾ja cena, najvi¹ja cena, obseg)
+# (povp. teèaj, najni¾ja cena, najvi¹ja cena, promet)
 # Promet zaenkrat izpustimo
-def Tecaji(dan='yesterday'):
+def Tecaji(dan='yesterday', refresh=0):
     global _TECAJIMAP
 
     # Izraèunaj datum
     datum = conn.query("SELECT '%s'::date AS datum" % dan)[0][0]
     
+    if refresh:
+	IzracunajTecaj(dan)
+	try:
+	    del _TECAJIMAP[datum]
+	except:
+	    pass
+
     if _TECAJIMAP.has_key(datum):
 	tecaji = _TECAJIMAP[datum]
     else:
@@ -140,22 +149,23 @@ def HTMLTecaji(dan='yesterday'):
     tecaji = Tecaji(dan)
     db_pap = conn.query("SELECT papir_id FROM papirji ORDER BY papir_id")
     
-    db_odprti = conn.query(
-	"SELECT Papir_id,\n" + 
-	"sum(kolicina)\n" +
-	"FROM stanje\n" + 
-	"WHERE kolicina>0\n" +
-	"GROUP BY Papir_id\n")	
+##     db_odprti = conn.query(
+## 	"SELECT Papir_id,\n" + 
+## 	"sum(kolicina)\n" +
+## 	"FROM stanje\n" + 
+## 	"WHERE kolicina>0 AND\n" +
+## 	"datum<='%s'\n" +
+## 	"GROUP BY Papir_id\n")	
 
-    odprti = {}
-    for k in db_odprti:
-	try:
-	    odprti[k[0]] = string.atoi(k[1])
-	except:
-	    pass
+##     odprti = {}
+##     for k in db_odprti:
+## 	try:
+## 	    odprti[k[0]] = string.atoi(k[1])
+## 	except:
+## 	    pass
 
 #    tb = '<colgroup align="char" char="." span=3>\n<colgroup align="right">'
-    tb = "<thead><tr><th>Kandidat<th>Poravnalna cena<th>Najni¾ja cena<th>Najvi¹ja cena<th>Obseg<th>Odprti interes\n<tbody>"
+    tb = "<thead><tr><th>Kandidat<th>Poravnalna cena<th>Najni¾ja cena<th>Najvi¹ja cena<th>Obseg\n<tbody>"
     # Naredi tabelo:
     # Mogoèe dodati ¹e spremembo teèaja v procentih?
     for k in db_pap:
@@ -164,10 +174,11 @@ def HTMLTecaji(dan='yesterday'):
 	    tb = tb + makeline("fffi",tecaji[k[0]]) 
 	else:
 	    tb = tb + '<td><td><td><td>'
-	if odprti.has_key(k[0]):
-	    tb = tb + '<td align="right">%d\n' % odprti[k[0]]
-	else:
-	    tb = tb + '<td>\n'
+##	if odprti.has_key(k[0]):
+##	    tb = tb + '<td align="right">%d\n' % odprti[k[0]]
+##	else:
+##	    tb = tb + '<td>\n'
+	tb = tb + '\n'
 
     datum = conn.query("SELECT '%s'::date AS datum" % dan)[0][0]
     datum = Util.RewriteDate(datum)
@@ -186,7 +197,10 @@ def run(srcdir, destdir, templates, dan='yesterday'):
     
     linktarg = destdir + templates['IndexTecaji']['dir'] + \
 	       '/' + templates['Tecaj']['ime']
-    os.unlink(linktarg)	       
+    try:
+	os.unlink(linktarg)	       
+    except:
+	pass
     os.symlink(destname, linktarg)
 
     # Seznam vseh tecajnic:
@@ -207,8 +221,8 @@ def run(srcdir, destdir, templates, dan='yesterday'):
     Util.MakeTemplate(templname, destname, dict)
 
     # Poskrbi ¹e za vse uporabnike:
-    import MakePregled
-
-    db_stranke = conn.query("select stranka_id from stranke")
-    for st in db_stranke:
-	MakePregled.defupdateuser(st[0])
+#    import MakePregled
+#
+#    db_stranke = conn.query("select stranka_id from stranke")
+#    for st in db_stranke:
+#	MakePregled.defupdateuser(st[0])

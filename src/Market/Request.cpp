@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+ * $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
  *
- * $Id: Request.cpp 1.8 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
+ * $Id: Request.cpp 1.9 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
@@ -76,7 +76,7 @@ bool Request::IsValid(PgDatabase &db)
       if (!db.Exec(FindFIFO.Params(NULL, this->ID_))) {
 	  ((Request*)this)->LastError_ = me_InternalError;	
 	  ((Request*)this)->Valid_ = false;      
-	  ACE_ERROR_RETURN((LM_ERROR, "Error checking symbol: '%s' \n",
+	  ACE_ERROR_RETURN((LM_ERROR, "Error lookin for request: '%s' \n",
 			    db.ErrorMessage()), this-> Valid_);
       }
       ((Request*)this)->Valid_ = ((Request*)this->Valid_) &&
@@ -251,7 +251,7 @@ Request::Omeji(PgDatabase &db)
   Stanje *s;
   s = (*(STANJA::instance() ->Get(db, Ponudnik_))).second;
 
-  // Shrani zaznamek o spremembi [...]
+  // Zaznamek o spremembi se shrani drugje
   Kolicina_ = s->Omeji(db, Papir_ID_, Kolicina_);
 
   return 0;
@@ -336,7 +336,7 @@ int Request::Read_i(char * rs)
     //    ACE_DEBUG((LM_DEBUG, "SELL or BUYqn"));
     ACE_OS::strcpy(this->Papir_ID_, tokens.next());
     //    ACE_DEBUG((LM_DEBUG, "PAPER: %s\n", Papir_ID_));
-    this->Kolicina_ = atoi(tokens.next()) * (cmd[0] == 'S' ? -1 : 1);
+    this->Kolicina_ = atoi(tokens.next()) * (toupper(cmd[0]) == 'S' ? -1 : 1);
     this->Cena_ = atof(tokens.next());
     ACE_OS::strcpy(this->Ponudnik_, tokens.next());
 

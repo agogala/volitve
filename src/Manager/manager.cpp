@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+ * $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
  *
- * $Id: manager.cpp 1.2 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
+ * $Id: manager.cpp 1.3 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
  *
  * Poganja in nadzira procese. Èe se kak sesuje, ga sku¹a ponovno
  * pognati. O sesutju tudi poroèa.
@@ -71,21 +71,22 @@ int main()
       (SIGCHLD, &manager) == -1)
     ACE_ERROR_RETURN ((LM_ERROR,
 		       "registering service with ACE_Reactor\n"), -1);
-  
-  // Run processes:
-  manager.open();
-  
+    
   // Run forever, managing children.
   ACE_DEBUG ((LM_DEBUG,
 	      "(%P|%t) starting up manager:\n"));
 
+  // Run processes:
+  manager.open();
+
   // Perform logging service until QUIT_HANDLER receives SIGINT.
   while (QUIT_HANDLER::instance ()->is_set () == 0)
     REACTOR::instance ()->handle_events ();
-
   
   ACE_DEBUG ((LM_DEBUG,
 	      "(%P|%t) shutting down manager\n"));
+
+  manager.close();
   
   return 0;
 }
@@ -100,27 +101,7 @@ Manager::Manager(void)
 // Pobije procese. Mogoèe posebna funkcija close()?
 Manager::~Manager(void)
 {
-  // Remove ourselfs from REACTOR:
-  REACTOR:: instance() ->remove_handler(SIGCHLD);
-
-  if (admind!=NULL) {
-    // admind->kill();
-    delete admind;
-    admind = NULL;
-  }
-  
-  if (marketd!=NULL) {
-    //    marketd->kill();
-    delete marketd;
-    marketd = NULL;
-  }
-
-  if (observerd!=NULL) {
-    //    observerd->kill();
-    delete observerd;
-    observerd = NULL;
-  }  
-
+  close();
 }
 
 int 
@@ -136,6 +117,26 @@ Manager::open()
 
 int Manager::close()
 {
+  // Remove ourselfs from REACTOR:
+  REACTOR:: instance() ->remove_handler(SIGCHLD);
+
+  if (admind!=NULL) {
+    admind->kill();
+    delete admind;
+    admind = NULL;
+  }
+  
+  if (marketd!=NULL) {
+    marketd->kill();
+    delete marketd;
+    marketd = NULL;
+  }
+
+  if (observerd!=NULL) {
+    observerd->kill();
+    delete observerd;
+    observerd = NULL;
+  } 
   return 0;
 }
 
@@ -148,6 +149,10 @@ Manager::handle_signal (
 {
   if (signum==SIGCHLD) {    
     ACE_DEBUG((LM_DEBUG, "Child killed!\n"));
+    if (QUIT_HANDLER::instance ()->is_set () != 0) {
+      return -1;
+    }
+
     pid_t pid;
     int status;
 
@@ -184,6 +189,10 @@ int Manager::run_observerd()
 
   if (observerd==NULL)    
     observerd = new ACE_Process;
+  // Zbri¹i socket...
+  // Verjetno bi morali ¹e preveriti, èe proces obstaja....
+  ACE_OS::unlink(FORMATER_DEFAULT_PATH);
+
   if (observerd->spawn (options) == -1)
     {
       int error = ACE_OS::last_error ();

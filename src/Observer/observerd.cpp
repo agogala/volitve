@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+ * $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
  *
- * $Id: observerd.cpp 1.9 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
+ * $Id: observerd.cpp 1.10 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
  *
  * Observer deamon. 
  */
@@ -15,6 +15,8 @@
 #include "StrSet.h"
 
 #include "Config.h"
+
+Formater *formater;
 
 int 
 main (int argc, char *argv[])
@@ -31,7 +33,9 @@ main (int argc, char *argv[])
 
   Notification_Handler notification(ACE_INET_Addr(NOTIFIER_DEFAULT_PORT), 
 				    &state, &userset);
-  Formater formater(&state, &userset);
+  formater = new Formater(&state, &userset);
+
+  Formater_Acceptor formater_acceptor;
 
   if (REACTOR::instance ()->register_handler
       (signals, QUIT_HANDLER::instance()) == -1)
@@ -42,12 +46,21 @@ main (int argc, char *argv[])
     ACE_ERROR_RETURN ((LM_ERROR,
 		       "can'(%P|%t) can't register with reactor\n"), -1);
   else if (REACTOR::instance ()->schedule_timer
-	   (&formater,
+	   (formater,
 	    NULL,
-	    ACE_Time_Value(1),
-	    ACE_Time_Value(1)) == -1)
+	    ACE_Time_Value(2),
+	    ACE_Time_Value(2)) == -1)
     ACE_ERROR_RETURN((LM_ERROR,
 		      "can'(%P|%t) can't register with reactor\n"), -1);
+  else  if (formater_acceptor.open
+      (ACE_UNIX_Addr ( FORMATER_DEFAULT_PATH ),
+       REACTOR::instance ()) == -1)
+    ACE_ERROR_RETURN ((LM_ERROR, "%p\n", "open"), -1);
+  else if (REACTOR::instance ()->register_handler
+	   (&formater_acceptor, ACE_Event_Handler::ACCEPT_MASK) == -1)
+    ACE_ERROR_RETURN ((LM_ERROR,
+		       "can'(%P|%t) can't register with reactor\n"), -1);
+
   ACE_DEBUG ((LM_DEBUG,
 	      "(%P|%t) starting up observer daemon\n"));
   
@@ -57,6 +70,8 @@ main (int argc, char *argv[])
   
   ACE_DEBUG ((LM_DEBUG,
 	      "(%P|%t) shutting down observer daemon\n"));
+
+  ACE_OS::unlink( FORMATER_DEFAULT_PATH );
   
   return 0;
 }

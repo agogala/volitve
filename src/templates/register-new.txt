@@ -5,10 +5,22 @@ Mime-version: 1.0
 Content-Type: text/plain; charset=iso-8859-2
 Content-transfer-encoding: Quoted-Printable 
 
-Spo=B9tovani,
+Spo¹tovani,
 
-klju=E8 je: %(hash)s
+va¹ kljuè je 
+
+%(hash)s
+
+Vpi=B9ite ga v obrazec na spletni strani
+<http://borza.e5.ijs.si/registracija.html> in pritisnite tipko
+Naprej. Na naslednji strani izpolnite uporabni¹ko ime in geslo. Po
+izpolnitvi obrazca, se bo odprla trgovalna stran.
+
+OPOZORILO: stran za vnos uporabni¹kega imena in gesla lahko dose¾ete
+samo enkrat.
+
+V primeru te¾av se lahko obrnete na naslov: %(serveradmin)s
 
 Lep pozdrav,
 
-Administrator..
+Administrator

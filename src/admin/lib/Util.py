@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
 #
-# $Id: Util.py 1.3 Sun, 26 Oct 1997 21:47:33 +0000 andrej $
+# $Id: Util.py 1.4 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
 #
 # Razlièni podprogrami
 
@@ -41,5 +41,5 @@ def ReformatFloat(s):
     return r
     
 def FormatFloat(f):
-    s = "%5.2f" % f
+    s = "%.2f" % f
     return ReformatFloat(s)

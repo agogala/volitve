@@ -1,17 +1,16 @@
 From: %(serveradmin)s
 To: %(replyto)s
-Subject: Registracija za borzo
+Subject: Zavrnjena registracija za borzo
 Mime-version: 1.0
 Content-Type: text/plain; charset=iso-8859-2
 Content-transfer-encoding: Quoted-Printable 
 
-Spo=B9tovani,
+Spo¹tovani,
  
-na stre=BEniku je =BEe registriran uporabnik z enakim elektronskim 
-naslovom. 
-
-[... kaj narediti ...?]
+Va¹ zahtevek za registracijo je bil zavrnjen, ker je na stre¾niku ¾e
+registriran uporabnik z enakim elektronskim naslovom. V primeru, da je
+pri¹lo do napake, pi¹ite na naslov: %(serveradmin)s
 
 Lep pozdrav,
 
-Administrator..
+Administrator

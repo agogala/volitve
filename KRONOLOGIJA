@@ -1,3 +1,10 @@
+0.23
+Dodal povezovanje z observerjem tako, da ta sedaj takoj lahko generira
+novo stanje ipd. 
+Malce polep¹al strani (no ja...)
+Stanje se ponovno izracuna na direktno uporabnikovo zahtevo.
+Odpravil kak bug...
+
 0.22
 Dopolnil raèunanje teèajnice.
 Stanje upo¹teva vèeraj¹nji povpreèni teèaj.

@@ -1,4 +1,4 @@
-# $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
+# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
 #
 # $Id: admin_cfg.py 1.2.2.5 Sun, 26 Oct 1997 21:47:33 +0000 andrej $
 #
