@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
+# $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
 #
-# $Id: Registrator.py 1.2 Thu, 11 Sep 1997 21:18:12 +0000 andrej $
+# $Id: Registrator.py 1.3 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
 # Se ukvarja z registracijo uporabnikov
 
 import pg95
@@ -8,6 +8,7 @@ import admin_cfg
 import sys
 import os
 import Util
+import AdminConst
 
 # Imamo kar stalno povezavo z bazo:
 pg95.set_defbase(admin_cfg.DB_Name)
@@ -20,18 +21,18 @@ def Validate(hash):
 	hash)
     # Nismo ¹e v bazi:
     if not gethash:
-	return -1
+	return AdminConst.Validate.NoHash
     # upsa!, veè enakih, interna napaka:
     if len(gethash)!=1:
 	raise "Too many hashes in base"
     # Preverimo, èe se je ¾e povezal.
     accessed = gethash[0][2]
     if accessed=='t':
-	return -1
+	return AdminConst.Validate.HashAccessed
 
     # Oznaèimo spremembo
     db_conn.query("UPDATE registracije SET accessed='t' WHERE hash='%s'" % hash)
-    return 0
+    return AdminConst.Validate.OK
 
 # Vrni ID za danega uporabnika
 # Podobna funkija je v Uporabniki v cgi direktoriju...
@@ -46,10 +47,10 @@ def UserID(user):
     else:
 	list = db_conn.query("SELECT oid FROM stranke WHERE stranka_id='%s'" % user)
 	if len(list)==0:
-	    raise "No such user"
+	    return (AdminConst.UserID.NoUser, "")
 	result = list[0][0]
 	_USERMAP[user] = result
-    return result
+    return (AdminConst.UserID.OK, result)
 
 # Registracija uporabnikov:
 # Gesla: tole sem pobral iz htpasswd.c
@@ -76,7 +77,7 @@ def Registriraj(hash, username, passwd):
 	"SELECT email, hash, accessed FROM registracije WHERE hash='%s'" %\
 	hash) 
     if not gethash:
-	return -1
+	return AdminConst.Register.NoHash
     if len(gethash)>1:
 	raise "Too many hashes in base"
     from RegisterReply import NormalizeAddress
@@ -86,12 +87,12 @@ def Registriraj(hash, username, passwd):
     getemail = db_conn.query("SELECT email FROM stranke WHERE email='%s'" %\
 			     email)
     if getemail:
-	raise "Email exists in user table!"
+	return AdminConst.Register.DuplicateEmail
     # Preverimo, èe je ime ¾e porabljeno:
     getusername = db_conn.query(
 	"SELECT stranka_id FROM stranke WHERE stranka_id='%s'" % username)
     if getusername:
-	raise "Username exists"
+	return AdminConst.Register.DuplicateUser
     try:
 	db_conn.query("BEGIN")
 	db_conn.query(
@@ -133,14 +134,14 @@ def Registriraj(hash, username, passwd):
 	os.system('cp %s %s' % (tmpname, fname))
 	os.unlink(tmpname)
 	# Ustvari home direktorij:
-	ID = UserID(username)
+	rc, ID = UserID(username)
 	userdir = admin_cfg.htmldir + \
 		  admin_cfg.templates['Stanje']['dir'] + '/' + ID
 	os.mkdir(userdir)
 	
 	templname = admin_cfg.tempdir + '/' + \
 		    admin_cfg.templates['Stanje']['ime'] + '.in'
-	destname = userdir + '/' + admin_cfg.templates['Stanje']['ime']
+	destname = userdir + '/index.html'
 	Util.MakeTemplate(templname, destname, {'username': username})
 
 	templname = admin_cfg.tempdir + '/' + \
@@ -159,4 +160,4 @@ def Registriraj(hash, username, passwd):
 	    pass
 	raise ety, evl, etr
 
-    return 0
+    return AdminConst.Register.OK

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
+# $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
 #
-# $Id: RegisterReply.py 1.3 Thu, 11 Sep 1997 21:18:12 +0000 andrej $
+# $Id: RegisterReply.py 1.4 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
 # Pripravi vse za registracijo - direktorij + odgovor
 
 import rfc822
@@ -62,7 +62,7 @@ def run(srcdir, templates):
 	    "VALUES ('%s', '%s', 'f')" % \
 	    (email, urlkey))
 
-    url = '/registriraj/' + urlkey
+    url = 'http://rozle.e5.ijs.si:4242/registriraj/' + urlkey
 
     # Preberi obrazec:
     templname = srcdir + '/' + templates[filekey]['ime'] 

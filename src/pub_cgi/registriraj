@@ -1,0 +1,8 @@
+# -*- Python -*-
+import Reg_Client
+import FormatResponse
+import cgi
+
+# Preberi zahtevek
+form = cgi.FieldStorage()
+FormatResponse.FormatResponse(Reg_Client.HandleForm(form))

@@ -1,5 +1,5 @@
 /*
- * $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
+ * $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
  *
  * $Id: Notifier.cpp 1.4 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
  *

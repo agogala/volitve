@@ -1,13 +1,16 @@
-# $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
+# $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
 #
-# $Id: .htaccess 1.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
+# $Id: .htaccess 1.2 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
 #
 # Apache nastavitve za direktorij uporabniki
 
-AuthUserFile  /home/andrej/sola/volitve/src/py_lib/.htpasswd
+AuthUserFile  /home/andrej/sola/volitve/src/admin/cfg/htpasswd
 AuthGroupFile /dev/null
 AuthName      "Borza kandidatov"
 AuthType      Basic
+
+# hack: zmotil sem se v imenu:
+#DirectoryIndex status.html
  
 Options All
 <Limit GET POST PUT>

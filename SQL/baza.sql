@@ -1,6 +1,6 @@
--- $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
+-- $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
 --
--- $Id: baza.sql 1.3.2.3 Thu, 11 Sep 1997 21:18:12 +0000 andrej $
+-- $Id: baza.sql 1.3.2.4 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
 --
 -- Skreira bazo.
 
@@ -35,7 +35,7 @@ CREATE TABLE Stanje
 	(Stranka_ID	char(10),
 	Papir_ID	char(8),
 	Kolicina	int,
-	Cena		float))	
+	Cena		float));	
 
 -- Sklenjeni posli:
 CREATE TABLE Posli

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
+# $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
 #
-# $Id: Uporabniki.py 1.2 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
+# $Id: Uporabniki.py 1.3 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
 #
 # Definira preslikavo iz uporabni¹kega imena v ID. Pa ¹e kaj?
 
@@ -22,11 +22,12 @@ def UserID(user):
     else:
 	if Admin_Client.admin_client.open()<0:
 	    raise "Administrator down"
-	Admin_Client.admin_client.send('U' + user)
+	Admin_Client.admin_client.send('UserID ' + user)
 	result = Admin_Client.admin_client.response()
 
-	if result=="-1":
+	if result[:3]=="100":
 	    raise "No such user: " + user
+	result = result[4:]
 	_USERMAP[user] = result
     return result
     

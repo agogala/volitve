@@ -1,6 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
   <head>
+    <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
     <title>Stanje - %(username)s</title>
   </head>
 

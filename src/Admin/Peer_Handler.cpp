@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
+ * $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
  *
- * $Id: Peer_Handler.cpp 1.2 Thu, 11 Sep 1997 21:18:12 +0000 andrej $
+ * $Id: Peer_Handler.cpp 1.3 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
  *
  * Sprejema zahtevke od klientov.
  */
@@ -12,6 +12,18 @@
 #include "admind.h"
 #include "Peer_Handler.h"
 #include "Registrator.h"
+
+void int2code(int in, char *instr)
+{
+  int absin = abs(in);
+  char *str = instr;
+
+  for (int n=100; n>0; n /= 10) {
+    *str = '0' + ((int)(absin / n)) % 10;
+    str++;
+  }
+  *str = '\0';
+}
 
 Peer_Handler::Peer_Handler (void)
 {
@@ -52,7 +64,7 @@ Peer_Handler::handle_input (ACE_HANDLE)
 			this->peer_name_, this->get_handle ()), -1);
       /* NOTREACHED */
     case 1:
-      {
+      { // case 1
 	char rs[256]; /* Request string */
 
 	// To je odveè, saj je len samo en byte!
@@ -67,46 +79,42 @@ Peer_Handler::handle_input (ACE_HANDLE)
 	/* NOTREACHED */
 
 	if (strlen (rs) == n)
-	  {
+	  { 
 	    ACE_DEBUG ((LM_DEBUG, "(%P|%t) Request: length %d content '%s'\n", n, rs));
 	    // Prevedi zahtevke v klice registratorjevih procedur.
 	    // Nobenega preverjanja napak, ¾al...
-	    switch (rs[0]) {
-	    case 'V': {
-	      if (REGISTRATOR::instance()-> Validate(&rs[1])==-1) {
-		ACE_OS::strncpy(&rs[1], "FAIL", sizeof(rs)-2);
-	      } else {
-		ACE_OS::strncpy(&rs[1], "OK", sizeof(rs)-2);
-	      }
-	      break;
-	    }
-	    case 'R': {
-	      ACE_Tokenizer tokens(&rs[1]);
-	      tokens.delimiter_replace(' ', '\0');
+	    ACE_Tokenizer tokens(rs);
+	    tokens.delimiter_replace(' ', '\0');
+	    tokens.preserve_designators('"','"');
+	    char *cmd = tokens.next();
+
+	    ACE_DEBUG((LM_DEBUG, "CMD: %s\n", cmd));
+
+	    if (!ACE_OS::strcasecmp(cmd, "Validate")) {
+	      char *hash = tokens.next();
+	      int rc = REGISTRATOR::instance()-> Validate(hash);
+	      int2code(rc, &rs[1]);
+	    } 
+	    else if (!ACE_OS::strcasecmp(cmd, "Register")) {
 	      char *hash = tokens.next();
 	      char *username = tokens.next();
 	      char *passwd = tokens.next();
 
-	      if (REGISTRATOR::instance()-> Register
-		  (RegRec(hash, username, passwd))==-1) {
-		ACE_OS::strncpy(&rs[1], "FAIL", sizeof(rs)-2);
-	      } else {
-		ACE_OS::strncpy(&rs[1], "OK", sizeof(rs)-2);
-	      } 
-	      break;
+	      int rc = REGISTRATOR::instance()-> Register
+		(hash, username, passwd);
+	      int2code(rc, &rs[1]);
 	    }
-	    case 'U': {
-	      char *rc = REGISTRATOR::instance()-> UserID(&rs[1]);
-	      
-	      if (rc==NULL) {
-		ACE_OS::strncpy(&rs[1], "-1", sizeof(rs)-2);
-	      } else {
-		ACE_OS::strncpy(&rs[1], rc, sizeof(rs)-2);
-		// free memory:
-		delete rc;
-	      }
-	      break;
+	    else if (!ACE_OS::strcasecmp(cmd, "UserID")) {
+	      char *username = tokens.next();
+
+	      int rc = REGISTRATOR::instance()-> UserID(username, &rs[5]);
+	      int2code(rc, &rs[1]);
+	      rs[4] = ' ';
+
 	    }
+	    else {
+	      // report error:
+	      int2code(200, &rs[1]);
 	    }
 	    rs[0] = strlen(&rs[1]);
 
@@ -119,7 +127,7 @@ Peer_Handler::handle_input (ACE_HANDLE)
       }
     default:
       ACE_ERROR_RETURN ((LM_ERROR, "(%P|%t) %p at host %s\n",
-			"client", this->peer_name_), -1);
+			 "client", this->peer_name_), -1);
       /* NOTREACHED */
     }
   return 0;

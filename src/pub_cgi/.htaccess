@@ -1,0 +1,12 @@
+# $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
+#
+# $Id: .htaccess 1.1 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
+#
+# Apache nastavitve za PUB CGI direktorij
+# Don't turn off the interpreter:
+PythonPersistent On
+SetHandler python-cgi-script
+PythonPath /home/andrej/sola/volitve/src/py_lib
+#PythonVerbose on
+#PythonDebug on
+

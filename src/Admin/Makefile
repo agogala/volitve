@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
-# $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
+# $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
 #
-# $Id: Makefile 1.1 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
+# $Id: Makefile 1.2 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
 #
 # Makefile za opazovalca.
 #----------------------------------------------------------------------------
@@ -38,6 +38,11 @@ LDFLAGS += -L$(PG_ROOT)/lib
 ifeq ($(OS),Linux)
 LDLIBS  += -lreadline -ltermcap
 LDFLAGS += -rdynamic
+endif
+
+# Tole potrebujemo samo zaradi debugiranja na Solarisu.
+ifeq ($(OS),SunOS)
+LDFLAGS += -R$(ACE_ROOT)/ace
 endif
 
 #LDFLAGS += $(platf_ldflags)

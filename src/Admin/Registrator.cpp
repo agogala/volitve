@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
+ * $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
  *
- * $Id: Registrator.cpp 1.2 Thu, 11 Sep 1997 21:18:12 +0000 andrej $
+ * $Id: Registrator.cpp 1.3 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
  *
  * Oblikuje HTML datoteke.
  */
@@ -16,7 +16,7 @@
 #include "Registrator.h"
 
 // ----------------------------
-
+/*
 RegRec::RegRec(const char *hash, 
 	 const char *username,
 	 const char *passwd)
@@ -52,7 +52,7 @@ char *RegRec::hash()
 {
   return this->hash_;
 }
-
+*/
 // ----------------------------
 
 Registrator::Registrator()
@@ -95,6 +95,10 @@ int Registrator::init()
 
 int Registrator::Validate(const char *hash)
 {
+
+  if (hash==NULL)
+    return 200; // Syntax error
+
   if (!initialized_)
     init();
 
@@ -107,25 +111,30 @@ int Registrator::Validate(const char *hash)
   return PythonRunInt(buff);
 }
 
-int Registrator::Register(RegRec &regrec)
+int Registrator::Register(char *hash, char *username, char *passwd)
 {
+  if ((hash==NULL) || (username==NULL) || (passwd==NULL))
+    return 200; // Syntax error
+
   if (!initialized_)
     init();
 
   static char CmdLine[] = "Registrator.Registriraj('%s','%s','%s')";
 
-  char buff[strlen(CmdLine) + strlen(regrec.hash()) +
-	   strlen(regrec.username()) + strlen(regrec.passwd()) + 1];
+  char buff[strlen(CmdLine) + strlen(hash) +
+	   strlen(username) + strlen(passwd) + 1];
 
-  ACE_OS::sprintf(buff, CmdLine, regrec.hash(), regrec.username(),
-		  regrec.passwd());
+  ACE_OS::sprintf(buff, CmdLine, hash, username, passwd);
 
   return PythonRunInt(buff);
 
 }
 
-char *Registrator::UserID(const char *user)
+int Registrator::UserID(const char *user, char *ID)
 {
+  if ((user==NULL) || (ID==NULL))
+    return 200;
+
   if (!initialized_)
     init();
 
@@ -135,7 +144,7 @@ char *Registrator::UserID(const char *user)
 
   ACE_OS::sprintf(buff, CmdLine, user);
 
-  return PythonRunStr(buff);
+  return PythonRunStr(buff, ID);
 }
 
 int Registrator::PythonRunInt(char *Command)
@@ -147,14 +156,14 @@ int Registrator::PythonRunInt(char *Command)
 
   m =  PyImport_AddModule("__main__");
   if (m == NULL)
-    ACE_ERROR_RETURN((LM_ERROR, "Error importing main module"), -1);
+    ACE_ERROR_RETURN((LM_ERROR, "Error importing main module"), 500);
   d = PyModule_GetDict(m);
 
   v = (PyIntObject *)PyRun_String(Command, eval_input, d, d);
 
   if (v == NULL) {
     PyErr_Print();
-    return -1;
+    return 500;
   }
 
   int rc = PyInt_AS_LONG(v);
@@ -162,32 +171,39 @@ int Registrator::PythonRunInt(char *Command)
   Py_DECREF(v);
   Py_FlushLine();  
 
+  ACE_DEBUG((LM_DEBUG,"Python run rc: %d\n", rc));
+
   return rc;
 }
 
-char *Registrator::PythonRunStr(char *Command)
+// Poklièi Python, kjer funkcija vrne urejen par int, str
+int Registrator::PythonRunStr(char *Command, char *Result)
 {
   PyObject *m, *d;
-  PyStringObject *v;
+  PyObject *v;
+
+  char *outs;
+  int rc;
 
   ACE_DEBUG((LM_DEBUG, "(str) Calling python with: %s\n", Command));
 
   m =  PyImport_AddModule("__main__");
   if (m == NULL) {
     ACE_ERROR((LM_ERROR, "Error importing main module"));
-    return NULL;
+    return 500;
   }
   d = PyModule_GetDict(m);
 
-  v = (PyStringObject *)PyRun_String(Command, eval_input, d, d);
+  v = PyRun_String(Command, eval_input, d, d);
 
   if (v == NULL) {
     PyErr_Print();
-    return NULL;
+    return 500; // Internal error
   }
 
-  char *rc = new char[PyString_Size((PyObject *)v) + 1];
-  strcpy(rc, PyString_AS_STRING(v));
+  PyArg_ParseTuple(v, "is", &rc, &outs);
+
+  strcpy(Result, outs);
   
   Py_DECREF(v);
   Py_FlushLine();  
