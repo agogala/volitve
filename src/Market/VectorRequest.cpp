@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.17 Fri, 03 Oct 1997 17:45:58 +0200 andrej $
+ * $ProjectHeader: volitve 0.18 Sun, 05 Oct 1997 22:53:12 +0200 andrej $
  *
- * $Id: VectorRequest.cpp 1.4 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
+ * $Id: VectorRequest.cpp 1.5 Sun, 05 Oct 1997 20:53:12 +0000 andrej $
  *
  * Implementacija enostavnega vektorja -- STL, ACE in g++ na Rozletu
  * ne gredo skupaj.
@@ -33,6 +33,8 @@ VectorRequest::VectorRequest(unsigned int size)
 
 VectorRequest::~VectorRequest()
 {
+  for (int i=0; i<Filled_; i++)
+    delete content[i];
   delete content;
 }
 

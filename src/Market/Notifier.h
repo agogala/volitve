@@ -1,6 +1,6 @@
 /* -*- C++ -*- */
 /* 
- * $ProjectHeader: volitve 0.17 Fri, 03 Oct 1997 17:45:58 +0200 andrej $
+ * $ProjectHeader: volitve 0.18 Sun, 05 Oct 1997 22:53:12 +0200 andrej $
  *
  * $Id: Notifier.h 1.4 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
  *

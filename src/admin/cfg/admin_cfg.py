@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.17 Fri, 03 Oct 1997 17:45:58 +0200 andrej $
+# $ProjectHeader: volitve 0.18 Sun, 05 Oct 1997 22:53:12 +0200 andrej $
 #
-# $Id: admin_cfg.py 1.2.2.2 Thu, 11 Sep 1997 21:18:12 +0000 andrej $
+# $Id: admin_cfg.py 1.2.2.3 Sun, 05 Oct 1997 20:53:12 +0000 andrej $
 #
 # Konfiguracija za administracijo:
 
@@ -13,7 +13,7 @@ userdir = htmldir + userurl
 
 # Obrazci:
 templates = {"Dodaj": {'dir': '/narocila', 'ime': 'dodaj.html'},
-	     "Pregled": {'dir': '/pregled', 'ime': 'pregled.html'},
+	     "Pregled": {'dir': '/narocila', 'ime': 'pregled.html'},
 	     "RegisterNew": {'ime': 'register-new.txt'},
 	     "RegisterOld": {'ime': 'register-old.txt'},
 	     "HTAccess": {'dir': '/uporabniki', 'ime': 'htaccess'},

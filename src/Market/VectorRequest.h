@@ -1,13 +1,16 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.17 Fri, 03 Oct 1997 17:45:58 +0200 andrej $
+ * $ProjectHeader: volitve 0.18 Sun, 05 Oct 1997 22:53:12 +0200 andrej $
  *
- * $Id: VectorRequest.h 1.2 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
+ * $Id: VectorRequest.h 1.3 Sun, 05 Oct 1997 20:53:12 +0000 andrej $
  *
  * Enostaven vektor zahtevkov. 
  * STL se nekaj punta, vsaj na ro¾letu - g++, ACE, bog si ga vedi?
  * Definirani so samo ukazi, ki jih potrebujem pri trgu.
  */
+
+#if !defined(VECTORREQUEST_H)
+#define VECTORREQUEST_H
 
 #include "Request.h"
 //#include <vector.h>
@@ -33,3 +36,4 @@ private:
 
 };
 
+#endif

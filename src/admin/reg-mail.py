@@ -1,5 +1,5 @@
 #!/net/rozle/export/share/sol/bin/python
-# $ProjectHeader: volitve 0.17 Fri, 03 Oct 1997 17:45:58 +0200 andrej $
+# $ProjectHeader: volitve 0.18 Sun, 05 Oct 1997 22:53:12 +0200 andrej $
 #
 # $Id: reg-mail.py 1.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
 # Odgovori na zahtevek za registracijo

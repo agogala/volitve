@@ -8,3 +8,8 @@ Options All
 <Limit GET POST PUT>
 require valid-user
 </Limit>
+
+<files pregled.html>
+header set Refresh 30
+header set Pragma no-cache
+</files>
