@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
-# $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+# $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
 #
-# $Id: Makefile 1.5 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
+# $Id: Makefile 1.6 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
 #
 # Makefile za opazovalca.
 #----------------------------------------------------------------------------
@@ -34,12 +34,17 @@ INCLDIRS += -I../include
 LDFLAGS  += .obj/config.o -L$(PYTHON_ROOT)/lib/python1.4/config -lModules -lPython -lObjects -lParser -lm $(PYTHON_ROOT)/lib/python1.4/config/getpath.o
 INCLDIRS += -I$(PYTHON_ROOT)/include/python1.4 -I$(PYTHON_ROOT)/lib/python1.4/config
 
-LDLIBS  += -lpq++ -lpq -lg++
-LDFLAGS += -L$(PG_ROOT)/lib 
+LDLIBS  += -lpq++ -lpq -lg++ -lbb
+LDFLAGS += -L$(PG_ROOT)/lib -L../lib
 
 ifeq ($(OS),Linux)
 LDLIBS  += -lreadline -ltermcap
 LDFLAGS += -rdynamic
+endif
+
+# Tole potrebujemo samo zaradi debugiranja na Solarisu.
+ifeq ($(OS),SunOS)
+LDFLAGS += -R$(ACE_ROOT)/ace -R../lib
 endif
 
 #LDFLAGS += $(platf_ldflags)
@@ -60,7 +65,7 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 #	Local targets
 #----------------------------------------------------------------------------
 
-.obj/.obj/config.o .shobj/config.so: $(PYTHON_ROOT)/lib/python1.4/config/config.c
+.obj/config.o: $(PYTHON_ROOT)/lib/python1.4/config/config.c
 	$(CC) $(CFLAGS) $(INCLDIRS) -DHAVE_CONFIG -DNO_MAIN -c $(PYTHON_ROOT)/lib/python1.4/config/config.c -o .obj/config.o
 
  

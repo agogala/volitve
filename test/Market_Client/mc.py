@@ -14,9 +14,9 @@ sock.connect("/tmp/market")
 
 sock.setsockopt(SOL_SOCKET, SO_KEEPALIVE, 1)
 
-b="BUY KUCA 10 60.1 andrej"
+b="BUY KUCA 5 60.1 andrej"
 
-s="SELL KUCA 5 58 miha"
+s="SELL KUCA 10 58 miha"
 
 while 1:
     sock.send(chr(len(s)) + s)

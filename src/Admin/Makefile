@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
-# $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+# $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
 #
-# $Id: Makefile 1.2 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
+# $Id: Makefile 1.3 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
 #
 # Makefile za opazovalca.
 #----------------------------------------------------------------------------
@@ -32,8 +32,8 @@ INCLDIRS += -I../include
 LDFLAGS  += .obj/config.o -L$(PYTHON_ROOT)/lib/python1.4/config -lModules -lPython -lObjects -lParser -lm $(PYTHON_ROOT)/lib/python1.4/config/getpath.o
 INCLDIRS += -I$(PYTHON_ROOT)/include/python1.4 -I$(PYTHON_ROOT)/lib/python1.4/config
 
-LDLIBS  += -lpq++ -lpq -lg++
-LDFLAGS += -L$(PG_ROOT)/lib 
+LDLIBS  += -lpq++ -lpq -lg++ -lbb
+LDFLAGS += -L$(PG_ROOT)/lib -L../lib
 
 ifeq ($(OS),Linux)
 LDLIBS  += -lreadline -ltermcap
@@ -63,7 +63,7 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 #	Local targets
 #----------------------------------------------------------------------------
 
-.obj/config.o: $(PYTHON_ROOT)/lib/python1.4/config/config.c
+.obj/.obj/config.o .shobj/config.so: $(PYTHON_ROOT)/lib/python1.4/config/config.c
 	$(CC) $(CFLAGS) $(INCLDIRS) -DHAVE_CONFIG -DNO_MAIN -c $(PYTHON_ROOT)/lib/python1.4/config/config.c -o .obj/config.o
 
  
@@ -75,7 +75,7 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 # DO NOT PUT ANYTHING AFTER THIS LINE, IT WILL GO AWAY.
 
 .obj/Peer_Handler.o .shobj/Peer_Handler.so: Peer_Handler.cpp admind.h Peer_Handler.h \
- ../include/Config.h Registrator.h
+ ../include/Config.h Registrator.h ../include/Utils.h
 .obj/Registrator.o .shobj/Registrator.so: Registrator.cpp ../include/Config.h Registrator.h
 
 # IF YOU PUT ANYTHING HERE IT WILL GO AWAY

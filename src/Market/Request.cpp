@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+ * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
  *
- * $Id: Request.cpp 1.4 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
+ * $Id: Request.cpp 1.5 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
@@ -15,6 +15,7 @@
 #include "Request.h"
 #include "Query.h"
 #include "MarketErrors.h"
+#include "Utils.h"
 
 Request::Request()
 {
@@ -174,9 +175,13 @@ int Request::Read_i(PgDatabase &db, const int tup_num)
   this->Kolicina_ = atoi(db.GetValue(tup_num, indKolicina));      // Kolièina
   this->Cena_ = atof(db.GetValue(tup_num, indCena));     // Cena
   //  this->Vrsta_ = db.GetValue(tup_num, indVrsta)[0];
+  // Strip white space from values:
   ACE_OS::strcpy(this->Ponudnik_, db.GetValue(tup_num, indPonudnik));
+  rstrip(this->Ponudnik_);
   ACE_OS::strcpy(this->Papir_ID_, db.GetValue(tup_num, indPapir_ID));
+  rstrip(this->Papir_ID_);
   ACE_OS::strcpy(this->ID_, db.GetValue(tup_num, indID));
+  rstrip(this->ID_);
 
   return this->LastError_;
 }

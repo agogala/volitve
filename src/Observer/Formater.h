@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+ * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
  *
- * $Id: Formater.h 1.1 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
+ * $Id: Formater.h 1.2 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
  *
  * Oblikuje HTML datoteke. Se spro¾a ob regularnih èasovnih razmikih.
  * Datoteke formatira python script, s katerim tale objekt komunicira
@@ -19,11 +19,12 @@
 #include <ace/Pipe.h>*/
 
 #include "State.h"
+#include "StrSet.h"
 
 class Formater: public ACE_Event_Handler
 {
  public:
-  Formater (State *state);
+  Formater (State *state, strset *userset);
   int init();
   virtual int handle_timeout(const ACE_Time_Value &,
                                  const void *arg);
@@ -33,6 +34,7 @@ class Formater: public ACE_Event_Handler
                              );*/
 private:
   State *state_;
+  strset *userset_;
   bool initialized_;
   //  int mkpregled();
 };

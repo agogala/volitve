@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+ * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
  *
- * $Id: Notification_Handler.h 1.1 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
+ * $Id: Notification_Handler.h 1.2 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
  *
  * Zaznava spremembe na trgu.
  */
@@ -14,6 +14,7 @@
 #include <ace/INET_Addr.h>
 
 #include "State.h"
+#include "StrSet.h"
 
 class Notification_Handler : public ACE_Event_Handler, public ACE_SOCK_Dgram
 {
@@ -24,7 +25,8 @@ class Notification_Handler : public ACE_Event_Handler, public ACE_SOCK_Dgram
   //     This class waits for broadcast messages from market and sets 
   //     appropriate flags.
 public:
-  Notification_Handler (const ACE_INET_Addr &local_addr, State *state);
+  Notification_Handler (const ACE_INET_Addr &local_addr, State *state,
+			strset *userset);
  
   virtual ACE_HANDLE get_handle (void) const;
  
@@ -32,6 +34,8 @@ public:
 
 private:
   State *state_;
+  strset *userset_;
+
 };
 
 #endif // NOTIFICATION_HANDLER_H

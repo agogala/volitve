@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 3 3)
 (Project-Description "Blagovna borza predsednikov")
-(Project-Version volitve 0 14)
-(Parent-Version volitve 0 13)
+(Project-Version volitve 0 15)
+(Parent-Version volitve 0 14)
 
 (Version-Log "")
 (New-Version-Log "")
-(Checkin-Time "Thu, 25 Sep 1997 21:32:05 +0200")
+(Checkin-Time "Fri, 26 Sep 1997 18:28:00 +0200")
 (Checkin-Login andrej)
 (Populate-Ignore ("~$" "^apache" "^Proto/" "^Tmp/"
                   "^test-cpp/" ".obj/"  ".shobj/" "^Bookmarks"
@@ -20,7 +20,7 @@
 ;; Files added by populate at Thu, 28 Aug 1997 18:56:22 +0200:
 
 ;; Kronologija in TODO
-  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.13 644))
+  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.14 644))
   (TODO (volitve/32_TODO 1.2 644))
   (tips (volitve/41_tips 1.1 644))
 
@@ -29,6 +29,10 @@
   (SQL/match.sql (volitve/1_match.sql 1.1 640))
 ;; Naredi bazo
   (SQL/baza.sql (volitve/2_baza.sql 1.3.2.5 640))
+;; Poèisti posle ipd...
+  (SQL/clear.sql (volitve/b/0_clear.sql 1.1 644))
+;; Popolni tabelo stanja
+  (SQL/mkstanje.sql (volitve/b/49_mkstanje.s 1.1 644))
 
 ;; Napolni bazo
   (SQL/pop-stranke.sql (volitve/3_pop-strank 1.2 640))
@@ -60,21 +64,21 @@
   
 ;; Source:
 ;; Observer
-  (src/Observer/observerd.cpp (volitve/16_observer.c 1.6 644))
+  (src/Observer/observerd.cpp (volitve/16_observer.c 1.7 644))
   (src/Observer/observerd.h (volitve/b/0_observerd.h 1.1 644))
   (src/Observer/initfmt.py (volitve/b/37_initfmt.py 1.2 644))
   (src/Observer/State.cpp (volitve/b/38_State.cpp 1.1.2.1 644))
   (src/Observer/State.h (volitve/b/39_State.h 1.1.2.1 644))
-  (src/Observer/Formater.cpp (volitve/b/40_Formater.c 1.1.2.1 644))
-  (src/Observer/Formater.h (volitve/b/41_Formater.h 1.1 644))
-  (src/Observer/Notification_Handler.h (volitve/b/42_Notificati 1.1 644))
-  (src/Observer/Notification_Handler.cpp (volitve/b/43_Notificati 1.1.2.1 644))
-  (src/Observer/Makefile (volitve/17_Makefile 1.5 644))
+  (src/Observer/Formater.cpp (volitve/b/40_Formater.c 1.1.2.2 644))
+  (src/Observer/Formater.h (volitve/b/41_Formater.h 1.2 644))
+  (src/Observer/Notification_Handler.h (volitve/b/42_Notificati 1.2 644))
+  (src/Observer/Notification_Handler.cpp (volitve/b/43_Notificati 1.1.2.2 644))
+  (src/Observer/Makefile (volitve/17_Makefile 1.6 644))
 
 ;; HTML:
   (src/HTML/index.html (volitve/18_index.html 1.4.2.1 644))
   (src/HTML/pregled/.htaccess (volitve/b/9_.htaccess 1.3 644))
-  (src/HTML/pregled/pregled.html (volitve/b/10_pregled.ht 1.8 644))
+  (src/HTML/pregled/pregled.html (volitve/b/10_pregled.ht 1.9 644))
   (src/HTML/pregled/kazalo.html (volitve/b/11_kazalo.htm 1.2 644))
   (src/HTML/pregled/index.html (volitve/b/12_index.html 1.2 644))
   (src/HTML/registracija.html (volitve/b/15_index.html 1.1.2.2 644))
@@ -90,29 +94,29 @@
 
 
 ;; Konfiguracija
-  (src/include/Config.h (volitve/21_Config.h 1.9 644))
+  (src/include/Config.h (volitve/21_Config.h 1.10 644))
+
 ;; Skupne zadeve
+  (src/include/StrSet.h (volitve/b/48_StrSet.h 1.1 644))
+  (src/include/Utils.h (volitve/b/50_Utils.h 1.1 644))
 
 ;; Trg:
-  (src/Market/Notifier.cpp (volitve/22_Notifier.c 1.5 644))
+  (src/Market/Notifier.cpp (volitve/22_Notifier.c 1.6 644))
   (src/Market/Notifier.h (volitve/23_Notifier.h 1.4 644))
   (src/Market/marketd.h (volitve/24_market.h 1.3 644)) 
   (src/Market/marketd.cpp (volitve/25_market.cpp 1.8 644))
   (src/Market/Market.h (volitve/26_Request.h 1.4 644))
-  (src/Market/Market.cpp (volitve/27_Request.cp 1.7 644))
+  (src/Market/Market.cpp (volitve/27_Request.cp 1.8 644))
   (src/Market/Market_Handler.h (volitve/47_Market_Han 1.2 644))
-  (src/Market/Market_Handler.cpp (volitve/28_Market_Han 1.7 644))
-  (src/Market/Request.cpp (volitve/48_Request.cp 1.4 644))
+  (src/Market/Market_Handler.cpp (volitve/28_Market_Han 1.8 644))
+  (src/Market/Request.cpp (volitve/48_Request.cp 1.5 644))
   (src/Market/Request.h (volitve/49_Request.h 1.4 644))
-  (src/Market/Makefile (volitve/29_Makefile 1.9 644)) 
+  (src/Market/Makefile (volitve/29_Makefile 1.10 644)) 
   (src/Market/VectorRequest.cpp (volitve/b/4_VectorRequ 1.3 644))
   (src/Market/VectorRequest.h (volitve/b/5_VectorRequ 1.1 644))
   (src/Market/Query.cpp (volitve/44_Query.cpp 1.2 644))
   (src/Market/Query.h (volitve/45_Query.h 1.1 644))
   (src/Market/MarketErrors.h (volitve/b/0_MarketErrors.h 1.1 644))
-  (src/Market/StrSet.cpp (volitve/b/0_StrSet.cpp 1.1 644))
-  (src/Market/StrSet.h (volitve/b/48_StrSet.h 1.1 644))
-
 
 ;; Manager:
   (src/Manager/manager.cpp (volitve/b/44_manager.cp 1.1 644))
@@ -120,13 +124,18 @@
 
 ;; Admin:
   (src/Admin/initadm.py (volitve/b/0_initadm.py 1.1 644))
-  (src/Admin/Peer_Handler.cpp (volitve/c/0_Peer_Handler.cpp 1.3 644))
+  (src/Admin/Peer_Handler.cpp (volitve/c/0_Peer_Handler.cpp 1.4 644))
   (src/Admin/Peer_Handler.h (volitve/c/12_Peer_Handl 1.1 644))
   (src/Admin/Registrator.cpp (volitve/c/13_Registrato 1.3 644))
   (src/Admin/Registrator.h (volitve/c/14_Registrato 1.2 644))
   (src/Admin/admind.cpp (volitve/c/15_admind.cpp 1.2 644))
   (src/Admin/admind.h (volitve/c/16_admind.h 1.1 644))
-  (src/Admin/Makefile (volitve/c/17_Makefile 1.2 644))
+  (src/Admin/Makefile (volitve/c/17_Makefile 1.3 644))
+
+;; Knji¾nica
+  (src/lib/Makefile (volitve/b/51_Makefile 1.1 644))
+  (src/lib/Utils.cpp (volitve/c/0_Utils.cpp 1.1 644))
+  (src/lib/StrSet.cpp (volitve/b/0_StrSet.cpp 1.1 644))
 
 ;; CGI
   (src/cgi/.htaccess (volitve/35_.htaccess 1.3.2.3 644))
@@ -154,7 +163,7 @@
 
 ;; Testni programi:
   (test/Observer_Client/oc.py (volitve/30_oc.py 1.2 755))
-  (test/Market_Client/mc.py (volitve/31_mc.py 1.5 755))
+  (test/Market_Client/mc.py (volitve/31_mc.py 1.6 755))
   (src/cgi/testpy.py (volitve/40_testpy.py 1.1 755))
   (test/Sock-Test/sock.cpp (volitve/42_sock.cpp 1.1 644))
   (test/Sock-Test/Makefile (volitve/43_Makefile 1.1 644))
@@ -175,30 +184,32 @@
   (Tmp () :directory)
 
 ;; Aministracija:
-  (src/start (volitve/b/23_start 1.2 755))
+  (src/start (volitve/b/23_start 1.3 755))
 ;; Programi
   (src/admin/observerd.py (volitve/b/24_observerd. 1.2 755))
   (src/admin/mk-pregled.py (volitve/b/25_mk-pregled 1.2 755))
   (src/admin/mk-dodaj.py (volitve/b/26_mk-dodaj.p 1.2 755))
+  (src/admin/mk-stanje.py (volitve/c/1_mk-stanje. 1.1 755))
   (src/admin/reg-mail.py (volitve/c/8_reg-mail.p 1.1 755))
 ;; Konfiguracija
   (src/admin/cfg/admin_cfg.py (volitve/b/27_admin_cfg. 1.2.2.2 644))
 ;; Knji¾nica
-  (src/admin/lib/MakePregled.py (volitve/b/28_MakePregle 1.4 644))
+  (src/admin/lib/MakePregled.py (volitve/b/28_MakePregle 1.5 644))
   (src/admin/lib/Observer.py (volitve/b/29_Observer.p 1.2 644))
   (src/admin/lib/MakeDodaj.py (volitve/b/30_MakeDodaj. 1.4 644))
   (src/admin/lib/RegisterReply.py (volitve/c/9_RegisterRe 1.4 644))
-  (src/admin/lib/Registrator.py (volitve/c/19_Registrato 1.4 644))
+  (src/admin/lib/Registrator.py (volitve/c/19_Registrato 1.5 644))
   (src/admin/lib/Util.py (volitve/51_Util.py 1.1 644))
   (src/admin/lib/AdminConst.py (volitve/b/46_AdminConst 1.1 644))
+  (src/admin/lib/DBConn.py (volitve/c/20_DBConn.py 1.1 644))
 
 ;; Obrazci:
   (src/templates/pregled.html.in (volitve/b/31_pregled.ht 1.2 644))
   (src/templates/dodaj.html.in (volitve/b/32_dodaj.html 1.3 644))
   (src/templates/register-old.txt (volitve/c/10_register-o 1.1 644))
   (src/templates/register-new.txt (volitve/c/11_register-n 1.1 644))
-  (src/templates/stanje.html.in (volitve/b/0_stanje.html.in 1.2 644))
-  (src/templates/htaccess.in (volitve/b/1_htaccess.i 1.1 644))
+  (src/templates/stanje.html.in (volitve/b/0_stanje.html.in 1.3 644))
+  (src/templates/htaccess.in (volitve/b/1_htaccess.i 1.2 644))
   (src/templates/reg_form.html.in (volitve/b/47_reg_form.h 1.1 644))
 
 ;; HTTP konfiguracija:

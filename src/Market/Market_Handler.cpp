@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+ * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
  *
- * $Id: Market_Handler.cpp 1.7 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
+ * $Id: Market_Handler.cpp 1.8 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
  *
  * Sprejema zahtevke od klientov.
  */
@@ -12,6 +12,7 @@
 #include "Market_Handler.h"
 #include "Notifier.h"
 #include "StrSet.h"
+#include "Utils.h"
 
 Market_Handler::Market_Handler (void)
 {
@@ -53,10 +54,8 @@ Market_Handler::handle_input (ACE_HANDLE)
       /* NOTREACHED */
     case 1:
       {
-	char rs[256]; /* Request string */
+	char rs[256]; // Request string 
 
-	// To je odveè, saj je len samo en byte!
-	//        len = ntohl (len);
 	n = this->peer ().recv_n ((void *) &rs, len);
 
 	rs[n] = '\0';
@@ -66,32 +65,36 @@ Market_Handler::handle_input (ACE_HANDLE)
 			    "client", this->peer_name_), -1);
 	/* NOTREACHED */
 
-	if (strlen (rs) == n)
-	  {
+	if (strlen (rs) == n) {
 	    ACE_DEBUG ((LM_DEBUG, "(%P|%t) Request: length %d content '%s'\n", n, rs));
 	    Request req(rs);
 	    strset userset;
 
 	    int rc = MARKET::instance ()-> Add(req, &userset);
 
-	    /* report back */
-	    ACE_OS::sprintf(&rs[1], "%03d", rc);
+	    // report back 
+	    int2code(rc, &rs[1]);
 	    rs[0] = strlen(&rs[1]);
 
 	    this->peer ().send_n ((void *) rs, rs[0]+1, 0);
 
 	    if (rc == 0) {
-	      /* notify observers */
+	      // notify observers 
 	      NOTIFIER::instance ()-> notify();
 	      while (userset.size()>0) {
 		NOTIFIER::instance ()-> notify(*userset.begin());
 		const char *ime = *userset.begin();
 		userset.erase(userset.begin());
 		delete ime;
-	      }	      
-	    } 
-	  }
-	else
+	      }
+	    } else { // Poèistimo za seboj
+	      while (userset.size()>0) {
+		const char *ime = *userset.begin();
+		userset.erase(userset.begin());
+		delete ime;
+	      }
+	    }
+	} else
 	  ACE_ERROR ((LM_ERROR, "(%P|%t) error, strlen(rs) = %d, n = %d\n",
 		      strlen(rs), n));
 	break;

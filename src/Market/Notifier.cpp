@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+ * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
  *
- * $Id: Notifier.cpp 1.5 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
+ * $Id: Notifier.cpp 1.6 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
  *
  * Po¹lji broadcast, èe se je zgodila kaka sprememba na trgu.
  */
@@ -64,11 +64,10 @@ int Notifier::notify ()
   
   char msg[NOTIFIER_MESSAGE_LENGTH+1];
 
-  ACE_OS::sprintf(msg, "%0*d", NOTIFIER_MESSAGE_LENGTH, this->cnt);
+  ACE_OS::sprintf(msg, "MarketChange %0*d", NOTIFIER_MESSAGE_LENGTH-13, this->cnt);
 
   ACE_DEBUG ((LM_DEBUG,
-		"(%P|%t) Handle output: %0*d\n", 
-	      NOTIFIER_MESSAGE_LENGTH, this->cnt));
+		"(%P|%t) Handle output: %s\n", msg));
   /*  ACE_DEBUG ((LM_DEBUG,
 	      "Broadcast address: %s, %d\n", 
 	      this->BroadcastAddr_.get_host_addr(),
@@ -87,6 +86,18 @@ int Notifier::notify ()
 
 int Notifier::notify (const char *user)
 {
+  if (!opened)
+    ACE_ERROR_RETURN((LM_ERROR, "Notifier not opened\n"), -1);
+  
+  char msg[NOTIFIER_MESSAGE_LENGTH+1] = "Change ";
+
+  strncpy(msg + 7, user, NOTIFIER_MESSAGE_LENGTH - 7);
+
+  ACE_DEBUG ((LM_DEBUG,
+		"(%P|%t) Handle output: %s\n", msg));
+
+  ACE_SOCK_Dgram_Bcast::send(msg, ACE_OS::strlen(msg), this->BroadcastAddr_);
+
   return 0;
 }
 

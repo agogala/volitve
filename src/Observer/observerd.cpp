@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+ * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
  *
- * $Id: observerd.cpp 1.6 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
+ * $Id: observerd.cpp 1.7 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
  *
  * Observer deamon. 
  */
@@ -12,13 +12,13 @@
 #include "Notification_Handler.h"
 #include "Formater.h"
 #include "State.h"
+#include "StrSet.h"
 
 #include "Config.h"
 
 int 
 main (int argc, char *argv[])
 {  
-
 
   ACE_Sig_Set signals;
 
@@ -27,10 +27,11 @@ main (int argc, char *argv[])
   signals.sig_add(SIGHUP);
 
   State state;
+  strset userset;
 
   Notification_Handler notification(ACE_INET_Addr(NOTIFIER_DEFAULT_PORT), 
-				    &state);
-  Formater formater(&state);
+				    &state, &userset);
+  Formater formater(&state, &userset);
 
   if (REACTOR::instance ()->register_handler
       (signals, QUIT_HANDLER::instance()) == -1)

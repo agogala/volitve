@@ -10,3 +10,8 @@ require user %(username)s
 </Limit>
 
 allow from all
+
+<files index.html>
+header set Refresh 30
+header set Pragma no-cache
+</files>

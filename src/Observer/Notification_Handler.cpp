@@ -1,24 +1,27 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+ * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
  *
- * $Id: Notification_Handler.cpp 1.1.2.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
+ * $Id: Notification_Handler.cpp 1.1.2.2 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
  *
  * Zaznava spremembe na trgu.
  */
 
 // ---------------------------------------------
 
-#include <Notification_Handler.h>
-#include <Formater.h>
+#include <ace/Process.h>
+
+#include "Notification_Handler.h"
+#include "Formater.h"
 
 #include "Config.h"
 
 Notification_Handler::Notification_Handler (const ACE_INET_Addr &local_addr,
-					    State *state)
+					    State *state, strset *userset)
   : ACE_SOCK_Dgram (local_addr, PF_INET, 0, 1)
 {
   state_ = state;
-
+  userset_ = userset;
+  
   char optval = 1;
 
   ACE_SOCK_Dgram::set_option(SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
@@ -74,22 +77,34 @@ Notification_Handler::handle_input (ACE_HANDLE)
 			 "(%P|%t) closing connection to host %s (fd = %d)\n",
 			from_addr.get_host_name(), this->get_handle ()), 0);
       /* NOTREACHED */
-    case NOTIFIER_MESSAGE_LENGTH:
+    default:
       {	
 	if (strlen (buff) == n)
 	  {
 	    ACE_DEBUG ((LM_DEBUG, "(%P|%t) Notification: length %d content '%s'\n", n, buff));
-	    state_->set(1);
+	    
+	    ACE_Tokenizer tokens(buff);
+	    tokens.delimiter_replace(' ', '\0');
+	    
+	    char *cmd = tokens.next();
+	    char *ime;
+
+	    if (!ACE_OS::strcasecmp(cmd, "Change")) {
+	      char *user = tokens.next();
+	      
+	      ime = new char[strlen(user)+1];
+	      ACE_OS::strcpy(ime, user);
+	      if (!userset_->insert(ime).second)
+		delete ime;
+	    } else { // Privzamemo da je vse v redu...
+	      state_->set(1);
+	    }
 	  }
 	else
 	  ACE_ERROR ((LM_ERROR, "(%P|%t) error, strlen(buff) = %d, n = %d\n",
 		      strlen(buff), n));
 	break;
       }
-    default:
-      ACE_ERROR_RETURN ((LM_ERROR, "(%P|%t) %p at host %s\n",
-			"client", from_addr.get_host_name()), 0);
-      /* NOTREACHED */
     }
 
   return 0;

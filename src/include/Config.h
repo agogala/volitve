@@ -1,8 +1,8 @@
 // -*- C++ -*-
 /* 
- * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+ * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
  *
- * $Id: Config.h 1.9 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
+ * $Id: Config.h 1.10 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
  *
  * Konfiguracija.
 */
@@ -28,15 +28,15 @@
 /* Pot za opazovalce (se ne uprablja) */
 //#define NOTIFIER_DEFAULT_PATH "/tmp/market_notify"
 
-/* Velikost sporoèila za opazovalce */
-#define NOTIFIER_MESSAGE_LENGTH 8
-
 /* Velikosti polj: */
 // Papirji:
 #define MAX_PAPIR_ID 8
 
 // Velikost raèunov:
 #define MAX_PONUDNIK 10
+
+/* Velikost sporoèila za opazovalce */
+#define NOTIFIER_MESSAGE_LENGTH MAX_PONUDNIK + 9
 
 // Velikost OID polja (vzeto iz kode za postgres (oidout v src/backend/utils/adt/oid.c) brez \0 stringa.
 #define MAX_ID 11

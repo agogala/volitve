@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
-# $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+# $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
 #
-# $Id: Makefile 1.9 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
+# $Id: Makefile 1.10 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
 #
 # Makefile za market deamon.
 # 
@@ -24,8 +24,6 @@ LSRC	= $(addsuffix .cpp,$(FILES))
 LOBJ	= $(addsuffix .o,$(FILES))
 SHOBJ	= $(addsuffix .so,$(FILES))
 
-LSRC	+= .obj/StrSet.o
-
 LDLIBS	= $(addprefix $(VSHDIR),$(SHOBJ))
 
 VLDLIBS = $(LDLIBS:%=%$(VAR))
@@ -34,10 +32,9 @@ BUILD	= $(VBIN)
 
 INCLDIRS += -I$(PG_ROOT)/include
 
-LDLIBS += -lpq++ -lpq -lg++ -lstdc++
+LDLIBS += -lpq++ -lpq -lg++ -lstdc++ -lbb
 
-LDFLAGS += .obj/StrSet.o -L$(PG_ROOT)/lib 
-
+LDFLAGS += -L$(PG_ROOT)/lib -L../lib
 # Tole potrebujemo samo zaradi debugiranja na Solarisu.
 ifeq ($(OS),SunOS)
 LDFLAGS += -R$(ACE_ROOT)/ace
@@ -60,9 +57,6 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 #----------------------------------------------------------------------------
 #	Local targets
 #----------------------------------------------------------------------------
-
-.obj/StrSet.o: StrSet.cpp
-	$(CXX) -c StrSet.cpp -o .obj/StrSet.o
 
 #----------------------------------------------------------------------------
 #	Dependencies

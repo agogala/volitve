@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+ * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
  *
- * $Id: Formater.cpp 1.1.2.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
+ * $Id: Formater.cpp 1.1.2.2 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
  *
  * Oblikuje HTML datoteke.
  */
@@ -12,10 +12,11 @@
 #include "Config.h"
 #include "Formater.h"
 
-Formater::Formater(State *state)
+Formater::Formater(State *state, strset *userset)
 {
   this->state_ = state;
-  
+  this->userset_ = userset;
+ 
   this->initialized_ = false;
 }
 
@@ -60,10 +61,24 @@ int Formater::handle_timeout(const ACE_Time_Value &,
     init();
 
   if (state_->is_set()) {
+    ACE_DEBUG((LM_DEBUG, "Formatting pregled.\n"));
     if (PyRun_SimpleString("MakePregled.run(admin_cfg.tempdir, admin_cfg.htmldir, admin_cfg.templates)")) {
       ACE_ERROR((LM_ERROR, "Error running MakePregled\n"));
     }
   }
+  while (userset_->size()>0) {
+    char cmd[500];
+
+    const char *ime = *(userset_->begin());
+    ACE_OS::sprintf(cmd, "MakePregled.defupdateuser('%s')", ime);
+    ACE_DEBUG((LM_DEBUG, "Formatting: %s\n", ime));
+    if (PyRun_SimpleString(cmd)) {
+      ACE_ERROR((LM_ERROR, "Error running MakePregled.defupdateuser\n"));
+    }
+    userset_->erase(userset_->begin());
+    delete ime;
+  }
+
   return 0;
 }
 

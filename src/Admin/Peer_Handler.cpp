@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+ * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
  *
- * $Id: Peer_Handler.cpp 1.3 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
+ * $Id: Peer_Handler.cpp 1.4 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
  *
  * Sprejema zahtevke od klientov.
  */
@@ -12,18 +12,7 @@
 #include "admind.h"
 #include "Peer_Handler.h"
 #include "Registrator.h"
-
-void int2code(int in, char *instr)
-{
-  int absin = abs(in);
-  char *str = instr;
-
-  for (int n=100; n>0; n /= 10) {
-    *str = '0' + ((int)(absin / n)) % 10;
-    str++;
-  }
-  *str = '\0';
-}
+#include "Utils.h"
 
 Peer_Handler::Peer_Handler (void)
 {

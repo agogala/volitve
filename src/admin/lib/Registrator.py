@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
+# $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
 #
-# $Id: Registrator.py 1.4 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
+# $Id: Registrator.py 1.5 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
 # Se ukvarja z registracijo uporabnikov
 
 import pg95
@@ -9,10 +9,10 @@ import sys
 import os
 import Util
 import AdminConst
+import DBConn
 
 # Imamo kar stalno povezavo z bazo:
-pg95.set_defbase(admin_cfg.DB_Name)
-db_conn = pg95.connect()
+db_conn = DBConn.db_conn
 
 # Preveri, èe je hash v bazi:
 def Validate(hash):
@@ -145,14 +145,13 @@ VALUES('%s','denar',0)" % username)
 
 	# Ustvari home direktorij:
 	rc, ID = UserID(username)
-	userdir = admin_cfg.htmldir + \
-		  admin_cfg.templates['Stanje']['dir'] + '/' + ID
+	userroot = admin_cfg.htmldir + \
+		   admin_cfg.templates['Stanje']['dir'] 
+	userdir = userroot + '/' + ID
 	os.mkdir(userdir)
-	
-	templname = admin_cfg.tempdir + '/' + \
-		    admin_cfg.templates['Stanje']['ime'] + '.in'
-	destname = userdir + '/index.html'
-	Util.MakeTemplate(templname, destname, {'username': username})
+
+	MakePregled.updateuser(admin_cfg.tempdir, userroot, 
+			       admin_cfg.templates, username)
 
 	templname = admin_cfg.tempdir + '/' + \
 		    admin_cfg.templates['HTAccess']['ime'] + '.in'
