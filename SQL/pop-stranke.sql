@@ -1,1 +1,1 @@
-copy stranke from '/home/andrej/volitve/SQL/stranke.txt' using delimiters ',';
+copy stranke from '/home/andrej/sola/volitve/SQL/stranke.txt' using delimiters ',';

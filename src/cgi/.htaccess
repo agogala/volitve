@@ -1,0 +1,4 @@
+# Don't turn off the interpreter:
+PythonPersistent On
+
+PythonPath /home/andrej/sola/volitve/src/Client

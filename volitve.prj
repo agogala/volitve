@@ -1,16 +1,17 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 3 3)
 (Project-Description "Blagovna borza predsednikov")
-(Project-Version volitve 0 2)
-(Parent-Version volitve 0 1)
+(Project-Version volitve 0 3)
+(Parent-Version volitve 0 2)
 
 (Version-Log "")
 (New-Version-Log "")
-(Checkin-Time "Thu, 28 Aug 1997 23:38:14 +0200")
+(Checkin-Time "Fri, 29 Aug 1997 13:44:29 +0200")
 (Checkin-Login andrej)
 (Populate-Ignore ("~$" "^apache" "^Proto/" "^Tmp/"
-		  "^test-cpp/" ".obj/"  ".shobj/" "^Bookmarks"
-		  ".old/" ".bak$" "^doc/ODBC/"))
+                  "^test-cpp/" ".obj/"  ".shobj/" "^Bookmarks"
+                  ".old/" ".bak$" "^doc/ODBC/" "Market.simple" 
+                  ".pyc$"))
 (Project-Keywords)
 (Files
 ;; This is a comment.  Fill in files here.
@@ -19,8 +20,8 @@
 ;; Files added by populate at Thu, 28 Aug 1997 18:56:22 +0200:
 
 ;; Kronologija in TODO
-  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.2 644))
-  (TODO (volitve/32_TODO 1.1 664))
+  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.3 644))
+  (TODO (volitve/32_TODO 1.1 644))
 
 ;; SQL datoteke in testi z libpq++
 ;; Poisci ustrezen posel
@@ -29,12 +30,12 @@
   (SQL/baza.sql (volitve/2_baza.sql 1.1 640))
 
 ;; Napolni bazo
-  (SQL/pop-stranke.sql (volitve/3_pop-strank 1.1 640))
-  (SQL/pop-fifo.sql (volitve/4_pop-fifo.s 1.1 640))
+  (SQL/pop-stranke.sql (volitve/3_pop-strank 1.2 640))
+  (SQL/pop-fifo.sql (volitve/4_pop-fifo.s 1.2 640))
 
 ;; Testni podatki
-  (SQL/fifo.txt (volitve/5_fifo.txt 1.1 640))
-  (SQL/stranke.txt (volitve/6_stranke.tx 1.1 640))
+  (SQL/fifo.txt (volitve/5_fifo.txt 1.1 644))
+  (SQL/stranke.txt (volitve/6_stranke.tx 1.1 644))
 
 ;; Testni programi
   (SQL/list-fifo.cc (volitve/7_list-fifo. 1.1 640))
@@ -49,28 +50,44 @@
   (doc/nacrt/pregled.fig (volitve/14_pregled.fi 1.1 740))
   (doc/nacrt/pregled.ps (volitve/15_pregled.ps 1.1 740))
   (doc/html () :directory)
-
+  (doc/man/zahteve.html (volitve/34_zahteve.ht 1.1 644))
+  
 ;; Source:
+;; Observer
   (src/Observer/observer.cpp (volitve/16_observer.c 1.1 644))
   (src/Observer/Makefile (volitve/17_Makefile 1.1 644))
-  (src/HTML/index.html (volitve/18_index.html 1.1 644))
-  (src/HTML/dodaj.html (volitve/19_dodaj.html 1.1 644)) 
-  (src/HTML/pregled.html (volitve/20_pregled.ht 1.1 644))
+;; HTML:
+  (src/HTML/index.html (volitve/18_index.html 1.2 644))
+  (src/HTML/dodaj.html (volitve/19_dodaj.html 1.2 644)) 
+  (src/HTML/pregled.html (volitve/20_pregled.ht 1.2 644))
+;; Konfiguracija
   (src/include/Config.h (volitve/21_Config.h 1.2 644))
+;; Trg:
   (src/Market/Notifier.cpp (volitve/22_Notifier.c 1.1 644))
   (src/Market/Notifier.h (volitve/23_Notifier.h 1.1 644))
   (src/Market/market.h (volitve/24_market.h 1.1 644)) 
-  (src/Market/market.cpp (volitve/25_market.cpp 1.1 644))
+  (src/Market/market.cpp (volitve/25_market.cpp 1.2 644))
   (src/Market/Request.h (volitve/26_Request.h 1.2 644))
   (src/Market/Request.cpp (volitve/27_Request.cp 1.2 644))
   (src/Market/Market_Handler.cpp (volitve/28_Market_Han 1.1 644))
-  (src/Market/Makefile (volitve/29_Makefile 1.2 644)) 
+  (src/Market/Makefile (volitve/29_Makefile 1.3 644)) 
+;; CGI
+  (src/cgi/.htaccess (volitve/35_.htaccess 1.1 644))
+  (src/cgi/request.py (volitve/36_request.py 1.1 755))
+;; Python
+  (src/Client/Count.py (volitve/37_Count.py 1.1 644))
+  (src/Client/Market_Client.py (volitve/38_Market_Cli 1.1 644))
+  (src/Client/config.py (volitve/39_config.py 1.1 644))
 
 ;; Testni programi:
   (test/Observer_Client/oc.py (volitve/30_oc.py 1.1 755))
-  (test/Market_Client/mc.py (volitve/31_mc.py 1.1 755))
-  (src/Market/testR.cpp (volitve/33_testR.cpp 1.1 664))
+  (test/Market_Client/mc.py (volitve/31_mc.py 1.2 755))
+  (src/Market/testR.cpp (volitve/33_testR.cpp 1.1 644))
+  (src/cgi/testpy.py (volitve/40_testpy.py 1.1 755))
 
+;; Razni direktoriji:
+  (Tmp () :directory)
+  (Dist () :directory)
 )
 (Merge-Parents)
 (New-Merge-Parents)

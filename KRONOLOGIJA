@@ -1,3 +1,6 @@
+0.3
+Zaèel z CGI klientom. 
+
 0.2
 Zaèel delo na trgovanju. Ugotovil, da moram narediti poseben objekt za
 zahtevke, ki se bo naredil iz Stringa, ali pa iz rezultat

@@ -1,7 +1,7 @@
 /*
  * $ProjectId$
  *
- * $Id: market.cpp 1.1 Thu, 28 Aug 1997 17:15:39 +0000 andrej $
+ * $Id: market.cpp 1.2 Fri, 29 Aug 1997 11:44:29 +0000 andrej $
  *
  */
 
@@ -9,6 +9,7 @@
 
 #include "market.h"
 #include "Notifier.h"
+#include "Request.h"
 
 class Options
 {
@@ -117,10 +118,11 @@ main (int argc, char *argv[])
     "registering service with ACE_Reactor\n"), -1);
 
   // Disable Notifier
-  //  MARKET_CHANGED::instance ()->set(0);
   REACTOR::instance ()->suspend_handler( NOTIFIER::instance () );
 
-  // Run forever, performing logging service.
+  REQUEST::instance ()->open();
+
+  // Run forever, performing market service.
 
   ACE_DEBUG ((LM_DEBUG,
 	      "(%P|%t) starting up market daemon\n"));

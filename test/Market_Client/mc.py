@@ -12,7 +12,7 @@ sock = socket(AF_UNIX, SOCK_STREAM)
 
 sock.connect("/tmp/market")
 
-s="BUY KUCA 10 50 Crt"
+s="BUY KUCA 10 60.1 Crt"
 
 while 1:
     sock.send(chr(len(s)) + s)

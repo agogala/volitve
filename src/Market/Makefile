@@ -9,15 +9,15 @@
 #	Local macros
 #----------------------------------------------------------------------------
 
-#BIN   	= market
+BIN   	= market
 
-#FILES 	= Market_Handler \
-#	  Request \
-#	  Notifier
+FILES 	= Market_Handler \
+	  Request \
+	  Notifier
 
-BIN	= testR
+#BIN	= testR
 
-FILES	= Request
+#FILES	= Request
 
 LSRC	= $(addsuffix .cpp,$(FILES))
 LOBJ	= $(addsuffix .o,$(FILES))
