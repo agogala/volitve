@@ -1,4 +1,4 @@
--- $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
+-- $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
 --
 -- $Id: baza.sql 1.3.2.4 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
 --

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
+# $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
 #
-# $Id: cgi_config.py 1.3.2.2 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
+# $Id: cgi_config.py 1.3.2.3 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
 #
 # Konfiguracija (nekoè bi se lahko avtomatièno generirala... HMM)
 
@@ -13,8 +13,8 @@ NOTIFIER_PORT=5002
 DB_Name="volitve"
 
 ## # Direktoriji:
-## ROOTDIR = "/home/andrej/sola/volitve/src"
-## tempdir = ROOTDIR + "/templates"
+ROOTDIR = "/home/andrej/sola/volitve/src"
+tempdir = ROOTDIR + "/templates"
 ## htmldir = ROOTDIR + "/HTML"
 
 ## # Obrazci:

@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
+ * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
  *
- * $Id: Request.h 1.3 Tue, 09 Sep 1997 22:58:50 +0000 andrej $
+ * $Id: Request.h 1.4 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
@@ -20,7 +20,7 @@ public:
   // Konstruktorji:
   Request();
   // Preberi string
-  Request(const char * rs);
+  Request(char * rs);
   // Preberi iz trenutne vrstice:
   Request(PgDatabase &db, int tup_num);
   // Naredi kopijo
@@ -46,7 +46,7 @@ public:
   const char *ID() const;
 
   // Vrne razlog zakaj zadeva ni veljavna
-  //  char *LastError() const;
+  int LastError() const;
 
 private:
   bool Valid_;
@@ -63,9 +63,11 @@ private:
   // Enolièna oznaka.
   char ID_[MAX_ID + 1];
 
+  int LastError_;
+
   // Interne funkcije 
   int Read_i(PgDatabase &db, int tup_num);
-  int Read_i(const char * rs);
+  int Read_i(char * rs);
 };
 
 #endif REQUEST_H

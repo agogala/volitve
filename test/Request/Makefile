@@ -56,7 +56,8 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 # DO NOT PUT ANYTHING AFTER THIS LINE, IT WILL GO AWAY.
 
 .obj/Request.o .shobj/Request.so: Request.cpp ../../src/Market/Request.h \
- ../../src/include/Config.h ../../src/include/Query.h
-.obj/Query.o .shobj/Query.so: Query.cpp ../../src/include/Query.h
+ ../../src/include/Config.h ../../src/Market/Query.h \
+ ../../src/Market/MarketErrors.h
+.obj/Query.o .shobj/Query.so: Query.cpp ../../src/Market/Query.h
 
 # IF YOU PUT ANYTHING HERE IT WILL GO AWAY

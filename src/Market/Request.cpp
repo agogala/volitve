@@ -1,18 +1,20 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
+ * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
  *
- * $Id: Request.cpp 1.3 Tue, 09 Sep 1997 22:58:50 +0000 andrej $
+ * $Id: Request.cpp 1.4 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
  */
 
-#include <String.h>
+//#include <String.h>
 #include <ace/OS.h>
+#include <ace/Process.h>
 #include <ace/Log_Msg.h>
 #include "Request.h"
 #include "Query.h"
+#include "MarketErrors.h"
 
 Request::Request()
 {
@@ -22,13 +24,12 @@ Request::Request()
   ACE_OS::memset(&Papir_ID_, '\0', sizeof(Papir_ID_));
   Kolicina_ = 0;
   Cena_ = 0;
+  LastError_ = me_OK;
 }
 
-Request::Request(const char * rs)
+Request::Request(char * rs)
 {
-
   Valid_ = this->Read_i(rs) == 0;
-
 }
 
 // Preberi iz trenutne vrstice:
@@ -60,9 +61,11 @@ bool Request::IsValid(PgDatabase &db) const
 {
   if (this-> Valid_) {
     ((Request*)this)->Valid_ = (0 < this-> Cena_) && (this-> Cena_ <= 100);
-    if (!this-> Valid_)
+    if (!this-> Valid_) {
+      ((Request*)this)->LastError_ = me_WrongPrice;
       ACE_ERROR_RETURN((LM_ERROR, "Price %f out of range\n", this->Cena_),
 		       this->Valid_);
+    }
     // Preveri kolièino: (to je potrebno ¹e razmisliti)
 
     // Itd...
@@ -79,10 +82,13 @@ int Request::Read(PgDatabase &db, const int tup_num)
 
 int Request::Store(PgDatabase &db) 
 {
+  LastError_ = me_OK;
+
   // Èe ni veljaven zahtevek, zavrnemo shranjevanje...
   // Kako enostavno bi to bilo, èe bi lahko vrgel kak exception!
   if (!IsValid(db)) {
-    ACE_ERROR_RETURN((LM_ERROR, "Request not valid. Can't store.\n"), -1);
+    LastError_ = me_InternalError;
+    ACE_ERROR_RETURN((LM_ERROR, "Request not valid. Can't store.\n"), LastError_);
   }
 
   /* Vstavi v zahtevke: 
@@ -100,13 +106,14 @@ int Request::Store(PgDatabase &db)
   if (!db.ExecCommandOk
       (insert.Params(NULL, this->Cena_, this->Kolicina_, 
 		     this->Papir_ID_, this->Ponudnik_))) {
+    LastError_ = me_InternalError;
     ACE_ERROR_RETURN((LM_ERROR, "Error inserting requests: %s\n",
-		      db.ErrorMessage()),-1);
+		      db.ErrorMessage()), LastError_);
   }
 
   ACE_OS::strcpy(this->ID_, db.OidStatus());
 
-  return 0;
+  return LastError_;
 }
 
 const char *Request::Ponudnik() const
@@ -135,16 +142,16 @@ const char *Request::ID() const
   return this->ID_;
 }
 
-
-// Vrne razlog zakaj zadeva ni veljavna
-/*char *Request::LastError() const
+int Request::LastError() const
 {
   return this->LastError_;
-}*/
+}
 
 int Request::Read_i(PgDatabase &db, const int tup_num)
 {
   
+  LastError_ = me_OK;
+
   // Predpostavimo, da je iskanje po imenih dolgotrajnej¹e, zato raje 
   // izraèunamo indekse kar na zaèetku. Hkrati preverimo, èe so vsa polja
   // na voljo:
@@ -159,8 +166,10 @@ int Request::Read_i(PgDatabase &db, const int tup_num)
            (indKolicina>=0) && (indCena>=0) &&
            (indID>=0) && (indPapir_ID>=0);
 
-  if (!Valid_) 
-    ACE_ERROR_RETURN((LM_ERROR, "Missing fields in table\n"), -1);
+  if (!Valid_) {
+    LastError_ = me_InternalError;
+    ACE_ERROR_RETURN((LM_ERROR, "Missing fields in table\n"), LastError_);
+  }
 
   this->Kolicina_ = atoi(db.GetValue(tup_num, indKolicina));      // Kolièina
   this->Cena_ = atof(db.GetValue(tup_num, indCena));     // Cena
@@ -169,14 +178,49 @@ int Request::Read_i(PgDatabase &db, const int tup_num)
   ACE_OS::strcpy(this->Papir_ID_, db.GetValue(tup_num, indPapir_ID));
   ACE_OS::strcpy(this->ID_, db.GetValue(tup_num, indID));
 
-  return 0;
+  return this->LastError_;
 }
 
-int Request::Read_i(const char * rs)
+int Request::Read_i(char * rs)
 {
 
   Valid_ = false;
+  LastError_ = me_OK;
 
+  char buff[256];
+
+  strncpy(buff, rs, 255);
+  buff[256] = '\0';
+
+  ACE_Tokenizer tokens(buff);
+  tokens.delimiter_replace(' ', '\0');
+  tokens.preserve_designators('"','"');
+  
+  char *cmd = tokens.next();
+
+  //  ACE_DEBUG((LM_DEBUG, "CMD: %s\n", cmd));
+  
+  if (!ACE_OS::strcasecmp(cmd, "Buy") || 
+      !ACE_OS::strcasecmp(cmd, "Sell")) {
+    //    ACE_DEBUG((LM_DEBUG, "SELL or BUYqn"));
+    ACE_OS::strcpy(this->Papir_ID_, tokens.next());
+    //    ACE_DEBUG((LM_DEBUG, "PAPER: %s\n", Papir_ID_));
+    this->Kolicina_ = atoi(tokens.next()) * (cmd[0] == 'B' ? -1 : 1);
+    this->Cena_ = atof(tokens.next());
+    ACE_OS::strcpy(this->Ponudnik_, tokens.next());
+
+    ACE_OS::memset(&ID_, '\0', sizeof(ID_));
+
+  } else if (!ACE_OS::strcasecmp(cmd, "Cancel")) {
+    // Ignore for the moment
+  } else {
+    // Error
+    this->LastError_ = me_SyntaxError;
+  }
+  
+  return this->LastError_;
+
+  /*
   // Err, tole je precej kruto narejeno:
   enum { KIND = 0, SYMBOL = 1, SHARES = 2, PRICE = 3, ACCOUNT = 4 };
 
@@ -202,4 +246,6 @@ int Request::Read_i(const char * rs)
   ACE_OS::memset(&ID_, '\0', sizeof(ID_));
 
   return 0;
+  */
 }
+

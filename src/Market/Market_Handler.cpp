@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
+ * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
  *
- * $Id: Market_Handler.cpp 1.5 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+ * $Id: Market_Handler.cpp 1.6 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
  *
  * Sprejema zahtevke od klientov.
  */
@@ -72,7 +72,7 @@ Market_Handler::handle_input (ACE_HANDLE)
 	    int rc = MARKET::instance ()-> Add(req);
 
 	    /* report back */
-	    strcpy(&rs[1], MARKET::instance ()-> Result());
+	    ACE_OS::sprintf(&rs[1], "%03d", rc);
 	    rs[0] = strlen(&rs[1]);
 
 	    this->peer ().send_n ((void *) rs, rs[0]+1, 0);

@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
+ * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
  *
- * $Id: Market.cpp 1.5 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+ * $Id: Market.cpp 1.6 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
  *
  * Trg. Zna dodajati zahtevke.
  */
@@ -62,13 +62,13 @@ int Market::Add(Request &req)
   bool error = false;
 
   if (db==NULL) {
-    MARKET_ERROR("Internal error\n", -1);
-    ACE_ERROR_RETURN((LM_ERROR, "Not connected\n"), -1);
+    MARKET_ERROR("Internal error\n", 500);
+    ACE_ERROR_RETURN((LM_ERROR, "Not connected\n"), 500);
   }
 
   if (!req.IsValid(*db)) {
-    MARKET_ERROR("Request not valid\n", -1);
-    ACE_ERROR_RETURN((LM_ERROR, "Request not valid\n"), -1);
+    MARKET_ERROR("Request not valid\n", req.LastError());
+    ACE_ERROR_RETURN((LM_ERROR, "Request not valid\n"), req.LastError());
   }
 
   do {
@@ -76,7 +76,7 @@ int Market::Add(Request &req)
     db->Exec("BEGIN");
 
     // Dodaj 
-    if (error = (req.Store(*db)==-1)) {
+    if (error = (req.Store(*db)!=0)) {
       ACE_ERROR((LM_ERROR, "Can't store request!\n"));
       break;
     }
@@ -209,7 +209,8 @@ int Market::Add(Request &req)
 		     db->ErrorMessage()));
 	  break;
 	}
-	// Popravi stanje [...]      
+	// Popravi stanje:
+	
       } 
 
       // Vstavi posel v FIFO:
@@ -238,9 +239,9 @@ int Market::Add(Request &req)
       db->Exec("END");
     } else {
       db->Exec("ROLLBACK");
-      LastRC_ = -1;
+      LastRC_ = 500;
       strcpy(Result_, "Internal error\n");
-      ACE_ERROR_RETURN((LM_ERROR, "Internal error\n"), -1);
+      ACE_ERROR_RETURN((LM_ERROR, "Internal error\n"), 500);
     }
   } while (0);
 

@@ -1,13 +1,15 @@
 /*
- * $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
+ * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
  *
- * $Id: marketd.cpp 1.7 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+ * $Id: marketd.cpp 1.8 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
  *
  * Glavni program.
  */
 
 #include <ace/INET_Addr.h>
 #include <ace/Get_Opt.h>
+#include <ace/Object_Manager.h>
+#include <ace/Signal.h>
 
 #include "marketd.h"
 #include "Notifier.h"
@@ -38,19 +40,32 @@ typedef ACE_Singleton<Options, ACE_Null_Mutex>
 // socket. (zaenkrat ne znam drugaèe...)
 int ReactorLoop();
 
+void CleanSocket(void *object, void *param);
+
 int
 main (int argc, char *argv[])
 {
 
   OPTIONS::instance ()->parse_args (argc, argv);
   
-  int rc = ReactorLoop();
+  // Tole je prav za ACE 4.3. 
+  // V kasnej¹ih verzijah je tole menda spremenjeno.
+  // V resnici ne dela za vse signale. Pa bi menda moralo!
+  ACE_Object_Manager::at_exit(OPTIONS::instance ()->market_path(),
+		     CleanSocket, NULL);
 
-  // Zbri¹i socket.
-  ACE_OS::unlink(OPTIONS::instance ()->market_path());
+  int rc = ReactorLoop();
 
   return rc;
 }
+
+void CleanSocket(void *object, void *param)
+{
+  // Zbri¹i socket.
+  ACE_OS::unlink((char *)object);
+
+}
+
 
 // Handles all work:
 int ReactorLoop()
@@ -64,6 +79,15 @@ int ReactorLoop()
   // We need to pass in REACTOR::instance () here so that we don't use
   // the default ACE_Reactor::instance ().
 
+  ACE_Sig_Set signals;
+  /*  signals.fill_set();
+  signals.sig_del(SIGKILL);
+  signals.sig_del(SIGSTOP);
+  */
+  signals.sig_add(SIGINT);
+  signals.sig_add(SIGTERM);
+  signals.sig_add(SIGHUP);
+  
   // Pove¾i se z bazo [...] Bolj opisna napaka?
   if (MARKET::instance ()->open()==-1)
     ACE_ERROR_RETURN ((LM_ERROR, 
@@ -83,7 +107,7 @@ int ReactorLoop()
   // QUIT_HANDLER becomes "set" and thus, the event loop below will
   // exit.
   else if (REACTOR::instance ()->register_handler
-	   (SIGINT, QUIT_HANDLER::instance()) == -1)
+	   (signals, QUIT_HANDLER::instance()) == -1)
     ACE_ERROR_RETURN ((LM_ERROR,
 		       "registering service with ACE_Reactor\n"), -1);
   

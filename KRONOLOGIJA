@@ -1,3 +1,8 @@
+0.13
+Registracija uporabna (verjetno se kaj manjka)
+Popravil Market protokol.
+Marketd pobrise za sabo ce dobi SIGINT, SIGQTERM, SIGHUP.
+
 0.12
 Admind protokol bolje definiran. Manjka se forma za vnos registracije ipd...
 

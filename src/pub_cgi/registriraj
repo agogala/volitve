@@ -5,4 +5,4 @@ import cgi
 
 # Preberi zahtevek
 form = cgi.FieldStorage()
-FormatResponse.FormatResponse(Reg_Client.HandleForm(form))
+Reg_Client.HandleForm(form)

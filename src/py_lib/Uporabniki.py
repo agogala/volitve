@@ -1,11 +1,12 @@
-# $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
+# $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
 #
-# $Id: Uporabniki.py 1.3 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
+# $Id: Uporabniki.py 1.4 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
 #
 # Definira preslikavo iz uporabni¹kega imena v ID. Pa ¹e kaj?
 
 import Admin_Client
 import cgi_config
+import string
 
 # Tole je globalno: med posameznimi klici se povezava ohranja 
 # To bi seveda moralo biti hitreje...
@@ -30,7 +31,8 @@ def UserID(user):
 	result = result[4:]
 	_USERMAP[user] = result
     return result
-    
+
+# test    
 if __name__ == '__main__':
     print UserID('CRT')
     print UserID('No Such User')

@@ -1,5 +1,5 @@
 /*
- * $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
+ * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
  *
  * $Id: observerd.cpp 1.5 Tue, 09 Sep 1997 22:58:50 +0000 andrej $
  *

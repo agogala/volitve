@@ -1,13 +1,17 @@
-# $ProjectHeader: volitve 0.12 Mon, 22 Sep 1997 15:21:03 +0200 andrej $
+# $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
 #
-# $Id: FormatResponse.py 1.1 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+# $Id: FormatResponse.py 1.2 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
 #
 # Oblikuje cgi odgovor.
 
-def FormatResponse(str):
+def FormatResponse(str, title=""):
     print "Content-type: text/html; charset=iso-8859-2"
     print 
     
-    print "<html><head></head><body><hr>\n"
+    print '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">'
+    print "<html><head>\n"
+    print '<meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">\n'
+    print '<title>%s</title>\n' % title 
+    print '</head><body bgcolor="#ffe8b8"><hr>\n'
     print str
     print "</body>\n"

@@ -1,0 +1,27 @@
+<!-- $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $ $Id: reg_form.html.in 1.1 Wed, 24 Sep 1997 17:03:46 +0000 andrej $ -->
+    <h1>Registracija</h1>
+
+    <form action="/registriraj" method="post">
+      <input type="hidden" name="hash" value="%(Hash)s">
+      <table bgcolor="lightblue" border="0" cellspacing="0" cellpadding="1">
+	<tr>
+
+	  <td>Uporabni¹ko ime:
+	  <td><input type="text" name="username"><br>
+	  
+	<tr>
+	  <td>Geslo: 
+	  <td><input type="password" name="passwd"><br>
+	</tr>
+	<tr>
+	  <td>Geslo: 
+	    <td><input type="password" name="passwd1"><br>
+	</tr>
+	  <tr align="center">
+	  <td colspan="2"><input type="submit" name="Registriraj" value="Registriraj">
+	</tr>
+      </table>
+    </form>
+    
+    <hr>
+<!--    <address><a href="mailto:andrej@e5.ijs.si">Andrej Gogala</a></address>-->
