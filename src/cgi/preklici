@@ -1,19 +1,14 @@
 # -*- python -*-
-# $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+# $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
 #
-# $Id: preklici 1.1 Thu, 09 Oct 1997 13:19:34 +0000 andrej $
+# $Id: preklici 1.2 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
 #
-# cgi skript, ki poklièe Brokerja.
+# cgi skript, ki poklièe Preklic.
 
-import Broker
+import Preklic
 import FormatResponse
 import cgi
 
 # Preberi zahtevek
 form = cgi.FieldStorage()
-#FormatResponse.FormatResponse(Broker.HandleForm(form))
-print "Content-type: text/plain"
-print
-print form.keys()
-for k in form.keys():
-    print form[k].value
+Preklic.HandleForm(form)

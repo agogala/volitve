@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+ * $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
  *
- * $Id: Market.cpp 1.10 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
+ * $Id: Market.cpp 1.11 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
  *
  * Trg. Zna dodajati zahtevke.
  */
@@ -151,6 +151,7 @@ int Market::Add(Request &req, strset *userset = NULL)
     // oid
     Query UpdateFIFO = "UPDATE fifo SET kolicina=%d WHERE oid=%s";
 
+    // AddLog()...
     req.Omeji(*db);
       
     // Ime stranke:
@@ -166,6 +167,7 @@ int Market::Add(Request &req, strset *userset = NULL)
       Request *buy = (req.Kolicina()>0 ? &req : vecreq[i]);
       Request *sell = (req.Kolicina()<0 ? &req : vecreq[i]);
 
+      // AddLog()...
       vecreq[i]->Omeji(*db);
       
       // Popravi FIFO:
@@ -197,51 +199,66 @@ int Market::Add(Request &req, strset *userset = NULL)
       }
 
       if (Kolicina != 0) {
-	// Dodaj posel:
-	if (error = (!db->ExecCommandOk
-		     (InsertPosli.Params
-		      (NULL, buy->Papir_ID(), 
-		       vecreq[i]->Cena(), 
-		       Kolicina,
-		       buy->Ponudnik(), sell->Ponudnik())))) {
-	  ACE_ERROR((LM_ERROR, "Error inserting into posli: %s\n", 
-		     db->ErrorMessage()));
-	  break;
-	}
+	// Preveri, èe se kupec in prodajalec razlikujeta:
+	if (!ACE_OS::strcmp(buy->Ponudnik(), sell->Ponudnik())) {
+	  // Posla ne sklenemo, shranimo opombo + dodamo uporabnika v spremembe
+	  // AddLog()...
 
-	Stanje *st;
-	st = (*(STANJA::instance() ->Get(*db, buy->Ponudnik()))).second;
-  
-	if (error = 
-	    (st->Spremeni(*db, buy->Papir_ID(), Kolicina, 
-			 vecreq[i]->Cena())<0)) {
-	  ACE_ERROR((LM_ERROR, "Error changing buyer's stanje: %s\n",
-		     db->ErrorMessage()));
-	  break;
-	}
-
-	st = (*(STANJA::instance() ->Get(*db, sell->Ponudnik()))).second;
-	if (error = 
-	    (st->Spremeni(*db, sell->Papir_ID(), -Kolicina, 
-			 vecreq[i]->Cena())<0)) {
-	  ACE_ERROR((LM_ERROR, "Error changing seller's stanje: %s\n",
-		     db->ErrorMessage()));
-	  break;
-	}
-
-	// Shrani ime v mno¾ico:
-	if (userset!=NULL) {
-	  // Kupec:
-	  ime = new char[strlen(buy->Ponudnik()) + 1];
-	  ACE_OS::strcpy(ime, buy->Ponudnik());
-	  if (!userset->insert(ime).second)
-	    delete ime;
+	  // Shrani ime v mno¾ico:
+	  if (userset!=NULL) {
+	    ime = new char[strlen(buy->Ponudnik()) + 1];
+	    ACE_OS::strcpy(ime, buy->Ponudnik());
+	    if (!userset->insert(ime).second)
+	      delete ime;
+	  }
 	  
-	  // Prodajalec:
-	  ime = new char[strlen(sell->Ponudnik()) + 1];
-	  ACE_OS::strcpy(ime, sell->Ponudnik());
-	  if (!userset->insert(ime).second)
-	    delete ime;
+	} else {
+	  // Dodaj posel:
+	  if (error = (!db->ExecCommandOk
+		       (InsertPosli.Params
+			(NULL, buy->Papir_ID(), 
+			 vecreq[i]->Cena(), 
+			 Kolicina,
+			 buy->Ponudnik(), sell->Ponudnik())))) {
+	    ACE_ERROR((LM_ERROR, "Error inserting into posli: %s\n", 
+		       db->ErrorMessage()));
+	    break;
+	  }
+
+	  Stanje *st;
+	  st = (*(STANJA::instance() ->Get(*db, buy->Ponudnik()))).second;
+  
+	  if (error = 
+	      (st->Spremeni(*db, buy->Papir_ID(), Kolicina, 
+			    vecreq[i]->Cena())<0)) {
+	    ACE_ERROR((LM_ERROR, "Error changing buyer's stanje: %s\n",
+		       db->ErrorMessage()));
+	    break;
+	  }
+
+	  st = (*(STANJA::instance() ->Get(*db, sell->Ponudnik()))).second;
+	  if (error = 
+	      (st->Spremeni(*db, sell->Papir_ID(), -Kolicina, 
+			    vecreq[i]->Cena())<0)) {
+	    ACE_ERROR((LM_ERROR, "Error changing seller's stanje: %s\n",
+		       db->ErrorMessage()));
+	    break;
+	  }
+
+	  // Shrani ime v mno¾ico:
+	  if (userset!=NULL) {
+	    // Kupec:
+	    ime = new char[strlen(buy->Ponudnik()) + 1];
+	    ACE_OS::strcpy(ime, buy->Ponudnik());
+	    if (!userset->insert(ime).second)
+	      delete ime;
+	  
+	    // Prodajalec:
+	    ime = new char[strlen(sell->Ponudnik()) + 1];
+	    ACE_OS::strcpy(ime, sell->Ponudnik());
+	    if (!userset->insert(ime).second)
+	      delete ime;
+	  }
 	}
       } // Kolicina != 0
     } // for
@@ -272,57 +289,11 @@ int Market::Add(Request &req, strset *userset = NULL)
 	  delete ime;
       }	
     }
-
-    // Popravi FIFO:
-    // Parametri: (enake vrednosti kot pri MatchFIFO)
-    //    Vrsta naroèila (N ali P)
-    //    Papir_ID
-    //    Vrsta sortiranja
-
-    Query GetFIFO =
-      "SELECT oid, *\n"
-      "FROM fifo\n"
-      "WHERE\n"
-      "     kolicina %s 0 and\n"
-      "     papir_id = '%s'\n"
-      "ORDER BY\n"
-      "     cena using %s, datum, ura";
-
-    // Query poganjam vedno znova, kar verjetno ni najbolje.
-    // Mogoèe se vseeno splaèa najprej prebrati cel FIFO?
-    do {    
-      if (error = (!db->Exec(GetFIFO.Params
-			     (NULL, KolOp, req.Papir_ID(),
-			      Urejenost)))) {
-	ACE_ERROR((LM_ERROR, "Error selecting FIFO2: %s\n",
-		   db->ErrorMessage()));
-	break; // Skoèi ven iz te zanke, ne iz while(0)!
-      }
-
-      if (db->Tuples()==0)
-	break;
-
-      Request freq(*db, 0);
-      
-      freq.Omeji(*db);
-
-      if (freq.Kolicina()==0) {
-	if (error = (!db->ExecCommandOk(DeleteFIFO.Params
-					(NULL, freq.ID())))) {
-	  ACE_ERROR((LM_ERROR, "Error deleting from FIFO: %s\n", 
-		     db->ErrorMessage()));
-	  break;
-	}	
-	// Shranimo ime spremembe:
-	if (userset!=NULL) {
-	  ime = new char[strlen(freq.Ponudnik()) + 1];
-	  ACE_OS::strcpy(ime, freq.Ponudnik());
-	  if (!userset->insert(ime).second)
-	    delete ime;
-	}		
-      } else
-	break;      
-    } while(1);
+    
+    // Tale if je tu zato, èe bom kdaj kaj dodal za tem stavkom,
+    // pa se ne bom spomnil, da moram ven...
+    if (error = FixFIFO(KolOp, req.Papir_ID(), Urejenost, userset))
+      break;
 
   } while (0);
     
@@ -338,6 +309,175 @@ int Market::Add(Request &req, strset *userset = NULL)
   strcpy(this->Result_, "OK");
   LastRC_ = 0;
   return LastRC_;
+}
+
+
+int Market::Cancel(Request &req, strset *userset = NULL)
+{
+  // oznaka, ki pove èe je pri¹lo do napake.
+  bool error = false;
+
+  if (db==NULL) {
+    MARKET_ERROR("Internal error\n", 500);
+    ACE_ERROR_RETURN((LM_ERROR, "Not connected\n"), 500);
+  }
+
+  if (!req.IsValid(*db)) {
+    MARKET_ERROR("Request not valid\n", req.LastError());
+    ACE_ERROR_RETURN((LM_ERROR, "Request not valid\n"), req.LastError());
+  }
+
+  // Prièni s transakcijo. 
+  db->Exec("BEGIN");
+
+  do {    
+    // Dodaj 
+    if (error = (req.Store(*db)!=0)) {
+      ACE_ERROR((LM_ERROR, "Can't store request!\n"));
+      break;
+    }
+
+    // Zapomni si kolièino in papir:
+    // Parameter:
+    // oid    
+    Query GetFIFO=
+      "SELECT oid, * FROM fifo\n"
+      "WHERE oid=%s";
+
+    if (error = (!db->Exec(GetFIFO.Params
+			   (NULL, req.ID())))) {
+      ACE_ERROR((LM_ERROR, "Error selecting FIFO: %s\n", 
+		 db->ErrorMessage()));
+      break;
+    }
+
+    if (error = (db->Tuples()==0)) {
+      ACE_ERROR((LM_ERROR, "No request in FIFO!\n"));
+      break;
+    }
+    
+    // Preberemo zahtevek:
+    Request freq(*db, 0);
+
+    if (error = !freq.IsValid(*db)) {
+      ACE_ERROR((LM_ERROR, "FIFO Request not valid: %s\n",
+		 freq.LastError()));
+      break;
+    }
+
+    // Zbri¹i iz FIFO:
+    // Parameter:
+    // oid
+    Query DeleteFIFO=
+      "DELETE FROM fifo\n"
+      "WHERE oid=%s";
+
+    if (error = (!db->ExecCommandOk(DeleteFIFO.Params
+				    (NULL, req.ID())))) {
+      ACE_ERROR((LM_ERROR, "Error deleting from FIFO: %s\n", 
+		 db->ErrorMessage()));
+      break;
+    }
+
+    // AddLog()...
+
+    // Shranimo ime spremembe:
+    if (userset!=NULL) {
+      char *ime = new char[strlen(req.Ponudnik()) + 1];
+      ACE_OS::strcpy(ime, req.Ponudnik());
+      if (!userset->insert(ime).second)
+	delete ime;
+    }		    
+
+    // Popravimo FIFO:
+    char *KolOp = freq.Kolicina()<0 ? ">" : "<";
+
+    char *Urejenost = freq.Kolicina()<0 ? ">" : "<";
+    
+    if (error = FixFIFO(KolOp, freq.Papir_ID(), Urejenost, userset))
+      break;
+
+  } while (0);
+    
+  if (!error) {
+    db->Exec("END");
+  } else {
+    db->Exec("ROLLBACK");
+    LastRC_ = 500;
+    strcpy(Result_, "Internal error\n");
+    ACE_ERROR_RETURN((LM_ERROR, "Internal error\n"), 500);
+  }
+
+  strcpy(this->Result_, "OK");
+  LastRC_ = 0;
+  return LastRC_;
+
+
+}
+
+bool Market::FixFIFO(char *KolOp, const char *Papir_ID, 
+		     char *Urejenost, strset *userset = NULL)
+{
+  bool error = false;
+
+  // Popravi FIFO:
+  // Parametri: (enake vrednosti kot pri MatchFIFO)
+  //    Vrsta naroèila (N ali P)
+  //    Papir_ID
+  //    Vrsta sortiranja
+
+  Query GetFIFO =
+    "SELECT oid, *\n"
+    "FROM fifo\n"
+    "WHERE\n"
+    "     kolicina %s 0 and\n"
+    "     papir_id = '%s'\n"
+    "ORDER BY\n"
+    "     cena using %s, datum, ura";
+
+    // Query poganjam vedno znova, kar verjetno ni najbolje.
+    // Mogoèe se vseeno splaèa najprej prebrati cel FIFO?
+  do {    
+    if (error = (!db->Exec(GetFIFO.Params
+			   (NULL, KolOp, Papir_ID,
+			    Urejenost)))) {
+      ACE_ERROR((LM_ERROR, "Error selecting FIFO2: %s\n",
+		 db->ErrorMessage()));
+      break; // Skoèi ven iz te zanke, ne iz while(0)!
+    }
+
+    if (db->Tuples()==0)
+      break;
+
+    Request freq(*db, 0);
+
+    // AddLog()...      
+    freq.Omeji(*db);
+
+    // Zbri¹i iz FIFO:
+    // Parametri:
+    // oid
+    Query DeleteFIFO = "DELETE FROM fifo WHERE oid=%s";
+
+    if (freq.Kolicina()==0) {
+      if (error = (!db->ExecCommandOk(DeleteFIFO.Params
+				      (NULL, freq.ID())))) {
+	ACE_ERROR((LM_ERROR, "Error deleting from FIFO2: %s\n", 
+		   db->ErrorMessage()));
+	break;
+      }	
+      // Shranimo ime spremembe:
+      if (userset!=NULL) {
+	char *ime = new char[strlen(freq.Ponudnik()) + 1];
+	ACE_OS::strcpy(ime, freq.Ponudnik());
+	if (!userset->insert(ime).second)
+	  delete ime;
+      }		
+    } else
+      break;      
+  } while(1);
+
+  return error;
 }
 
 #if defined (ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION)

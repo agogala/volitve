@@ -1,21 +1,31 @@
-# $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+# $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
 #
-# $Id: Broker.py 1.4 Thu, 09 Oct 1997 13:19:34 +0000 andrej $
+# $Id: Broker.py 1.5 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
 #
 # Prevede podatke iz obrazca v zahtevek za trg.
 #import Apache
 import sys
 import os
 import cgi
-import Count
 import Market_Client
 import CheckForm
 import string
+import FormatResponse
+
+rel_msg = \
+	"<H1>Preseljen dokument</H1>\n" + \
+	"Dokument je preseljen na drugo lokacijo"
+rel_title = "Preseljen dokument",
+rel_headers = {'Status' : '302 relocate',
+	       'Location' : '/narocila/dodaj.html'}
+
 
 def HandleForm(form):
     if Market_Client.market_client.open()<0:
-	return "<H1>Zaprt trg</H1>\n" + \
-	       "Trg je trenutno zaprt\n"
+	return FormatResponse.FormatResponse(
+	    "<H1>Zaprt trg</H1>\n" + \
+	    "Trg je trenutno zaprt\n",
+	    "Zaprt trg")
     
     # Preverimo veljavnost podatkov:
 
@@ -24,8 +34,10 @@ def HandleForm(form):
     reqfields = fields
 
     if not CheckForm.CheckForm(form, fields, reqfields):
-	return "<H1>Napaka</H1>\n"  + \
-	       "Prosim izpolnite vsa polja..."
+	return FormatResponse.FormatResponse(
+	    "<H1>Napaka</H1>\n"  + \
+	    "Prosim izpolnite vsa polja...",
+	    "Napaka")
 
     try:
 	if form["Vrsta"].value == "Nakup":
@@ -49,19 +61,35 @@ def HandleForm(form):
 	zahtevek = "%(vrsta)s %(papir)s %(kol)s %(cena)s %(ponudnik)s" % locals()
     except: 
 	# Tule bi moral poroèati kaj je narobe:
-	return "<H1>Napaka</H1>" + \
-	       sys.exc_type + sys.exc_value + sys.exc_traceback
+	return FormatResponse.FormatResponse(
+	    "<H1>Napaka</H1>" + \
+	    sys.exc_type + sys.exc_value + sys.exc_traceback,
+	    "Napaka")
 
-    msg =  "Po¹iljam: %s<P>" % zahtevek 
+    #    msg =  "Po¹iljam: %s<P>" % zahtevek 
+
+    headers = {}
+    title = ""
+    msg = ""
 
     try:
 	Market_Client.market_client.send(zahtevek)
 	response = Market_Client.market_client.response()
-	msg = msg + "Odgovor je: %s<P>" % response
+	if response=="000":
+	    msg = rel_msg
+	    title = rel_title
+	    headers = rel_headers
+	else:
+	    # Obrazlo¾itve...
+	    msg = '<H1>Napaka</H1>\n %s' % response
     except:
-	msg = msg + "Trg se je zaprl...<P>"
-
-    Count.increase()
-    msg = msg + "©tevilka: %d<P>" % Count.value()
-    return msg
+	#	pass
+	msg = "<H1>Zaprt trg</H1>\n" + \
+	      "Trg je trenutno zaprt\n"
+	
+    #    Count.increase()
+    #    msg = msg + "©tevilka: %d<P>" % Count.value()
+    return FormatResponse.FormatResponse(
+	msg, title, headers
+	)
     

@@ -1,8 +1,8 @@
 // -*- C++ -*-
 /* 
- * $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+ * $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
  *
- * $Id: Config.h 1.10 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
+ * $Id: Config.h 1.11 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
  *
  * Konfiguracija.
 */
@@ -22,7 +22,7 @@
 /* Opazovalci uporabljajo tale port */
 #define NOTIFIER_DEFAULT_PORT 5002
 
-/* Tale port uporablja notifier */
+/* Tale port uporablja obve¹èevalec */
 #define NOTIFIER_LOCAL_PORT 5001
 
 /* Pot za opazovalce (se ne uprablja) */
@@ -43,5 +43,8 @@
 
 /* Ime baze: */
 #define DB_NAME "volitve"
+
+/* Najveèja dovoljena kolièina */
+#define MAX_KOL 10
 
 #endif

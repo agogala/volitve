@@ -31,7 +31,7 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 #----------------------------------------------------------------------------
 #	Local targets
 #----------------------------------------------------------------------------
-.obj/StrSet.o: StrSet.cpp
+.obj/StrSet.o .shobj/StrSet.so: StrSet.cpp
 	$(CXX) -c StrSet.cpp -I../include -o .obj/StrSet.o
  
 

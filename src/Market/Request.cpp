@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+ * $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
  *
- * $Id: Request.cpp 1.7 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
+ * $Id: Request.cpp 1.8 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
@@ -61,89 +61,89 @@ Request::~Request()
 
 bool Request::IsValid(PgDatabase &db)
 {
-  if (this-> Valid_) {
-    // Preveri papir:
-    Query CheckPapir=
-      "SELECT DISTINCT Papir_id\n"
-      "FROM Papirji\n"
-      "WHERE Papir_id='%s'";
-    // Ni prazen string:
-    ((Request*)this)->Valid_ = Papir_ID_[0]!='\0';
-    if (this-> Valid_)
-      if (!db.Exec(CheckPapir.Params(NULL, this->Papir_ID_))) {
-	((Request*)this)->LastError_ = me_InternalError;	
-	((Request*)this)->Valid_ = false;      
-	ACE_ERROR_RETURN((LM_ERROR, "Error checking symbol: '%s' \n",
-			  db.ErrorMessage()), this-> Valid_);
-	
+  if (this->Preklic_) {
+    // Preklic, preveri èe v FIFO obstaja zahtevek s takim ID:
+
+    // Poi¹èi zahtevek v FIFO:    
+    // Parameter:
+    // OID:
+    Query FindFIFO=
+      "SELECT *\n"
+      "FROM FIFO\n"
+      "WHERE oid=%s\n";
+
+    if (this->Valid_) {
+      if (!db.Exec(FindFIFO.Params(NULL, this->ID_))) {
+	  ((Request*)this)->LastError_ = me_InternalError;	
+	  ((Request*)this)->Valid_ = false;      
+	  ACE_ERROR_RETURN((LM_ERROR, "Error checking symbol: '%s' \n",
+			    db.ErrorMessage()), this-> Valid_);
       }
-    ((Request*)this)->Valid_ = ((Request*)this->Valid_) &&
-      db.Tuples()>0;
-    if (!this-> Valid_) {
-      ((Request*)this)->LastError_ = me_NoSuchSymbol;
-      ACE_ERROR_RETURN((LM_ERROR, "No such symbol '%s'\n", 
-			this-> Papir_ID_), this->Valid_);
+      ((Request*)this)->Valid_ = ((Request*)this->Valid_) &&
+	db.Tuples()==1;
+      if (!this->Valid_) {
+	((Request*)this)->LastError_ = me_NoSuchRequest;
+	ACE_ERROR_RETURN((LM_ERROR, "No such request '%s'\n", 
+			  this-> ID_), this->Valid_);
+      }
     }
+  } else { // Ni Preklic:
+    if (this-> Valid_) {
+      // Preveri papir:
+      Query CheckPapir=
+	"SELECT DISTINCT Papir_id\n"
+	"FROM Papirji\n"
+	"WHERE Papir_id='%s'";
+      // Ni prazen string:
+      ((Request*)this)->Valid_ = Papir_ID_[0]!='\0';
+      if (this-> Valid_)
+	if (!db.Exec(CheckPapir.Params(NULL, this->Papir_ID_))) {
+	  ((Request*)this)->LastError_ = me_InternalError;	
+	  ((Request*)this)->Valid_ = false;      
+	  ACE_ERROR_RETURN((LM_ERROR, "Error checking symbol: '%s' \n",
+			    db.ErrorMessage()), this-> Valid_);
+	
+	}
+      ((Request*)this)->Valid_ = ((Request*)this->Valid_) &&
+	db.Tuples()>0;
+      if (!this-> Valid_) {
+	((Request*)this)->LastError_ = me_NoSuchSymbol;
+	ACE_ERROR_RETURN((LM_ERROR, "No such symbol '%s'\n", 
+			  this-> Papir_ID_), this->Valid_);
+      }
 		    
-    // Preveri stranko:
-    Query CheckStranka=
-      "SELECT DISTINCT Stranka_id\n"
-      "FROM Stranke\n"
-      "WHERE Stranka_id='%s'";
-    // Ni prazen string:
-    ((Request*)this)->Valid_ = Ponudnik_[0]!='\0';
-    if (this-> Valid_)
-      if (!db.Exec(CheckStranka.Params(NULL, this->Ponudnik_))) {
-	((Request*)this)->LastError_ = me_InternalError;	
-	((Request*)this)->Valid_ = false;
-	ACE_ERROR_RETURN((LM_ERROR, "Error checking user: '%s' \n",
-			  db.ErrorMessage()), this-> Valid_);
+      // Preveri stranko:
+      Query CheckStranka=
+	"SELECT DISTINCT Stranka_id\n"
+	"FROM Stranke\n"
+	"WHERE Stranka_id='%s'";
+      // Ni prazen string:
+      ((Request*)this)->Valid_ = Ponudnik_[0]!='\0';
+      if (this-> Valid_)
+	if (!db.Exec(CheckStranka.Params(NULL, this->Ponudnik_))) {
+	  ((Request*)this)->LastError_ = me_InternalError;	
+	  ((Request*)this)->Valid_ = false;
+	  ACE_ERROR_RETURN((LM_ERROR, "Error checking user: '%s' \n",
+			    db.ErrorMessage()), this-> Valid_);
 	
+	}
+      this ->Valid_ = this->Valid_ && db.Tuples()>0;
+      if (!(this-> Valid_)) {
+	this ->LastError_ = me_NoSuchUser;
+	ACE_ERROR_RETURN((LM_ERROR, "No such user '%s'\n",
+			  this-> Ponudnik_), this-> Valid_);
       }
-    this ->Valid_ = this->Valid_ && db.Tuples()>0;
-    if (!(this-> Valid_)) {
-      this ->LastError_ = me_NoSuchUser;
-      ACE_ERROR_RETURN((LM_ERROR, "No such user '%s'\n",
-			this-> Ponudnik_), this-> Valid_);
+
+      // Preveri ceno:
+      ((Request*)this)->Valid_ = (0 < this-> Cena_) && (this-> Cena_ <= 100);
+      if (!this-> Valid_) {
+	((Request*)this)->LastError_ = me_WrongPrice;
+	ACE_ERROR_RETURN((LM_ERROR, "Price %f out of range\n", this->Cena_),
+			 this->Valid_);
+      }
+
     }
-
-    // Preveri ceno:
-    ((Request*)this)->Valid_ = (0 < this-> Cena_) && (this-> Cena_ <= 100);
-    if (!this-> Valid_) {
-      ((Request*)this)->LastError_ = me_WrongPrice;
-      ACE_ERROR_RETURN((LM_ERROR, "Price %f out of range\n", this->Cena_),
-		       this->Valid_);
-    }
-
-    // Preveri kolièino:
-    /*    
-
-    // Tole poènemo zelo èudno, ker drugaèe ne znam narediti...
-    Query SumFifo=
-      "SELECT sum(kolicina)"
-      "FROM fifo"
-      "WHERE ponudnik='%s' AND"
-      "kolicina %s= 0";
-
-    Query SumStanje=
-      "SELECT sum(kolicina)"
-      "FROM stanje"
-      "WHERE stranka_id='%s' AND"
-      "papir_id='%s' AND"
-      "kolicina %s= 0";
-
-    Query PapirFifo=
-      "SELECT sum(kolicina)"
-      "FROM fifo"
-      "WHERE ponudnik='%s' AND"
-      "papir_id = '%s' AND"
-      "kolicina %s = 0";
-
-    // Se¹tejemo 
-    */
-
     
-
   }
   
   return this->Valid_;
@@ -167,28 +167,48 @@ int Request::Store(PgDatabase &db)
     ACE_ERROR_RETURN((LM_ERROR, "Request not valid. Can't store.\n"), LastError_);
   }
 
-  /* Vstavi v zahtevke: 
+  if (this->Preklic_) {
+    // Prekopiraj iz FIFO:
+    // Parameter:
+    // oid:
+    Query copy=
+      "INSERT INTO zahtevki\n"
+      "SELECT cena, kolicina,\n"
+      "       papir_id, 'today' AS datum,\n"
+      "       'now' AS ura, ponudnik,\n"
+      "       't' AS preklic\n"
+      "WHERE oid=%s";
+
+    if (!db.ExecCommandOk
+	(copy.Params(NULL, this->ID_))) {
+      LastError_ = me_InternalError;
+      ACE_ERROR_RETURN((LM_ERROR, "Error inserting cancel request: %s\n",
+			db.ErrorMessage()), LastError_);
+    }
+  } else {
+
+    /* Vstavi v zahtevke: 
      Parametri:
      Cena
      Kolicina
      Papir_ID
      Ponudnik
    */
+    Query insert(
+		 "INSERT INTO zahtevki\n"
+		 "\tVALUES (%f, %d, '%s', 'today', 'now', '%s', %d)");
 
-  Query insert(
-    "INSERT INTO zahtevki\n"
-    "\tVALUES (%f, %d, '%s', 'today', 'now', '%s')");
+    if (!db.ExecCommandOk
+	(insert.Params(NULL, this->Cena_, this->Kolicina_, 
+		       this->Papir_ID_, this->Ponudnik_, (int)this->Preklic_))) {
+      LastError_ = me_InternalError;
+      ACE_ERROR_RETURN((LM_ERROR, "Error inserting requests: %s\n",
+			db.ErrorMessage()), LastError_);
+    }
 
-  if (!db.ExecCommandOk
-      (insert.Params(NULL, this->Cena_, this->Kolicina_, 
-		     this->Papir_ID_, this->Ponudnik_))) {
-    LastError_ = me_InternalError;
-    ACE_ERROR_RETURN((LM_ERROR, "Error inserting requests: %s\n",
-		      db.ErrorMessage()), LastError_);
+    ACE_OS::strcpy(this->ID_, db.OidStatus());
+
   }
-
-  ACE_OS::strcpy(this->ID_, db.OidStatus());
-
   return LastError_;
 }
 
@@ -211,6 +231,11 @@ int Request::Kolicina() const
 double Request::Cena() const
 {
   return this->Cena_;
+}
+
+bool Request::Preklic() const
+{
+  return this->Preklic_;
 }
 
 const char *Request::ID() const
@@ -281,6 +306,8 @@ int Request::Read_i(PgDatabase &db, const int tup_num)
   ACE_OS::strcpy(this->ID_, db.GetValue(tup_num, indID));
   rstrip(this->ID_);
 
+  this->Preklic_ = false;
+
   return this->LastError_;
 }
 
@@ -305,6 +332,7 @@ int Request::Read_i(char * rs)
   
   if (!ACE_OS::strcasecmp(cmd, "Buy") || 
       !ACE_OS::strcasecmp(cmd, "Sell")) {
+    this->Preklic_ = false;
     //    ACE_DEBUG((LM_DEBUG, "SELL or BUYqn"));
     ACE_OS::strcpy(this->Papir_ID_, tokens.next());
     //    ACE_DEBUG((LM_DEBUG, "PAPER: %s\n", Papir_ID_));
@@ -316,6 +344,10 @@ int Request::Read_i(char * rs)
 
   } else if (!ACE_OS::strcasecmp(cmd, "Cancel")) {
     // Ignore for the moment
+    this->Preklic_ = true;
+    // Doloèimo ostale parametre:
+    ACE_OS::strcpy(this->ID_, tokens.next());
+    ACE_OS::strcpy(this->Ponudnik_, tokens.next());
   } else {
     // Error
     this->LastError_ = me_SyntaxError;
@@ -323,32 +355,5 @@ int Request::Read_i(char * rs)
   
   return this->LastError_;
 
-  /*
-  // Err, tole je precej kruto narejeno:
-  enum { KIND = 0, SYMBOL = 1, SHARES = 2, PRICE = 3, ACCOUNT = 4 };
-
-  String words[5];
-
-  // 0    1      2      3     4
-  // KIND SYMBOL SHARES PRICE ACCOUNT
-  int n = split(String(rs), words, 5, String(" "));
-
-  if (n!=5) {
-    ACE_ERROR_RETURN((LM_ERROR, "Wrong number of words: %d\n", n), -1);
-  }
-  
-  // BUY ali SELL
-  // Zaenkrat uporabljamo kar tele funkcije - ne glede na Locale ipd.
-  this->Kolicina_ = atoi(words[SHARES].chars()) 
-    * (words[KIND][0] == 'B' ? -1 : 1); // Kolièina
-  this->Cena_ = atof(words[PRICE].chars());     // Cena
-  //  this->Vrsta_ = words[KIND][0] == 'B' ? 'N' : 'P';
-  ACE_OS::strcpy(this->Ponudnik_, words[ACCOUNT].chars());
-  ACE_OS::strcpy(this->Papir_ID_, words[SYMBOL].chars());
-
-  ACE_OS::memset(&ID_, '\0', sizeof(ID_));
-
-  return 0;
-  */
 }
 

@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+ * $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
  *
- * $Id: Request.h 1.6 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
+ * $Id: Request.h 1.7 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
@@ -31,7 +31,7 @@ public:
   // Preveri veljavnost (glede na trenutno bazo):
   bool IsValid(PgDatabase &db);
   
-  // Preberi iz tabele:
+  // Preberi iz tabele (FIFO, v zahtevkih so lahko tudi preklici!):
   int Read(PgDatabase &db, int tup_num);
   // Shrani v tabelo, doloèi oid
   int Store(PgDatabase &db);
@@ -42,6 +42,9 @@ public:
   // Vrne negativno vrednost, ce je prodaja, pozitivno ce je nakup.
   int Kolicina() const;
   double Cena() const;
+
+  // Vrne true, èe je zahtevek preklic
+  bool Preklic() const;
 
   const char *ID() const;
 
@@ -56,6 +59,8 @@ public:
 
 private:
   bool Valid_;
+
+  bool Preklic_;
 
   char Ponudnik_[MAX_PONUDNIK + 1];
   char Papir_ID_[MAX_PAPIR_ID + 1];

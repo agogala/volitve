@@ -1,12 +1,10 @@
-* Dokonèaj sklepanje poslov
-	* Preverjanje zahtevkov
-* Pregled trga
-	* Kaj sploh prikazati?
-	* Osve¾evanje
-	* Kako je z osebnimi pregledi trga? Ali lahko Java applet kako 
-	  sporoèi svojo identiteto - prek URL-ja?
-* HTML datoteke
-	* Polep¹aj
-* Kontroler za procese
-* Logiranje (ACE_Log?)
-* Overjanje strank / registracija strank
+0.20
+* Manager za procese, zapiranje in odpiranje trga
+* Logiranje preklicov in zavrnitev
+* Prepoved sklepanja poslov sam s sabo
+* Ureditev sporoèil o napakah in odgovorov na po¹iljanje obrazcev
+* Ureditev HTML strani:
+	* Teèajnice in grafi
+	* Navodila
+* MakeHash v administratorju
+* Dokumentacija za Krisperja

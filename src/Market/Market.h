@@ -1,8 +1,8 @@
 // -*- C++ -*-
 /*
- * $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+ * $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
  *
- * $Id: Market.h 1.5 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
+ * $Id: Market.h 1.6 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
  *
  * Trg. Zna dodajati zahtevke.
  */
@@ -29,6 +29,9 @@ class Market
   /* Dodaj zahtevek */
   int Add(Request &req, strset *userset = NULL);
 
+  // Preklièi zahtevek
+  int Cancel(Request &req, strset *userset = NULL);
+
   char *Result();
 
   int LastRC();
@@ -37,6 +40,11 @@ class Market
   int LastRC_;
   char Result_[256];
   PgDatabase *db;
+
+  // Interna funkcija:
+  bool FixFIFO(char *KolOp, const char *Papir_ID, 
+	       char *Urejenost, strset *userset = NULL);
+
 };
 
 // Market singleton

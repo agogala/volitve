@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
-# $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+# $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
 #
-# $Id: Makefile 1.11 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
+# $Id: Makefile 1.12 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
 #
 # Makefile za market deamon.
 # 
@@ -71,7 +71,7 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 .obj/Stanje.o .shobj/Stanje.so: Stanje.cpp
 	$(CXX) -g $(INCLDIRS) -c Stanje.cpp -o .obj/Stanje.o
 
-#VectorRequest.o: VectorRequest.cpp
+#.obj/VectorRequest.o .shobj/VectorRequest.so: VectorRequest.cpp
 #	$(CXX) -g $(INCLDIRS) -c VectorRequest.cpp -o .obj/VectorRequest.o
 
 #----------------------------------------------------------------------------
@@ -81,13 +81,14 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 # DO NOT DELETE THIS LINE -- g++dep uses it.
 # DO NOT PUT ANYTHING AFTER THIS LINE, IT WILL GO AWAY.
 
-.obj/Market_Handler.o .shobj/Market_Handler.so: Market_Handler.cpp marketd.h Market.h Request.h \
- ../include/Config.h ../include/StrSet.h ../include/Utils.h \
+.obj/Market_Handler.o .shobj/Market_Handler.so: Market_Handler.cpp marketd.h Market.h Stanje.h \
+ ../include/Utils.h Request.h ../include/Config.h ../include/StrSet.h \
  Market_Handler.h Notifier.h
 .obj/Market.o .shobj/Market.so: Market.cpp VectorRequest.h Request.h ../include/Config.h \
- Market.h ../include/StrSet.h ../include/Utils.h Query.h
+ Market.h Stanje.h ../include/Utils.h ../include/StrSet.h Query.h
 .obj/Request.o .shobj/Request.so: Request.cpp Request.h ../include/Config.h Query.h \
- MarketErrors.h ../include/Utils.h
+ MarketErrors.h ../include/Utils.h Market.h Stanje.h \
+ ../include/StrSet.h
 .obj/VectorRequest.o .shobj/VectorRequest.so: VectorRequest.cpp VectorRequest.h Request.h \
  ../include/Config.h
 .obj/Notifier.o .shobj/Notifier.so: Notifier.cpp marketd.h Notifier.h ../include/Config.h

@@ -1,5 +1,5 @@
 /*
- * $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+ * $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
  *
  * $Id: marketd.cpp 1.8 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
  *

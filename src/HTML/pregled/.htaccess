@@ -1,6 +1,6 @@
 <files pregled.html>
-header set Refresh 30
-#ExpiresActive on
-#ExpiresDefault M30
+header set Refresh 4
+ExpiresActive on
+ExpiresDefault M4
 header set Pragma no-cache
 </files>

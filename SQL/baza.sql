@@ -1,19 +1,21 @@
--- $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+-- $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
 --
--- $Id: baza.sql 1.3.2.5 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
+-- $Id: baza.sql 1.3.2.6 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
 --
 -- Skreira bazo.
 
 -- Papirji:
 -- Zaenkrat samo imena. Moram dodati ¹e min, max vrednost, rok trajanja
 CREATE TABLE Papirji
-	(Papir_ID	char(8));
+	(Papir_ID	char(8),
+	Naziv		text,
+	URL		text);
 
 -- Zagotavlja enoliènost ¹ifer:
 CREATE UNIQUE INDEX Papir_ID
 	ON Papirji (Papir_ID);
 
--- Stranke: (naziv je verjetno odveè
+-- Stranke: (naziv je verjetno odveè)
 CREATE TABLE Stranke
 	(Stranka_ID	char(10),
 	Naziv		text,
@@ -30,11 +32,12 @@ CREATE TABLE Registracije
 	accessed	bool);
 
 -- Stanje na raèunu:
--- Papir_ID je lahko prazen, to pomeni ,,izkupièek''.
+-- Za vsako stranko in papir + "denar".
 CREATE TABLE Stanje
 	(Stranka_ID	char(10),
 	Papir_ID	char(8),
 	Kolicina	float);	
+
 -- enolièen indeks
 CREATE UNIQUE INDEX Stanje_indx
 	ON Stanje (Stranka_ID, Papir_ID);
@@ -65,4 +68,28 @@ CREATE TABLE Zahtevki
 	Papir_ID	char(8),
 	Datum		date,
 	Ura		time,
-	Ponudnik	char(10));
+	Ponudnik	char(10),
+	Preklic		bool);
+
+-- Teèajnica: je v resnici ne potrebujemo!
+--CREATE TABLE Tecajnica
+--	(Datum		date,
+--	Papir_ID	char(8),
+--	Tecaj		float,
+--	Promet		int);
+
+--CREATE UNIQUE INDEX Tecajnica_indx
+--	ON Tecajnica (Datum, Papir_ID);
+
+-- Spremembe:
+CREATE TABLE Spremembe
+	(Datum_log	date,
+	Ura_log		time,
+	Cena		float,
+	Kolicina	int,
+	Papir_ID	char(8),
+	Datum		date,
+	Ura		time,
+	Ponudnik	char(10),
+	Razlog		text);
+

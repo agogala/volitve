@@ -1,3 +1,11 @@
+0.20
+Zaèel s teèajnico.
+Naredil managerja. V primeru, da se kak proces sesuje, ga ponovno pozene.
+Pobrise tudi sockete.
+Dodal preklic naroèil.
+Popravil obrazec za vnos uporabni¹kega imena in gesla, tako da CGI
+script sedaj dela.
+
 0.19
 Pregled trga ka¾e najbolj¹o ponudbo in povpra¹evanje.
 Pri stanju je vse nastavljeno za preklic.

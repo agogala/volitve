@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+ * $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
  *
- * $Id: observerd.cpp 1.8 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
+ * $Id: observerd.cpp 1.9 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
  *
  * Observer deamon. 
  */
@@ -45,7 +45,7 @@ main (int argc, char *argv[])
 	   (&formater,
 	    NULL,
 	    ACE_Time_Value(1),
-	    ACE_Time_Value(15)) == -1)
+	    ACE_Time_Value(1)) == -1)
     ACE_ERROR_RETURN((LM_ERROR,
 		      "can'(%P|%t) can't register with reactor\n"), -1);
   ACE_DEBUG ((LM_DEBUG,

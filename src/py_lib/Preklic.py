@@ -1,67 +1,36 @@
-# $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+# $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
 #
-# $Id: Preklic.py 1.1 Thu, 09 Oct 1997 13:19:34 +0000 andrej $
+# $Id: Preklic.py 1.2 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
 #
 # Poskrbi za preklic naroèila.
-#import Apache
 import sys
 import os
 import cgi
-import Count
+import time
 import Market_Client
-import CheckForm
-import string
+import FormatResponse
 
 def HandleForm(form):
     if Market_Client.market_client.open()<0:
-	return "<H1>Zaprt trg</H1>\n" + \
-	       "Trg je trenutno zaprt\n"
-    
-    # Preverimo veljavnost podatkov:
+	return FormatResponse.FormatResponse("<H1>Zaprt trg</H1>\n" + \
+	       "Trg je trenutno zaprt\n", "Zaprt trg")
 
-    # Polja: Ponudnik je zaèasen
-    fields = ["Papir", "Vrsta", "Kolicina", "Cena"]
-    reqfields = fields
-
-    if not CheckForm.CheckForm(form, fields, reqfields):
-	return "<H1>Napaka</H1>\n"  + \
-	       "Prosim izpolnite vsa polja..."
+    uporabnik = os.environ["REMOTE_USER"]
 
     try:
-	if form["Vrsta"].value == "Nakup":
-	    vrsta = "BUY"
-	elif form["Vrsta"].value == "Prodaja":
-	    vrsta = "SELL"
-	else:
-	    raise "Napaèna vrsta naroèila: %s" % form["Vrsta"].value
-
-	# Papir kar privzamemo, zaenkrat [...]
-	papir = form["Papir"].value
-
-	# Kolièina:
-	kol = string.atoi(form["Kolicina"].value)
-	
-	cena = string.atof(form["Cena"].value)
-	
-	#	ponudnik = form["Ponudnik"].value
-	ponudnik = os.environ["REMOTE_USER"]
-
-	zahtevek = "%(vrsta)s %(papir)s %(kol)s %(cena)s %(ponudnik)s" % locals()
-    except: 
-	# Tule bi moral poroèati kaj je narobe:
-	return "<H1>Napaka</H1>" + \
-	       sys.exc_type + sys.exc_value + sys.exc_traceback
-
-    msg =  "Po¹iljam: %s<P>" % zahtevek 
-
-    try:
-	Market_Client.market_client.send(zahtevek)
-	response = Market_Client.market_client.response()
-	msg = msg + "Odgovor je: %s<P>" % response
+	for k in form.keys():
+	    if form[k].value=='on':
+		Market_Client.market_client.send("Cancel %s %s" % (k, uporabnik))
+		resp = Market_Client.market_client.response()
+		# Ignoriramo vse napake...
     except:
-	msg = msg + "Trg se je zaprl...<P>"
-
-    Count.increase()
-    msg = msg + "©tevilka: %d<P>" % Count.value()
-    return msg
+	pass
     
+    time.sleep(2)
+    return FormatResponse.FormatResponse(
+	"<H1>Preseljen dokument</H1>\n" + \
+	"Dokument je preseljen na drugo lokacijo",
+	"Preseljen dokument",
+	{'Status' : '302 relocate',
+	 'Location' : '/trg/vhod'})
+

@@ -1,4 +1,4 @@
-# $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+# $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
 #
 # $Id: Registrator.py 1.6 Tue, 30 Sep 1997 16:27:41 +0000 andrej $
 # Se ukvarja z registracijo uporabnikov

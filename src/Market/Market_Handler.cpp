@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+ * $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
  *
- * $Id: Market_Handler.cpp 1.8 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
+ * $Id: Market_Handler.cpp 1.9 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
  *
  * Sprejema zahtevke od klientov.
  */
@@ -69,8 +69,12 @@ Market_Handler::handle_input (ACE_HANDLE)
 	    ACE_DEBUG ((LM_DEBUG, "(%P|%t) Request: length %d content '%s'\n", n, rs));
 	    Request req(rs);
 	    strset userset;
+	    int rc;
 
-	    int rc = MARKET::instance ()-> Add(req, &userset);
+	    if (req.Preklic()) 
+	      rc = MARKET::instance ()-> Cancel(req, &userset);
+	    else
+	      rc = MARKET::instance ()-> Add(req, &userset);
 
 	    // report back 
 	    int2code(rc, &rs[1]);

@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+ * $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
  *
- * $Id: Stanje.h 1.1 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
+ * $Id: Stanje.h 1.2 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
  *
  * Definira stanje in hrambo stanj.
  */
@@ -15,7 +15,6 @@
 #include "Utils.h"
 
 #define denar_ID "denar"
-#define MAX_KOL 10
 
 // Interval dovoljenih vrednosti
 typedef pair<int, int> Interval;

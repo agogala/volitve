@@ -1,9 +1,12 @@
 #!/net/rozle/export/share/sol/bin/python
 # $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
 #
-# $Id: mk-dodaj.py 1.2 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
-# Naredi dodaj.html
+# $Id: mk-tecaj.py 1.1 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
+# Naredi tecaj.html
+
 import os, sys
+
+print "MAKE TECAJ"
 
 try:
     (exedir, exename) = os.path.split(sys.argv[0])
@@ -11,8 +14,8 @@ try:
     sys.path = ['.', '../cfg'] + sys.path
     import admin_cfg
     admin_cfg.ReadCfg()
-    import MakeDodaj
-    MakeDodaj.run(admin_cfg.tempdir, admin_cfg.htmldir, admin_cfg.templates)
+    import MakeTecaj
+    MakeTecaj.run(admin_cfg.tempdir, admin_cfg.htmldir, admin_cfg.templates)
 
 except:
     sys.stderr.write('*** Error running %s ***\n' % exename)

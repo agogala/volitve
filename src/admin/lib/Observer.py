@@ -1,4 +1,4 @@
-# $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+# $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
 #
 # $Id: Observer.py 1.2 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
 # Observer deamon. Ne dela, ker je SocketServer zaniè.

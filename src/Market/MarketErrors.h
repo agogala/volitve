@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.19 Thu, 09 Oct 1997 15:19:34 +0200 andrej $
+ * $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
  * 
- * $Id: MarketErrors.h 1.1 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
+ * $Id: MarketErrors.h 1.2 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
  *
  * Konstante, ki definirajo napake v programu.
  */
@@ -16,6 +16,7 @@
 #define me_NoSuchUser    103
 #define me_SyntaxError   200
 #define me_InternalError 500
+// Preklic:
 #define me_NoSuchRequest 100
 
 #endif // MARKET_ERRORS_H
