@@ -1,23 +1,24 @@
 /*
  * $ProjectHeader: volitve 0.10 Thu, 11 Sep 1997 18:28:32 +0200 andrej $
  *
- * $Id: Market_Handler.cpp 1.5 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+ * $Id: Peer_Handler.cpp 1.1 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
  *
  * Sprejema zahtevke od klientov.
  */
 
-#include "marketd.h"
-#include "Market.h"
-#include "Request.h"
-#include "Market_Handler.h"
-#include "Notifier.h"
+// Tokenizer:
+#include <ace/Process.h>
 
-Market_Handler::Market_Handler (void)
+#include "admind.h"
+#include "Peer_Handler.h"
+#include "Registrator.h"
+
+Peer_Handler::Peer_Handler (void)
 {
 }
 
 int
-Market_Handler::handle_timeout (const ACE_Time_Value &,
+Peer_Handler::handle_timeout (const ACE_Time_Value &,
 				 const void *arg)
 {
   ACE_ASSERT (arg == this);
@@ -28,7 +29,7 @@ Market_Handler::handle_timeout (const ACE_Time_Value &,
 // Perform the logging record receive.
 
 int
-Market_Handler::handle_input (ACE_HANDLE)
+Peer_Handler::handle_input (ACE_HANDLE)
 {
   // Perform two recv's to emulate record-oriented semantics.  Note
   // that this code is not entirely portable since it relies on the
@@ -68,19 +69,44 @@ Market_Handler::handle_input (ACE_HANDLE)
 	if (strlen (rs) == n)
 	  {
 	    ACE_DEBUG ((LM_DEBUG, "(%P|%t) Request: length %d content '%s'\n", n, rs));
-	    Request req(rs);
-	    int rc = MARKET::instance ()-> Add(req);
-
-	    /* report back */
-	    strcpy(&rs[1], MARKET::instance ()-> Result());
+	    // Prevedi zahtevke v klice registratorjevih procedur.
+	    // Nobenega preverjanja napak, ¾al...
+	    switch (rs[0]) {
+	    case 'V': {
+	      if (REGISTRATOR::instance()-> Validate(&rs[1])==-1) {
+		ACE_OS::strncpy(&rs[1], "FAIL", sizeof(rs)-2);
+	      } else {
+		ACE_OS::strncpy(&rs[1], "OK", sizeof(rs)-2);
+	      }
+	      break;
+	    }
+	    case 'R': {
+	      ACE_Tokenizer tokens(rs);
+	      tokens.delimiter(' ');
+	      if (REGISTRATOR::instance()-> Register
+		  (RegRec(tokens.next(), tokens.next(), tokens.next()))==-1) {
+		ACE_OS::strncpy(&rs[1], "FAIL", sizeof(rs)-2);
+	      } else {
+		ACE_OS::strncpy(&rs[1], "OK", sizeof(rs)-2);
+	      } 
+	      break;
+	    }
+	    case 'U': {
+	      char *rc = REGISTRATOR::instance()-> UserID(&rs[1]);
+	      
+	      if (rc==NULL) {
+		ACE_OS::strncpy(&rs[1], "-1", sizeof(rs)-2);
+	      } else {
+		ACE_OS::strncpy(&rs[1], rc, sizeof(rs)-2);
+		// free memory:
+		delete rc;
+	      }
+	      break;
+	    }
+	    }
 	    rs[0] = strlen(&rs[1]);
 
 	    this->peer ().send_n ((void *) rs, rs[0]+1, 0);
-
-	    if (rc == 0) {
-	      /* notify observers */
-	      NOTIFIER::instance ()-> notify();
-	    } 
 	  }
 	else
 	  ACE_ERROR ((LM_ERROR, "(%P|%t) error, strlen(rs) = %d, n = %d\n",
@@ -96,7 +122,7 @@ Market_Handler::handle_input (ACE_HANDLE)
 }
 
 int
-Market_Handler::open (void *)
+Peer_Handler::open (void *)
 {
   
   ACE_OS::strncpy(this->peer_name_, "LSOCK", MAXHOSTNAMELEN + 1);
@@ -122,7 +148,9 @@ Market_Handler::open (void *)
 }
 
 #if defined (ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION)
-template class ACE_Acceptor<Market_Handler, ACE_LSOCK_ACCEPTOR>;
+template class ACE_Acceptor<Peer_Handler, ACE_LSOCK_ACCEPTOR>;
+template class ACE_Svc_Handler<ACE_LSOCK_STREAM, ACE_NULL_SYNCH>;
 #elif defined (ACE_HAS_TEMPLATE_INSTANTIATION_PRAGMA)
-#pragma instantiate ACE_Acceptor<Market_Handler, ACE_LSOCK_ACCEPTOR>
+#pragma instantiate ACE_Acceptor<Peer_Handler, ACE_LSOCK_ACCEPTOR>
+#pragma instantiate ACE_Svc_Handler<ACE_LSOCK_STREAM, ACE_NULL_SYNCH>
 #endif

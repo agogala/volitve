@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 3 3)
 (Project-Description "Blagovna borza predsednikov")
-(Project-Version volitve 0 9)
-(Parent-Version volitve 0 8)
+(Project-Version volitve 0 10)
+(Parent-Version volitve 0 9)
 
-(Version-Log "Zaèel z registracijo in profili uporabnikov...")
+(Version-Log "Dodal admind, vse okoli registracije poteka prek njega.")
 (New-Version-Log "")
-(Checkin-Time "Wed, 10 Sep 1997 18:15:50 +0200")
+(Checkin-Time "Thu, 11 Sep 1997 18:28:32 +0200")
 (Checkin-Login andrej)
 (Populate-Ignore ("~$" "^apache" "^Proto/" "^Tmp/"
                   "^test-cpp/" ".obj/"  ".shobj/" "^Bookmarks"
@@ -20,7 +20,7 @@
 ;; Files added by populate at Thu, 28 Aug 1997 18:56:22 +0200:
 
 ;; Kronologija in TODO
-  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.8 644))
+  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.9 644))
   (TODO (volitve/32_TODO 1.2 644))
   (tips (volitve/41_tips 1.1 644))
 
@@ -28,7 +28,7 @@
 ;; Poisci ustrezen posel
   (SQL/match.sql (volitve/1_match.sql 1.1 640))
 ;; Naredi bazo
-  (SQL/baza.sql (volitve/2_baza.sql 1.3.2.1 640))
+  (SQL/baza.sql (volitve/2_baza.sql 1.3.2.2 640))
 
 ;; Napolni bazo
   (SQL/pop-stranke.sql (volitve/3_pop-strank 1.2 640))
@@ -62,7 +62,7 @@
 ;; Observer
   (src/Observer/observerd.cpp (volitve/16_observer.c 1.5 644))
   (src/Observer/observerd.h (volitve/b/0_observerd.h 1.1 644))
-  (src/Observer/initfmt.py (volitve/b/37_initfmt.py 1.1 644))
+  (src/Observer/initfmt.py (volitve/b/37_initfmt.py 1.2 644))
   (src/Observer/State.cpp (volitve/b/38_State.cpp 1.1.2.1 644))
   (src/Observer/State.h (volitve/b/39_State.h 1.1.2.1 644))
   (src/Observer/Formater.cpp (volitve/b/40_Formater.c 1.1.2.1 644))
@@ -90,7 +90,7 @@
 
 
 ;; Konfiguracija
-  (src/include/Config.h (volitve/21_Config.h 1.8 644))
+  (src/include/Config.h (volitve/21_Config.h 1.9 644))
 ;; Skupne zadeve
 
 ;; Trg:
@@ -126,11 +126,11 @@
   (src/py_lib/CheckForm.py (volitve/b/22_CheckForm. 1.2 644))
   (src/py_lib/Count.py (volitve/37_Count.py 1.1 644))
   (src/py_lib/Market_Client.py (volitve/38_Market_Cli 1.3 644))
-  (src/py_lib/cgi_config.py (volitve/39_config.py 1.3.2.1 644))
+  (src/py_lib/cgi_config.py (volitve/39_config.py 1.3.2.2 644))
   (src/py_lib/FormatResponse.py (volitve/b/0_FormatResponse.py 1.1 644))
 ;; Preusmeri uporabnika:
   (src/py_lib/Redirect.py (volitve/c/5_Redirect.p 1.1 644))
-  (src/py_lib/Uporabniki.py (volitve/c/6_Uporabniki 1.1 644))
+  (src/py_lib/Uporabniki.py (volitve/c/6_Uporabniki 1.2 644))
 ;; Gesla:
   (src/py_lib/.htpasswd (volitve/c/7_.htpasswd 1.1 644))
 
@@ -169,7 +169,7 @@
   (src/admin/lib/MakePregled.py (volitve/b/28_MakePregle 1.3 644))
   (src/admin/lib/Observer.py (volitve/b/29_Observer.p 1.2 644))
   (src/admin/lib/MakeDodaj.py (volitve/b/30_MakeDodaj. 1.3 644))
-  (src/admin/lib/RegisterReply.py (volitve/c/9_RegisterRe 1.1 644))
+  (src/admin/lib/RegisterReply.py (volitve/c/9_RegisterRe 1.2 644))
 
 ;; Obrazci:
   (src/templates/pregled.html.in (volitve/b/31_pregled.ht 1.2 644))
@@ -182,6 +182,20 @@
   (apache_1.2.4/conf/srm.conf (volitve/b/34_srm.conf 1.2 644))
   (apache_1.2.4/conf/access.conf (volitve/b/35_access.con 1.2 644))
   (apache_1.2.4/conf/mime.types (volitve/b/36_mime.types 1.1 644))
+
+  (src/Admin/initadm.py (volitve/b/0_initadm.py 1.1 644))
+  (src/Admin/Peer_Handler.cpp (volitve/c/0_Peer_Handler.cpp 1.1 644))
+  (src/Admin/Peer_Handler.h (volitve/c/12_Peer_Handl 1.1 644))
+  (src/Admin/Registrator.cpp (volitve/c/13_Registrato 1.1 644))
+  (src/Admin/Registrator.h (volitve/c/14_Registrato 1.1 644))
+  (src/Admin/admind.cpp (volitve/c/15_admind.cpp 1.1 644))
+  (src/Admin/admind.h (volitve/c/16_admind.h 1.1 644))
+  (src/Admin/Makefile (volitve/c/17_Makefile 1.1 644))
+
+  (src/py_lib/Admin_Client.py (volitve/c/18_Admin_Clie 1.1 644))
+
+  (src/admin/lib/Registrator.py (volitve/c/19_Registrato 1.1 644))
+
 )
 (Merge-Parents)
 (New-Merge-Parents)

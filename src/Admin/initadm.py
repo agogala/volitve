@@ -1,19 +1,19 @@
 # $ProjectHeader: volitve 0.10 Thu, 11 Sep 1997 18:28:32 +0200 andrej $
 #
-# $Id: initfmt.py 1.2 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
+# $Id: initadm.py 1.1 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
 #
-# Inicializira formatiranje
+# Inicializira administratorja
 
 import os, sys
 
 try:
-    exename = "initfmt.py"
+    exename = "initadm.py"
     admindir = '../admin'
     sys.path = [os.path.join(admindir, 'lib'), \
                 os.path.join(admindir, 'cfg')] + sys.path
     import admin_cfg
     admin_cfg.ReadCfg()
-    import MakePregled
+    import Registrator
 
 except:
     sys.stderr.write('*** Error running %s ***\n' % exename)

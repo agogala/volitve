@@ -1,0 +1,203 @@
+/* -*- C++ -*-
+ * $ProjectHeader: volitve 0.10 Thu, 11 Sep 1997 18:28:32 +0200 andrej $
+ *
+ * $Id: Registrator.cpp 1.1 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
+ *
+ * Oblikuje HTML datoteke.
+ */
+
+#include <stdio.h>
+#include <Python.h>
+#include <ace/OS.h>
+// Python konstante za run:
+#include <graminit.h>
+
+#include "Config.h"
+#include "Registrator.h"
+
+// ----------------------------
+
+RegRec::RegRec(const char *hash, 
+	 const char *username,
+	 const char *passwd)
+{
+  hash_ = new char[ACE_OS::strlen(hash)+1];
+  ACE_OS::strcpy(hash_, hash);
+
+  username_ = new char[ACE_OS::strlen(username)+1];
+  ACE_OS::strcpy(username_, username);
+
+  passwd_ = new char[ACE_OS::strlen(passwd)+1];
+  ACE_OS::strcpy(passwd_, passwd);
+}
+
+RegRec::~RegRec()
+{
+  delete passwd_;
+  delete username_;
+  delete hash_;
+}
+
+char *RegRec::username()
+{
+  return this->username_;
+}
+
+char *RegRec::passwd()
+{
+  return this->passwd_;
+}
+ 
+char *RegRec::hash()
+{
+  return this->hash_;
+}
+
+// ----------------------------
+
+Registrator::Registrator()
+{
+    this->initialized_ = false;
+}
+
+int Registrator::init()
+{
+  if (initialized_)
+    return 0;
+
+  ACE_DEBUG((LM_DEBUG, "Initializing python interpreter\n"));
+
+  // Pripravi interpeter
+  Py_Initialize();
+
+  // Nalo¾i skripte:
+  FILE *f;
+  do {
+
+    if ((f = fopen("./initadm.py", "r"))==NULL) {
+      ACE_ERROR((LM_ERROR, "Can't find init script\n"));
+      break;
+    }
+
+    if (PyRun_SimpleFile(f, "Registrator")!=0) {
+      ACE_ERROR((LM_ERROR, "Error initializing formater\n"));
+      break;
+    }
+
+    fclose(f);
+
+    initialized_ = true;
+
+  } while (0);
+
+  return initialized_ ? 0 : -1;
+}
+
+int Registrator::Validate(const char *hash)
+{
+  if (!initialized_)
+    init();
+
+  static char CmdLine[] = "Registrator.Validate('%s')";
+
+  char buff[strlen(CmdLine) + strlen(hash) + 1];
+
+  ACE_OS::sprintf(buff, CmdLine, hash);
+
+  return PythonRunInt(buff);
+}
+
+int Registrator::Register(RegRec &regrec)
+{
+  if (!initialized_)
+    init();
+
+  static char CmdLine[] = "Registrator.Register('%s','%s','%s')";
+
+  char buff[strlen(CmdLine) + strlen(regrec.hash()) +
+	   strlen(regrec.username()) + strlen(regrec.passwd()) + 1];
+
+  ACE_OS::sprintf(buff, CmdLine, regrec.hash(), regrec.username(),
+		  regrec.passwd());
+
+  return PythonRunInt(buff);
+
+}
+
+char *Registrator::UserID(const char *user)
+{
+  if (!initialized_)
+    init();
+
+  static char CmdLine[] = "Registrator.UserID('%s')";
+
+  char buff[strlen(CmdLine) + strlen(user) + 1];
+
+  ACE_OS::sprintf(buff, CmdLine, user);
+
+  return PythonRunStr(buff);
+}
+
+int Registrator::PythonRunInt(char *Command)
+{
+  PyObject *m, *d;
+  PyIntObject *v;
+
+  ACE_DEBUG((LM_DEBUG, "(int) Calling python with: %s\n", Command));
+
+  m =  PyImport_AddModule("__main__");
+  if (m == NULL)
+    ACE_ERROR_RETURN((LM_ERROR, "Error importing main module"), -1);
+  d = PyModule_GetDict(m);
+
+  v = (PyIntObject *)PyRun_String(Command, eval_input, d, d);
+
+  if (v == NULL) {
+    PyErr_Print();
+    return -1;
+  }
+
+  int rc = PyInt_AS_LONG(v);
+  
+  Py_DECREF(v);
+  Py_FlushLine();  
+
+  return rc;
+}
+
+char *Registrator::PythonRunStr(char *Command)
+{
+  PyObject *m, *d;
+  PyStringObject *v;
+
+  ACE_DEBUG((LM_DEBUG, "(str) Calling python with: %s\n", Command));
+
+  m =  PyImport_AddModule("__main__");
+  if (m == NULL) {
+    ACE_ERROR((LM_ERROR, "Error importing main module"));
+    return NULL;
+  }
+  d = PyModule_GetDict(m);
+
+  v = (PyStringObject *)PyRun_String(Command, eval_input, d, d);
+
+  if (v == NULL) {
+    PyErr_Print();
+    return NULL;
+  }
+
+  char *rc = new char[PyString_Size((PyObject *)v) + 1];
+  strcpy(rc, PyString_AS_STRING(v));
+  
+  Py_DECREF(v);
+  Py_FlushLine();  
+
+  return rc;
+}
+
+#if defined (ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION)
+template class ACE_Singleton<Registrator, ACE_Null_Mutex>;
+#elif defined (ACE_HAS_TEMPLATE_INSTANTIATION_PRAGMA)
+#pragma instantiate ACE_Singleton<Registrator, ACE_Null_Mutex>
+#endif /* ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION */
+

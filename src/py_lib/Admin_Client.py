@@ -1,12 +1,12 @@
 # $ProjectHeader: volitve 0.10 Thu, 11 Sep 1997 18:28:32 +0200 andrej $
 #
-# $Id: Market_Client.py 1.3 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+# $Id: Admin_Client.py 1.1 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
 #
 # Objekt, ki definira povezavo s trgom
 import socket
 import cgi_config
 
-class MarketClient:
+class AdminClient:
     def __init__(self):
         self.sock = None
         pass
@@ -15,7 +15,7 @@ class MarketClient:
         if self.sock==None:         
             self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             try:
-                self.sock.connect(cgi_config.MARKET_PATH)
+                self.sock.connect(cgi_config.ADMIN_PATH)
             except:
 		self.sock = None
                 return -1
@@ -33,11 +33,11 @@ class MarketClient:
 
     def response(self):
 	resp = self.sock.recv(1024)
-	# Aha!, market se je odklopil
+	# Aha!, administrator se je odklopil
 	if resp == "":
 	    self.sock.close()
 	    self.sock = None
-	    resp = " Trg se je zaprl"
+	    raise "Administrator ne teèe"
 	return resp[1:]
 
-market_client = MarketClient()
+admin_client = AdminClient()

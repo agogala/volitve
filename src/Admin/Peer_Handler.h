@@ -2,14 +2,14 @@
 /*
  * $ProjectHeader: volitve 0.10 Thu, 11 Sep 1997 18:28:32 +0200 andrej $
  *
- * $Id: Market_Handler.h 1.2 Thu, 04 Sep 1997 02:15:14 +0000 andrej $
+ * $Id: Peer_Handler.h 1.1 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
  *
- * Blagovna borza. Market_Handler sprejema in dela z odjemalci.
+ * Sprejema odjemalèeve zahtevke in klièe ustrezne registratorjeve funkcije.
  *
  */
 
-#if !defined (MARKET_HANDLER)
-#define MARKET_HANDLER
+#if !defined (PEER_HANDLER_H)
+#define PEER_HANDLER_H
 
 #include <ace/Acceptor.h>
 #include <ace/LSOCK_Acceptor.h>
@@ -23,7 +23,7 @@
 
 // ----------------------------------------
 
-class Market_Handler : public ACE_Svc_Handler<ACE_LSOCK_STREAM, ACE_NULL_SYNCH>
+class Peer_Handler : public ACE_Svc_Handler<ACE_LSOCK_STREAM, ACE_NULL_SYNCH>
   // = TITLE
   //     Receive client message from the remote clients.
   //
@@ -35,7 +35,7 @@ class Market_Handler : public ACE_Svc_Handler<ACE_LSOCK_STREAM, ACE_NULL_SYNCH>
 {
 public:
   // = Initialization and termination methods.
-  Market_Handler (void);
+  Peer_Handler (void);
 
   // = Hooks for opening and closing handlers.
   virtual int open (void *);
@@ -52,7 +52,7 @@ private:
 };
 
 // Specialize a Market Acceptor.
-typedef ACE_Acceptor <Market_Handler, ACE_LSOCK_ACCEPTOR>
-	Market_Acceptor;
+typedef ACE_Acceptor <Peer_Handler, ACE_LSOCK_ACCEPTOR>
+	Peer_Acceptor;
 
-#endif /* MARKET_HANDLER */
+#endif /* PEER_HANDLER */

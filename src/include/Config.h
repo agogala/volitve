@@ -1,14 +1,17 @@
 // -*- C++ -*-
 /* 
- * $ProjectHeader: volitve 0.9 Wed, 10 Sep 1997 18:15:50 +0200 andrej $
+ * $ProjectHeader: volitve 0.10 Thu, 11 Sep 1997 18:28:32 +0200 andrej $
  *
- * $Id: Config.h 1.8 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
+ * $Id: Config.h 1.9 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
  *
  * Konfiguracija.
 */
 
 #if !defined(CONFIG_H)
 #define CONFIG_H
+
+/* Privzeta pot za administratorja */
+#define ADMIN_DEFAULT_PATH "/tmp/admin_market"
 
 /* Port za marketd (se trenutno ne uporablja) */
 //#define MARKET_DEFAULT_PORT 5001

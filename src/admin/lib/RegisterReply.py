@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.9 Wed, 10 Sep 1997 18:15:50 +0200 andrej $
+# $ProjectHeader: volitve 0.10 Thu, 11 Sep 1997 18:28:32 +0200 andrej $
 #
-# $Id: RegisterReply.py 1.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
+# $Id: RegisterReply.py 1.2 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
 # Pripravi vse za registracijo - direktorij + odgovor
 
 import rfc822
@@ -52,7 +52,8 @@ def run(srcdir, templates):
     else:
 	urlkey = MakeUrl(replyto)
 	conn.query(
-	    "INSERT INTO Registracije (EMail, url) VALUES ('%s', '%s')" % \
+	    "INSERT INTO Registracije (EMail, hash, accessed) " + 
+	    "VALUES ('%s', '%s', 'f')" % \
 	    (email, urlkey))
 
     url = '/registriraj/' + urlkey
