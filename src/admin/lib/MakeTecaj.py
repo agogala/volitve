@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.21 Tue, 21 Oct 1997 21:26:41 +0200 andrej $
+# $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
 #
-# $Id: MakeTecaj.py 1.2 Tue, 21 Oct 1997 19:26:41 +0000 andrej $
+# $Id: MakeTecaj.py 1.3 Sun, 26 Oct 1997 21:47:33 +0000 andrej $
 #
 # Pripravi teèajnico.
 
@@ -10,89 +10,205 @@ import Util
 import DBConn
 import Registrator
 import string
+import os
+import sys
 
 # Imamo kar stalno povezavo z bazo:
 conn = DBConn.db_conn
 
-def Tecaji(dan='yesterday'):
-    # Izracunaj tecaje za dani dan:
-    db_tecaji = conn.query((
-	"SELECT Papir_id,\n" + 
-	"sum(float8(kolicina) * cena) / float8(sum(kolicina)) AS tecaj,\n" +
-	"sum(kolicina) AS promet\n" +
-	"FROM posli\n" +
-	"WHERE datum='%(dan)s' and kupec!=prodajalec\n" +
-	"GROUP BY papir_id") % {'dan': dan})
+# Cache teèajev:
+_TECAJIMAP = {}
 
-    tecaji = {}
-    for k in db_tecaji:
-	if k[0]!='':
-	    tecaji[k[0]] = (string.atof(k[1]), string.atoi(k[2]))
+def IzracunajTecaj(dan='yesterday'):
+    conn.query("begin")
+    try:
+	# Izracunaj tecaje za dani dan:
+	db_tecaji = conn.query((
+	    "SELECT '%(dan)s'::date,\n" +
+	    "Papir_id,\n" + 
+	    "sum(float8(kolicina) * cena) / float8(sum(kolicina)) AS tecaj,\n" +
+	    "min(cena) as MinCena,\n" + 
+	    "max(cena) as MaxCena,\n" +
+	    "count(kolicina) AS obseg,\n" +
+	    "sum(kolicina) AS promet\n" +
+	    "FROM posli\n" +
+	    "WHERE datum='%(dan)s' and kupec!=prodajalec\n" +
+	    "GROUP BY papir_id") % {'dan': dan})
+	vstavil = 0
+	for f in db_tecaji:
+	    if f[1]<>"":
+		conn.query(
+		    "INSERT INTO Tecajnica\n" + 
+		    "VALUES('%s', '%s', %s, %s, %s, %s, %s)" % f)
+		vstavil = 1
+	# Izraèunamo ¹e preostale teèaje:
+	if vstavil:
+	    db_manjkajo = conn.query((
+		"SELECT D.papir_id\n" +
+		"FROM Papirji D, Tecajnica D1\n" +
+		"WHERE D.papir_id!=D1.papir_id and D1.datum='%s'\n" +
+		"ORDER BY papir_id") % dan)
+	else:
+	    db_manjkajo = conn.query("SELECT Papir_id FROM Papirji")
+	manjkajo = '('
+	for p in db_manjkajo:
+	    manjkajo = manjkajo + "'%s'" % p[0] + ','
+	manjkajo = manjkajo[:-1] + ')'
+	vrednosti = conn.query((
+	    "SELECT max(datum),\n" +
+	    "papir_id, tecaj\n" +
+	    "FROM Tecajnica\n" +
+	    "WHERE datum<'%(dan)s' and\n" + 
+	    "papir_id in " + manjkajo + "\n" +
+	    "GROUP BY papir_id, tecaj\n" +
+	    "ORDER BY papir_id") % {'dan':dan})
+	for v in vrednosti:
+	    if v[0]<>'':
+		conn.query(
+		    "INSERT INTO Tecajnica\n" +
+		    "VALUES('%s', '%s', %s)" % (dan,v[1],v[2]))
+	conn.query("commit")
+    except:
+	conn.query("rollback")
+	raise sys.exc_type, sys.exc_value, sys.exc_traceback
+    return None
+
+def stof(s):
+    try:
+	return string.atof(s)
+    except:
+	return 0.0
+
+def stoi(s):
+    try:
+	return string.atoi(s)
+    except:
+	return 0
+
+def makeline(fmt, tuple):
+    i = 0
+    r = ''
+    for f in fmt:
+	if f=='f':
+	    if tuple[i]==0:
+		r = r + "<td>"
+	    else:
+		r = r + "<td align=right>" + Util.FormatFloat(tuple[i])
+	elif f=='i':
+	    if tuple[i]==0:
+		r = r + "<td>"
+	    else:
+		r = r + "<td align=right>%d" % tuple[i]
+	else:
+	    r = r + "<td>" + tuple[i]
+	i = i + 1
+    return r
+
+# Vrne teèajnico za dani dan:
+# za vsako pogodbo vrne n-terico z naslednjimi polji:
+# (povp. teèaj, najni¾ja cena, najvi¹ja cena, obseg)
+# Promet zaenkrat izpustimo
+def Tecaji(dan='yesterday'):
+    global _TECAJIMAP
+
+    # Izraèunaj datum
+    datum = conn.query("SELECT '%s'::date AS datum" % dan)[0][0]
+    
+    if _TECAJIMAP.has_key(datum):
+	tecaji = _TECAJIMAP[datum]
+    else:
+	db_tecaji = conn.query((
+	    "SELECT papir_id,\n" +
+	    "tecaj, mincena, maxcena, obseg\n" +
+	    "FROM Tecajnica WHERE datum='%s'") % dan)
+	if len(db_tecaji)==0:
+	    IzracunajTecaj(dan)
+	    db_tecaji = conn.query((
+	    "SELECT papir_id,\n" +
+	    "tecaj, mincena, maxcena, obseg\n" +
+	    "FROM Tecajnica WHERE datum='%s'") % dan)
+
+	tecaji = {}
+	for k in db_tecaji:
+	    if k[0]!='':
+		tecaji[k[0]] = (stof(k[1]), stof(k[2]),
+				stof(k[3]), stoi(k[4]))
+	_TECAJIMAP[datum] = tecaji
     return tecaji
 
-def run(srcdir, destdir, templates, dan='yesterday'):
+def HTMLTecaji(dan='yesterday'):
     tecaji = Tecaji(dan)
     db_pap = conn.query("SELECT papir_id FROM papirji ORDER BY papir_id")
+    
+    db_odprti = conn.query(
+	"SELECT Papir_id,\n" + 
+	"sum(kolicina)\n" +
+	"FROM stanje\n" + 
+	"WHERE kolicina>0\n" +
+	"GROUP BY Papir_id\n")	
 
-    tb = "<tr><td>Kandidat<td>Teèaj<td>Promet"
+    odprti = {}
+    for k in db_odprti:
+	try:
+	    odprti[k[0]] = string.atoi(k[1])
+	except:
+	    pass
+
+#    tb = '<colgroup align="char" char="." span=3>\n<colgroup align="right">'
+    tb = "<thead><tr><th>Kandidat<th>Poravnalna cena<th>Najni¾ja cena<th>Najvi¹ja cena<th>Obseg<th>Odprti interes\n<tbody>"
     # Naredi tabelo:
+    # Mogoèe dodati ¹e spremembo teèaja v procentih?
     for k in db_pap:
-	tb = tb + '<tr><td>%s\n' % k
+	tb = tb + '<tr><th align="left">%s\n' % k
 	if tecaji.has_key(k[0]):
-	    tb = tb + '<td align=right>%5.2f<td align=right>%d\n' % tecaji[k[0]]
+	    tb = tb + makeline("fffi",tecaji[k[0]]) 
 	else:
-	    tb = tb + '<td>'
+	    tb = tb + '<td><td><td><td>'
+	if odprti.has_key(k[0]):
+	    tb = tb + '<td align="right">%d\n' % odprti[k[0]]
+	else:
+	    tb = tb + '<td>\n'
 
     datum = conn.query("SELECT '%s'::date AS datum" % dan)[0][0]
     datum = Util.RewriteDate(datum)
+    return  {'tecaj':tb, 'datum': datum}
+
+def run(srcdir, destdir, templates, dan='yesterday'):
+    dict = HTMLTecaji(dan)
+
+    ime = Util.si2iso(dict['datum']) + '.html'
 
     # Preberi obrazec:
     templname = srcdir + '/' + templates['Tecaj']['ime'] + '.in'
-    destname = destdir + templates['Tecaj']['dir'] + '/' + \
-		templates['Tecaj']['ime'] 
+    destname = destdir + templates['Tecaj']['dir'] + '/' + ime
 
-    Util.MakeTemplate(templname, destname, {'tecaj':tb, 'datum': datum})
+    Util.MakeTemplate(templname, destname, dict)
     
+    linktarg = destdir + templates['IndexTecaji']['dir'] + \
+	       '/' + templates['Tecaj']['ime']
+    os.unlink(linktarg)	       
+    os.symlink(destname, linktarg)
 
-## def Old():
-##     db_ponudbe = conn.query("SELECT max(cena), papir_id FROM fifo WHERE kolicina<0 GROUP BY papir_id ORDER BY papir_id")
-##     ponudbe = {}
-##     for p in db_ponudbe:
-## 	ponudbe[p[1]] = p[0]
+    # Seznam vseh tecajnic:
+    tdir = os.listdir(destdir + templates['Tecaj']['dir'])
+    tdir.sort()
+    tecajnice = ""
+    topdir = templates['Tecaj']['dir']
+    for t in tdir:
+	tecajnice = tecajnice + \
+		    '<li><a href="%s" target="tecaj">%s</a>' % (topdir + '/' + t,
+						 Util.iso2si(t[:6]))
 
-##     db_povpr = conn.query("SELECT min(cena), papir_id FROM fifo WHERE kolicina>0 GROUP BY papir_id ORDER BY papir_id")
-##     povpr = {}
-##     for p in db_povpr:
-## 	povpr[p[1]] = p[0]
-
-##     db_pap = conn.query("SELECT papir_id FROM papirji ORDER BY papir_id")
-##     FIFO = "<tr><td><td>Ponudba<td>Povpra¹evanje</tr>\n<tr>\n"
-## #    for p in db_pap:
-## #	FIFO = FIFO + '<td colspan="2">' + p[0] + "\n"
-## #    FIFO = FIFO + "</tr>\n<tr>\n"
-
-## #    for p in db_pap:
-## #	FIFO = FIFO + "<td>Ponudba\n <td>Povpra¹evanje\n" 
-
-## #    FIFO = FIFO + "</tr>\n<tr>\n"
-##     for p in db_pap:
-## 	if ponudbe.has_key(p[0]):
-## 	    pon = ponudbe[p[0]]
-## 	else:
-## 	    pon = ""
-## 	if povpr.has_key(p[0]):
-## 	    pov = povpr[p[0]]
-## 	else:
-## 	    pov = ""
-## 	FIFO = FIFO + '<tr>\n<td>%s\n<td align="right">%s\n<td align="right">%s\n</tr>\n' % (p[0], pon, pov)
-
-##     # Preberi obrazec:
-##     templname = srcdir + '/' + templates['Pregled']['ime'] + '.in'
-##     destname = destdir + templates['Pregled']['dir'] + '/' + \
-## 		templates['Pregled']['ime'] 
-##     Util.MakeTemplate(templname, destname, locals())
-
-## def RewriteDate(d):
-##     return '%s.%s.%s' % (d[3:5], d[0:2], d[8:10])
-
+    templname = srcdir + '/' + templates['IndexTecaji']['ime'] + '.in'
+    destname = destdir + templates['IndexTecaji']['dir'] + '/' + \
+	       templates['IndexTecaji']['ime']
     
+    dict['Tecajnice'] = tecajnice
+    Util.MakeTemplate(templname, destname, dict)
+
+    # Poskrbi ¹e za vse uporabnike:
+    import MakePregled
+
+    db_stranke = conn.query("select stranka_id from stranke")
+    for st in db_stranke:
+	MakePregled.defupdateuser(st[0])

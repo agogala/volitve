@@ -1,5 +1,5 @@
 /*
- * $ProjectHeader: volitve 0.21 Tue, 21 Oct 1997 21:26:41 +0200 andrej $
+ * $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
  *
  * $Id: Query.cpp 1.2 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
  *

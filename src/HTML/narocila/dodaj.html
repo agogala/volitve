@@ -1,58 +1,62 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<!-- $ProjectHeader: volitve 0.21 Tue, 21 Oct 1997 21:26:41 +0200 andrej $ $Id: dodaj.html 1.5 Thu, 09 Oct 1997 13:19:34 +0000 andrej $ -->
+<!-- $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $ $Id: dodaj.html 1.6 Sun, 26 Oct 1997 21:47:33 +0000 andrej $ -->
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
     <title>Naročilo</title>
   </head>
 
-  <body bgcolor="#ffe8b8"> <!-- #ffe8b8 moccassin -->
+  <body bgcolor="#ffe8b8"> 
     <hr>
 
     <center>
     <h1>Naročilo</h1>
 
-      <form action="/trg/broker" method=post> <!--  enctype="multipart/form-data"-->
+      <form action="/trg/broker" method=post>
 	<table border="1" bgcolor="lightblue">
 	  <tr><td>
-	<table cellspacing="4" cellpading="10">
-	  <tr>
-	    <td rowspan="3">	  
-	      Kandidat:<br>
-	      <select name="Papir" size="5" selected>
-		  <OPTION>GERL    
-<OPTION>JSIH    
-<OPTION>KUCA    
-<OPTION>PDBN    
-<OPTION>STOR    
+	      <table cellspacing="4" cellpading="10" >
+		<colgroup>
+		  <cols>
+		  <cols>
+		<tr>
+		  <td valign="baseline">	  
+		    Kandidat:
+		  </td>
+		  <td valign="baseline">
+		    Vrsta:
+		    <input type="radio" name="Vrsta" value="Prodaja" checked="checked">Prodaja
+		    <input type="radio" name="Vrsta" Value="Nakup">Nakup
+		  </td>
+		<tr>
+		  <td rowspan="2">	  
+		    <select name="Papir" size="5" selected>
+			<OPTION>BERNIK  
+<OPTION>CERAR   
+<OPTION>KUCAN   
+<OPTION>MIKLAVCI
+<OPTION>PERSAK  
+<OPTION>TOPLAK  
 
-	      </select>
-	    </td>
-	    <td>
-	      Vrsta:
-	    <input type="radio" name="Vrsta" value="Prodaja" checked="checked">Prodaja
-	      <input type="radio" name="Vrsta" Value="Nakup">Nakup
-	    </td>
-	  <tr>
-	    <td>
-	      Količina:
-	      <input type="text" name="Kolicina" value=1 maxlength=2 size=2>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      Cena:
-	      <input type="text" name="Cena" value=50 maxlength=5 size=5><br>
-	      0-100, decimalke s piko prosim.
-	    </td>
-	  </tr>
-	  <tr>
-	    <td colspan="2" align="center">
-	      <input type="submit" value="            Dodaj             ">
-	    </td>
-	  </tr>
-<!--      <input type="reset" value="Zbriši">-->
-	</table>
+		    </select>
+		  </td>
+		  <td valign="top">
+		    Količina:
+		    <input type="text" name="Kolicina" value=1 maxlength=2 size=2>
+		  </td>
+		</tr>
+		<tr>
+		  <td valign="top">
+		    Cena:
+		    <input type="text" name="Cena" value=50 maxlength=5 size=5><br>
+		  </td>
+		</tr>
+		<tr>
+		  <td colspan="2" align="center">
+		    <input type="submit" value="            Dodaj             ">
+		  </td>
+		</tr>
+	      </table>
 	</table>
       </form>    
     </center>

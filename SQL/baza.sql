@@ -1,6 +1,6 @@
--- $ProjectHeader: volitve 0.21 Tue, 21 Oct 1997 21:26:41 +0200 andrej $
+-- $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $
 --
--- $Id: baza.sql 1.3.2.6 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
+-- $Id: baza.sql 1.3.2.7 Sun, 26 Oct 1997 21:47:33 +0000 andrej $
 --
 -- Skreira bazo.
 
@@ -72,14 +72,17 @@ CREATE TABLE Zahtevki
 	Preklic		bool);
 
 -- Teèajnica: je v resnici ne potrebujemo!
---CREATE TABLE Tecajnica
---	(Datum		date,
---	Papir_ID	char(8),
---	Tecaj		float,
---	Promet		int);
+CREATE TABLE Tecajnica
+	(Datum		date,
+	Papir_ID	char(8),
+	Tecaj		float,
+	MinCena		float,
+	MaxCena		float,
+	Obseg		int,
+	Promet		int);
 
---CREATE UNIQUE INDEX Tecajnica_indx
---	ON Tecajnica (Datum, Papir_ID);
+CREATE UNIQUE INDEX Tecajnica_indx
+	ON Tecajnica (Datum, Papir_ID);
 
 -- Spremembe:
 CREATE TABLE Spremembe

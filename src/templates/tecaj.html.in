@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<!-- $ProjectHeader: volitve 0.21 Tue, 21 Oct 1997 21:26:41 +0200 andrej $ $Id: tecaj.html.in 1.1 Tue, 21 Oct 1997 19:26:41 +0000 andrej $ -->
+<!-- $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $ $Id: tecaj.html.in 1.2 Sun, 26 Oct 1997 21:47:33 +0000 andrej $ -->
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
@@ -9,7 +9,7 @@
   <body bgcolor="#ffe8b8">
     <center>	
       
-      <h1>Zaključni tečaj dne %(datum)s</h1>
+      <h1>Pregled cen za dan %(datum)s</h1>
       
       <table border="1" cellspacing="1" bgcolor="lightblue">
       %(tecaj)s

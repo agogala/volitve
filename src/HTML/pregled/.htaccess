@@ -1,6 +1,4 @@
-<files pregled.html>
-header set Refresh 4
+<files tecaj*.html>
 ExpiresActive on
-ExpiresDefault M4
-header set Pragma no-cache
+ExpiresDefault M1
 </files>

@@ -1,0 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//Microsoft//DTD Internet Explorer 3.0 HTML//EN">
+<!-- $ProjectHeader: volitve 0.22 Sun, 26 Oct 1997 22:47:33 +0100 andrej $ $Id: tecaji.html.in 1.1 Sun, 26 Oct 1997 21:47:33 +0000 andrej $ -->
+
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
+
+    <title>Tečajnica</title>
+  </head>
+
+  <body  bgcolor="#ffe8b8">
+    <h1>Vse tečajnice</h1>
+
+      <ul>
+      %(Tecajnice)s
+      </ul>
+    
+  </body>
+</html>
