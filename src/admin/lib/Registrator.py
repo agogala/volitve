@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
+# $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
 #
-# $Id: Registrator.py 1.5 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
+# $Id: Registrator.py 1.6 Tue, 30 Sep 1997 16:27:41 +0000 andrej $
 # Se ukvarja z registracijo uporabnikov
 
 import pg95
@@ -10,6 +10,7 @@ import os
 import Util
 import AdminConst
 import DBConn
+import MakePregled
 
 # Imamo kar stalno povezavo z bazo:
 db_conn = DBConn.db_conn

@@ -1,4 +1,4 @@
-# $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
+# $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
 #
 # $Id: Redirect.py 1.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
 #

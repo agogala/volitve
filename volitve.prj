@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 3 3)
 (Project-Description "Blagovna borza predsednikov")
-(Project-Version volitve 0 15)
-(Parent-Version volitve 0 14)
+(Project-Version volitve 0 16)
+(Parent-Version volitve 0 15)
 
-(Version-Log "")
+(Version-Log "Manjsi popravki, request preverja stranko, papir, ceno.")
 (New-Version-Log "")
-(Checkin-Time "Fri, 26 Sep 1997 18:28:00 +0200")
+(Checkin-Time "Tue, 30 Sep 1997 18:27:41 +0200")
 (Checkin-Login andrej)
 (Populate-Ignore ("~$" "^apache" "^Proto/" "^Tmp/"
                   "^test-cpp/" ".obj/"  ".shobj/" "^Bookmarks"
@@ -20,7 +20,7 @@
 ;; Files added by populate at Thu, 28 Aug 1997 18:56:22 +0200:
 
 ;; Kronologija in TODO
-  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.14 644))
+  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.15 644))
   (TODO (volitve/32_TODO 1.2 644))
   (tips (volitve/41_tips 1.1 644))
 
@@ -78,7 +78,7 @@
 ;; HTML:
   (src/HTML/index.html (volitve/18_index.html 1.4.2.1 644))
   (src/HTML/pregled/.htaccess (volitve/b/9_.htaccess 1.3 644))
-  (src/HTML/pregled/pregled.html (volitve/b/10_pregled.ht 1.9 644))
+  (src/HTML/pregled/pregled.html (volitve/b/10_pregled.ht 1.10 644))
   (src/HTML/pregled/kazalo.html (volitve/b/11_kazalo.htm 1.2 644))
   (src/HTML/pregled/index.html (volitve/b/12_index.html 1.2 644))
   (src/HTML/registracija.html (volitve/b/15_index.html 1.1.2.2 644))
@@ -106,11 +106,11 @@
   (src/Market/marketd.h (volitve/24_market.h 1.3 644)) 
   (src/Market/marketd.cpp (volitve/25_market.cpp 1.8 644))
   (src/Market/Market.h (volitve/26_Request.h 1.4 644))
-  (src/Market/Market.cpp (volitve/27_Request.cp 1.8 644))
+  (src/Market/Market.cpp (volitve/27_Request.cp 1.9 644))
   (src/Market/Market_Handler.h (volitve/47_Market_Han 1.2 644))
   (src/Market/Market_Handler.cpp (volitve/28_Market_Han 1.8 644))
-  (src/Market/Request.cpp (volitve/48_Request.cp 1.5 644))
-  (src/Market/Request.h (volitve/49_Request.h 1.4 644))
+  (src/Market/Request.cpp (volitve/48_Request.cp 1.6 644))
+  (src/Market/Request.h (volitve/49_Request.h 1.5 644))
   (src/Market/Makefile (volitve/29_Makefile 1.10 644)) 
   (src/Market/VectorRequest.cpp (volitve/b/4_VectorRequ 1.3 644))
   (src/Market/VectorRequest.h (volitve/b/5_VectorRequ 1.1 644))
@@ -159,7 +159,7 @@
   (src/py_lib/Admin_Client.py (volitve/c/18_Admin_Clie 1.1 644))
   (src/py_lib/Reg_Client.py (volitve/b/3_Reg_Client 1.3 644))
 ;; Gesla:
-  (src/admin/cfg/htpasswd (volitve/c/7_.htpasswd 1.5 644))
+  (src/admin/cfg/htpasswd (volitve/c/7_.htpasswd 1.6 644))
 
 ;; Testni programi:
   (test/Observer_Client/oc.py (volitve/30_oc.py 1.2 755))
@@ -168,10 +168,10 @@
   (test/Sock-Test/sock.cpp (volitve/42_sock.cpp 1.1 644))
   (test/Sock-Test/Makefile (volitve/43_Makefile 1.1 644))
 ;; Request:
-  (test/Request/testR.cpp (volitve/33_testR.cpp 1.3 644))
+  (test/Request/testR.cpp (volitve/33_testR.cpp 1.4 644))
   (test/Request/Query.cpp (../../src/Market/Query.cpp) :symlink)
   (test/Request/Request.cpp (../../src/Market/Request.cpp) :symlink)
-  (test/Request/Makefile (volitve/50_Makefile 1.3 644))
+  (test/Request/Makefile (volitve/50_Makefile 1.4 644))
 ;; Market
   (test/Market/VectorRequest.cpp (../../src/Market/VectorRequest.cpp) :symlink)
   (test/Market/Query.cpp (../../src/Market/Query.cpp) :symlink)
@@ -198,7 +198,7 @@
   (src/admin/lib/Observer.py (volitve/b/29_Observer.p 1.2 644))
   (src/admin/lib/MakeDodaj.py (volitve/b/30_MakeDodaj. 1.4 644))
   (src/admin/lib/RegisterReply.py (volitve/c/9_RegisterRe 1.4 644))
-  (src/admin/lib/Registrator.py (volitve/c/19_Registrato 1.5 644))
+  (src/admin/lib/Registrator.py (volitve/c/19_Registrato 1.6 644))
   (src/admin/lib/Util.py (volitve/51_Util.py 1.1 644))
   (src/admin/lib/AdminConst.py (volitve/b/46_AdminConst 1.1 644))
   (src/admin/lib/DBConn.py (volitve/c/20_DBConn.py 1.1 644))

@@ -1,5 +1,5 @@
 /*
- * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
+ * $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
  *
  * $Id: manager.cpp 1.1 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
  *

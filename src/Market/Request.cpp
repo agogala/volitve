@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
+ * $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
  *
- * $Id: Request.cpp 1.5 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
+ * $Id: Request.cpp 1.6 Tue, 30 Sep 1997 16:27:41 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
@@ -58,20 +58,95 @@ Request::~Request()
 {
 }
 
-bool Request::IsValid(PgDatabase &db) const
+bool Request::IsValid(PgDatabase &db)
 {
   if (this-> Valid_) {
+    // Preveri papir:
+    Query CheckPapir=
+      "SELECT DISTINCT Papir_id\n"
+      "FROM Papirji\n"
+      "WHERE Papir_id='%s'";
+    // Ni prazen string:
+    ((Request*)this)->Valid_ = Papir_ID_[0]!='\0';
+    if (this-> Valid_)
+      if (!db.Exec(CheckPapir.Params(NULL, this->Papir_ID_))) {
+	((Request*)this)->LastError_ = me_InternalError;	
+	((Request*)this)->Valid_ = false;      
+	ACE_ERROR_RETURN((LM_ERROR, "Error checking symbol: '%s' \n",
+			  db.ErrorMessage()), this-> Valid_);
+	
+      }
+    ((Request*)this)->Valid_ = ((Request*)this->Valid_) &&
+      db.Tuples()>0;
+    if (!this-> Valid_) {
+      ((Request*)this)->LastError_ = me_NoSuchSymbol;
+      ACE_ERROR_RETURN((LM_ERROR, "No such symbol '%s'\n", 
+			this-> Papir_ID_), this->Valid_);
+    }
+		    
+    // Preveri stranko:
+    Query CheckStranka=
+      "SELECT DISTINCT Stranka_id\n"
+      "FROM Stranke\n"
+      "WHERE Stranka_id='%s'";
+    // Ni prazen string:
+    ((Request*)this)->Valid_ = Ponudnik_[0]!='\0';
+    if (this-> Valid_)
+      if (!db.Exec(CheckStranka.Params(NULL, this->Ponudnik_))) {
+	((Request*)this)->LastError_ = me_InternalError;	
+	((Request*)this)->Valid_ = false;
+	ACE_ERROR_RETURN((LM_ERROR, "Error checking user: '%s' \n",
+			  db.ErrorMessage()), this-> Valid_);
+	
+      }
+    this ->Valid_ = this->Valid_ && db.Tuples()>0;
+    if (!(this-> Valid_)) {
+      this ->LastError_ = me_NoSuchUser;
+      ACE_ERROR_RETURN((LM_ERROR, "No such user '%s'\n",
+			this-> Ponudnik_), this-> Valid_);
+    }
+
+    // Preveri ceno:
     ((Request*)this)->Valid_ = (0 < this-> Cena_) && (this-> Cena_ <= 100);
     if (!this-> Valid_) {
       ((Request*)this)->LastError_ = me_WrongPrice;
       ACE_ERROR_RETURN((LM_ERROR, "Price %f out of range\n", this->Cena_),
 		       this->Valid_);
     }
-    // Preveri kolièino: (to je potrebno ¹e razmisliti)
 
-    // Itd...
+    // Preveri kolièino:
+    /*    
+
+    // Tole poènemo zelo èudno, ker drugaèe ne znam narediti...
+    Query SumFifo=
+      "SELECT sum(kolicina)"
+      "FROM fifo"
+      "WHERE ponudnik='%s' AND"
+      "kolicina %s= 0";
+
+    Query SumStanje=
+      "SELECT sum(kolicina)"
+      "FROM stanje"
+      "WHERE stranka_id='%s' AND"
+      "papir_id='%s' AND"
+      "kolicina %s= 0";
+
+    Query PapirFifo=
+      "SELECT sum(kolicina)"
+      "FROM fifo"
+      "WHERE ponudnik='%s' AND"
+      "papir_id = '%s' AND"
+      "kolicina %s = 0";
+
+    // Se¹tejemo 
+    */
+
+    
+
   }
-  return Valid_;
+  
+  ACE_DEBUG((LM_DEBUG, "Valid: %d\n", this->Valid_));
+  return this->Valid_;
 }
   
 // Preberi iz tabele:
@@ -195,7 +270,7 @@ int Request::Read_i(char * rs)
   char buff[256];
 
   strncpy(buff, rs, 255);
-  buff[256] = '\0';
+  buff[255] = '\0';
 
   ACE_Tokenizer tokens(buff);
   tokens.delimiter_replace(' ', '\0');

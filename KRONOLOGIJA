@@ -1,3 +1,8 @@
+0.16
+Manjsi popravki.
+Request preverja stranko, papir in ceno. Potreben razmislek glede kolicine...
+Moral zbrisati const za Request::IsValid - oèitno bug v g++.
+
 0.15
 Observerd redno obnavlja stanja strank.
 Popravil start script.

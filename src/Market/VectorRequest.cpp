@@ -1,5 +1,5 @@
 /*
- * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
+ * $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
  *
  * $Id: VectorRequest.cpp 1.3 Tue, 09 Sep 1997 22:58:50 +0000 andrej $
  *

@@ -1,4 +1,4 @@
-# $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
+# $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
 #
 # $Id: initfmt.py 1.2 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
 #

@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
+ * $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
  *
- * $Id: Market.cpp 1.8 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
+ * $Id: Market.cpp 1.9 Tue, 30 Sep 1997 16:27:41 +0000 andrej $
  *
  * Trg. Zna dodajati zahtevke.
  */
@@ -268,13 +268,13 @@ int Market::Add(Request &req, strset *userset = NULL)
 	// Shrani ime v mno¾ico:
 	if (userset!=NULL) {
 	  // Kupec:
-	  ime = new char[strlen(buy->Ponudnik()+1)];
+	  ime = new char[strlen(buy->Ponudnik()) + 1];
 	  ACE_OS::strcpy(ime, buy->Ponudnik());
 	  if (!userset->insert(ime).second)
 	    delete ime;
 	  
 	  // Prodajalec:
-	  ime = new char[strlen(sell->Ponudnik()+1)];
+	  ime = new char[strlen(sell->Ponudnik()) + 1];
 	  ACE_OS::strcpy(ime, sell->Ponudnik());
 	  if (!userset->insert(ime).second)
 	    delete ime;
@@ -301,7 +301,7 @@ int Market::Add(Request &req, strset *userset = NULL)
 		     db->ErrorMessage()));
 	} 
 	else if (userset!=NULL) {
-	  ime = new char[strlen(req.Ponudnik()+1)];
+	  ime = new char[strlen(req.Ponudnik()) + 1];
 	  ACE_OS::strcpy(ime, req.Ponudnik());
 	  if (!userset->insert(ime).second)
 	    delete ime;

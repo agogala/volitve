@@ -26,9 +26,9 @@ BUILD	= $(VBIN)
 
 INCLDIRS += -I$(PG_ROOT)/include -I../../src/Market
 
-LDLIBS += -lpq++ -lpq -lg++
+LDLIBS += -lpq++ -lpq -lg++ -lbb
 
-LDFLAGS += -L$(PG_ROOT)/lib -R$(ACE_ROOT)/ace
+LDFLAGS += -L$(PG_ROOT)/lib -R$(ACE_ROOT)/ace -L../../src/lib
 
 INCLDIRS += -I../../src/include
 

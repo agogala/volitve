@@ -15,10 +15,17 @@ main()
     ACE_ERROR_RETURN((LM_ERROR, "Error %s connecting to database %s\n", 
 		      db->ErrorMessage(), DB_NAME), -1); 
   }  
+
+  Request req1("SELL KUCA 200 102.3 MILAN");
+
+  cout << "Is Valid: " << req1.IsValid(*db) << endl;
   
+  cout << false << endl;
+
+  /*  
   cout << "Request1" << endl;
 
-  Request req1("BUY KUCA 10 60.1 Crt");
+  Request req1("BUY KUCA 10 60.1 andrej");
  
   req1.Store(*db);
 
@@ -47,13 +54,13 @@ main()
   for (int i=0; i< db->Tuples(); i++) {
     req.Read(*db, i);
     cout << "Request: " << i << endl;
-    cout << "   Valid: " << req.IsValid(*db) << endl;
+    //    cout << "   Valid: " << req.IsValid(*db) << endl;
     cout << "   Fields: " << req.Ponudnik() << " " 
 	 << req.Papir_ID() << " " 
          << req.Kolicina() << " " 
 	 << req.Cena() << endl;
   }
-
+  */
   delete db;
 
   return 0;

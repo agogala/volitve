@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.15 Fri, 26 Sep 1997 18:28:00 +0200 andrej $
+ * $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
  *
- * $Id: Request.h 1.4 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
+ * $Id: Request.h 1.5 Tue, 30 Sep 1997 16:27:41 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
@@ -29,7 +29,7 @@ public:
   ~Request();
 
   // Preveri veljavnost (glede na trenutno bazo):
-  bool IsValid(PgDatabase &db) const;
+  bool IsValid(PgDatabase &db);
   
   // Preberi iz tabele:
   int Read(PgDatabase &db, int tup_num);
