@@ -1,8 +1,10 @@
+#include <ace/Singleton.h>
 #include <ace/Log_Msg.h>
 #include <libpq++.h>
 #include <iostream.h>
 #include "Config.h"
 #include "Request.h"
+#include "Stanje.h"
 
 int
 main()
@@ -16,11 +18,34 @@ main()
 		      db->ErrorMessage(), DB_NAME), -1); 
   }  
 
-  Request req1("SELL KUCA 200 102.3 MILAN");
+  //  Request req1("BUY KUCA 5 40.0 miha");
 
-  cout << "Is Valid: " << req1.IsValid(*db) << endl;
+  cout << "Reading ..." << endl;
+
+  cout << "Return: " << db->ExecTuplesOk("SELECT oid, * FROM fifo Where Ponudnik='miha'") << endl;
+
+  Request req1;
+
+  //  for (int i=0; i< db->Tuples(); i++) {
+    req1.Read(*db, 0);
+    //    cout << "Request: " << i << endl;
+    //    cout << "   Valid: " << req.IsValid(*db) << endl;
+    cout << "   Fields: " << req1.Ponudnik() << " " 
+	 << req1.Papir_ID() << " " 
+         << req1.Kolicina() << " " 
+	 << req1.Cena() << endl;
+
+    //  }
+
+
+  //  cout << "Is Valid: " << req1.IsValid(*db) << endl;
   
-  cout << false << endl;
+  cout << "Kolicina: " << req1.Kolicina() << endl;
+
+  req1.Omeji(*db);
+
+  cout << "Omejitev: " << req1.Kolicina() << endl;
+
 
   /*  
   cout << "Request1" << endl;
@@ -66,3 +91,5 @@ main()
   return 0;
 
 }
+
+template class ACE_Singleton<ShrambaStanj, ACE_Null_Mutex>;

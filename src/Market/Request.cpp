@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
+ * $ProjectHeader: volitve 0.17 Fri, 03 Oct 1997 17:45:58 +0200 andrej $
  *
- * $Id: Request.cpp 1.6 Tue, 30 Sep 1997 16:27:41 +0000 andrej $
+ * $Id: Request.cpp 1.7 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
@@ -16,6 +16,7 @@
 #include "Query.h"
 #include "MarketErrors.h"
 #include "Utils.h"
+#include "Market.h"
 
 Request::Request()
 {
@@ -145,7 +146,6 @@ bool Request::IsValid(PgDatabase &db)
 
   }
   
-  ACE_DEBUG((LM_DEBUG, "Valid: %d\n", this->Valid_));
   return this->Valid_;
 }
   
@@ -218,6 +218,29 @@ const char *Request::ID() const
   return this->ID_;
 }
 
+// Omejitev:
+int
+Request::Omeji(PgDatabase &db)
+{
+  // Preveri napake [...]
+  Stanje *s;
+  s = (*(STANJA::instance() ->Get(db, Ponudnik_))).second;
+
+  // Shrani zaznamek o spremembi [...]
+  Kolicina_ = s->Omeji(db, Papir_ID_, Kolicina_);
+
+  return 0;
+}
+  
+// Sprememba zahtevka. Samo v spominu.
+int
+Request::Spremeni(int Kolicina)
+{
+  this->Kolicina_ = Kolicina;
+  return 0;
+}
+
+
 int Request::LastError() const
 {
   return this->LastError_;
@@ -285,7 +308,7 @@ int Request::Read_i(char * rs)
     //    ACE_DEBUG((LM_DEBUG, "SELL or BUYqn"));
     ACE_OS::strcpy(this->Papir_ID_, tokens.next());
     //    ACE_DEBUG((LM_DEBUG, "PAPER: %s\n", Papir_ID_));
-    this->Kolicina_ = atoi(tokens.next()) * (cmd[0] == 'B' ? -1 : 1);
+    this->Kolicina_ = atoi(tokens.next()) * (cmd[0] == 'S' ? -1 : 1);
     this->Cena_ = atof(tokens.next());
     ACE_OS::strcpy(this->Ponudnik_, tokens.next());
 

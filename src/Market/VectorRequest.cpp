@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
+ * $ProjectHeader: volitve 0.17 Fri, 03 Oct 1997 17:45:58 +0200 andrej $
  *
- * $Id: VectorRequest.cpp 1.3 Tue, 09 Sep 1997 22:58:50 +0000 andrej $
+ * $Id: VectorRequest.cpp 1.4 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
  *
  * Implementacija enostavnega vektorja -- STL, ACE in g++ na Rozletu
  * ne gredo skupaj.
@@ -10,10 +10,21 @@
 
 #include "VectorRequest.h"
 
+// VectorRequest dummyVR;
+
+
+// #if defined (ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION)
+// template class vector<Request*>;
+// #elif defined (ACE_HAS_TEMPLATE_INSTANTIATION_PRAGMA)
+// #pragma instantiate vector<Request*>
+// #endif /* ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION */
+
+
+
 VectorRequest::VectorRequest(unsigned int size)
 {
   if (size!=0)
-    content = new Request[size];
+    content = new (Request*)[size];
   else
     content = NULL;
   Size_ = size;
@@ -25,7 +36,7 @@ VectorRequest::~VectorRequest()
   delete content;
 }
 
-void VectorRequest::push_back(Request &r)
+void VectorRequest::push_back(Request *r)
 {
   if (Filled_<Size_) {
     content[Filled_] = r;
@@ -38,11 +49,12 @@ unsigned int VectorRequest::size()
   return this->Size_;
 }
 
-Request VectorRequest::operator[](unsigned int i)
+Request *VectorRequest::operator[](unsigned int i)
 {
   if (i<Filled_) 
     return content[i];
   else // Sicer pa vrnemo kar zadnjega ... kako lahko vrnem napako?
     return content[Filled_-1];
 }
+
 

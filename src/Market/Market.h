@@ -1,8 +1,8 @@
 // -*- C++ -*-
 /*
- * $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
+ * $ProjectHeader: volitve 0.17 Fri, 03 Oct 1997 17:45:58 +0200 andrej $
  *
- * $Id: Market.h 1.4 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
+ * $Id: Market.h 1.5 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
  *
  * Trg. Zna dodajati zahtevke.
  */
@@ -13,6 +13,7 @@
 #include <ace/Synch.h>
 #include <ace/Singleton.h>
 #include <libpq++.h>
+#include "Stanje.h"
 #include "Request.h"
 #include "StrSet.h"
 
@@ -41,5 +42,8 @@ class Market
 // Market singleton
 typedef ACE_Singleton<Market, ACE_Null_Mutex>
 	MARKET;
+
+typedef ACE_Singleton<ShrambaStanj, ACE_Null_Mutex>
+        STANJA;
 
 #endif /* MARKET_H */

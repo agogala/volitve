@@ -28,6 +28,8 @@ INCLDIRS += -I$(PG_ROOT)/include -I../../src/Market
 
 LDLIBS += -lpq++ -lpq -lg++ -lbb
 
+LDLIBS	+= /home/andrej/sola/volitve/src/Market/.obj/Stanje.o
+
 LDFLAGS += -L$(PG_ROOT)/lib -R$(ACE_ROOT)/ace -L../../src/lib
 
 INCLDIRS += -I../../src/include

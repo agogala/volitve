@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
+ * $ProjectHeader: volitve 0.17 Fri, 03 Oct 1997 17:45:58 +0200 andrej $
  *
- * $Id: Request.h 1.5 Tue, 30 Sep 1997 16:27:41 +0000 andrej $
+ * $Id: Request.h 1.6 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
@@ -39,11 +39,17 @@ public:
   // Atributi:
   const char *Ponudnik() const;
   const char *Papir_ID() const;
-  // Vrne negativno vrednost, ce je nakup, pozitivno ce je prodaja.
+  // Vrne negativno vrednost, ce je prodaja, pozitivno ce je nakup.
   int Kolicina() const;
   double Cena() const;
 
   const char *ID() const;
+
+  // Omejitev:
+  int Omeji(PgDatabase &db);
+  
+  // Sprememba zahtevka. Samo v spominu.
+  int Spremeni(int Kolicina);
 
   // Vrne razlog zakaj zadeva ni veljavna
   int LastError() const;

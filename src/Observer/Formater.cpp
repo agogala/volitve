@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
+ * $ProjectHeader: volitve 0.17 Fri, 03 Oct 1997 17:45:58 +0200 andrej $
  *
- * $Id: Formater.cpp 1.1.2.2 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
+ * $Id: Formater.cpp 1.1.2.3 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
  *
  * Oblikuje HTML datoteke.
  */
@@ -65,6 +65,7 @@ int Formater::handle_timeout(const ACE_Time_Value &,
     if (PyRun_SimpleString("MakePregled.run(admin_cfg.tempdir, admin_cfg.htmldir, admin_cfg.templates)")) {
       ACE_ERROR((LM_ERROR, "Error running MakePregled\n"));
     }
+    state_->set(false);
   }
   while (userset_->size()>0) {
     char cmd[500];

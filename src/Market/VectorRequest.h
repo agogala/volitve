@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
+ * $ProjectHeader: volitve 0.17 Fri, 03 Oct 1997 17:45:58 +0200 andrej $
  *
- * $Id: VectorRequest.h 1.1 Thu, 04 Sep 1997 02:15:14 +0000 andrej $
+ * $Id: VectorRequest.h 1.2 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
  *
  * Enostaven vektor zahtevkov. 
  * STL se nekaj punta, vsaj na ro¾letu - g++, ACE, bog si ga vedi?
@@ -10,21 +10,26 @@
  */
 
 #include "Request.h"
+//#include <vector.h>
+
+//typedef vector<Request*> VectorRequest ;
+
 
 class VectorRequest {
-  Request *content;
+  Request **content;
   unsigned int Size_;
   unsigned int Filled_;
 public:
   VectorRequest(unsigned int size);
   ~VectorRequest();
 
-  void push_back(Request &r);
+  void push_back(Request *r);
   unsigned int size();
 
-  Request operator[](unsigned int i);
+  Request * operator[](unsigned int i);
 
 private:
   VectorRequest() {}
 
 };
+

@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
-# $ProjectHeader: volitve 0.16 Tue, 30 Sep 1997 18:27:41 +0200 andrej $
+# $ProjectHeader: volitve 0.17 Fri, 03 Oct 1997 17:45:58 +0200 andrej $
 #
-# $Id: Makefile 1.10 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
+# $Id: Makefile 1.11 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
 #
 # Makefile za market deamon.
 # 
@@ -18,11 +18,13 @@ FILES 	= Market_Handler \
 	  Request \
 	  VectorRequest \
 	  Notifier \
-	  Query
+	  Query 
 
 LSRC	= $(addsuffix .cpp,$(FILES))
 LOBJ	= $(addsuffix .o,$(FILES))
 SHOBJ	= $(addsuffix .so,$(FILES))
+
+LSRC	+= .obj/Stanje.o .obj/VectorRequest.o
 
 LDLIBS	= $(addprefix $(VSHDIR),$(SHOBJ))
 
@@ -34,10 +36,18 @@ INCLDIRS += -I$(PG_ROOT)/include
 
 LDLIBS += -lpq++ -lpq -lg++ -lstdc++ -lbb
 
-LDFLAGS += -L$(PG_ROOT)/lib -L../lib
+LDFLAGS += -L$(PG_ROOT)/lib -L../lib 
+
+#LIBS 	+= /usr/local/lib/ccmalloc.o
+LIBS	+= .obj/Stanje.o
+
 # Tole potrebujemo samo zaradi debugiranja na Solarisu.
 ifeq ($(OS),SunOS)
 LDFLAGS += -R$(ACE_ROOT)/ace
+endif
+
+ifeq ($(OS),Linux)
+LDFLAGS += -Xlinker -rpath -Xlinker ../lib
 endif
 
 INCLDIRS += -I../include
@@ -58,6 +68,12 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 #	Local targets
 #----------------------------------------------------------------------------
 
+.obj/Stanje.o .shobj/Stanje.so: Stanje.cpp
+	$(CXX) -g $(INCLDIRS) -c Stanje.cpp -o .obj/Stanje.o
+
+#VectorRequest.o: VectorRequest.cpp
+#	$(CXX) -g $(INCLDIRS) -c VectorRequest.cpp -o .obj/VectorRequest.o
+
 #----------------------------------------------------------------------------
 #	Dependencies
 #----------------------------------------------------------------------------
@@ -66,10 +82,12 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 # DO NOT PUT ANYTHING AFTER THIS LINE, IT WILL GO AWAY.
 
 .obj/Market_Handler.o .shobj/Market_Handler.so: Market_Handler.cpp marketd.h Market.h Request.h \
- ../include/Config.h Market_Handler.h Notifier.h
+ ../include/Config.h ../include/StrSet.h ../include/Utils.h \
+ Market_Handler.h Notifier.h
 .obj/Market.o .shobj/Market.so: Market.cpp VectorRequest.h Request.h ../include/Config.h \
- Market.h Query.h
-.obj/Request.o .shobj/Request.so: Request.cpp Request.h ../include/Config.h Query.h
+ Market.h ../include/StrSet.h ../include/Utils.h Query.h
+.obj/Request.o .shobj/Request.so: Request.cpp Request.h ../include/Config.h Query.h \
+ MarketErrors.h ../include/Utils.h
 .obj/VectorRequest.o .shobj/VectorRequest.so: VectorRequest.cpp VectorRequest.h Request.h \
  ../include/Config.h
 .obj/Notifier.o .shobj/Notifier.so: Notifier.cpp marketd.h Notifier.h ../include/Config.h

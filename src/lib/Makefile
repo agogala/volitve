@@ -34,6 +34,7 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 .obj/StrSet.o: StrSet.cpp
 	$(CXX) -c StrSet.cpp -I../include -o .obj/StrSet.o
  
+
 #----------------------------------------------------------------------------
 #	Dependencies
 #----------------------------------------------------------------------------
