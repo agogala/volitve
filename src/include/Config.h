@@ -1,8 +1,8 @@
 // -*- C++ -*-
 /* 
- * $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
+ * $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
  *
- * $Id: Config.h 1.15 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
+ * $Id: Config.h 1.16 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
  *
  * Konfiguracija.
 */
@@ -76,5 +76,9 @@
 
 /* Najveèja dovoljena kolièina */
 #define MAX_KOL 25
+
+/* Èas zaprtja: */
+#define CLOSING_TIME 880153200 // 'Sat Nov 22 00:00:00 1997' :-)))
+//#define CLOSING_TIME 880117058
 
 #endif

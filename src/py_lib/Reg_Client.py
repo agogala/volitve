@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
+# $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
 #
-# $Id: Reg_Client.py 1.5 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
+# $Id: Reg_Client.py 1.6 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
 #
 # Registriraj uporabnika:
 
@@ -44,6 +44,10 @@ def HandleHash(form):
 	# Hash accessed:
 	return FormatResponse.FormatResponse("<H1>Napaka</H1>\n" +
 					    "Nepravilen kljuè")
+    elif resp==300:
+	# Zaprt trg:
+	return FormatResponse.FormatResponse("<H1>Zaprta borza</H1>\n" +
+					     "Borza je zaprta")
     else:
 	return FormatResponse.FormatResponse("<H1>Napaka</H1>\n" +
 					    "Interna napaka")

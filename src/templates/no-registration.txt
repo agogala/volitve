@@ -1,0 +1,16 @@
+From: %(serveradmin)s
+To: %(replyto)s
+Subject: Zavrnjena registracija za borzo
+Mime-version: 1.0
+Content-Type: text/plain; charset=iso-8859-2
+Content-transfer-encoding: Quoted-Printable 
+
+Spo¹tovani,
+ 
+Va¹ zahtevek za registracijo je ¾al pri¹el prepozno. Borza
+predsedni¹kih kandidatov je zaprla svoja vrata. Èe bi radi kaj
+sporoèili, pi¹ite na naslov: %(serveradmin)s
+
+Lep pozdrav,
+
+Administrator

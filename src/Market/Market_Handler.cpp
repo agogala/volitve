@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
+ * $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
  *
- * $Id: Market_Handler.cpp 1.9 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
+ * $Id: Market_Handler.cpp 1.10 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
  *
  * Sprejema zahtevke od klientov.
  */
@@ -60,6 +60,11 @@ Market_Handler::handle_input (ACE_HANDLE)
 
 	rs[n] = '\0';
 
+	// Preveri, ali naj trg ¹e teèe:
+	time_t t = time(NULL);
+	if (t>=CLOSING_TIME)
+	  return 0;
+	
 	if (n != len)
 	  ACE_ERROR_RETURN ((LM_ERROR, "(%P|%t) %p at host %s\n",
 			    "client", this->peer_name_), -1);

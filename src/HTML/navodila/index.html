@@ -8,7 +8,7 @@
 
   <body bgcolor="#ffe8b8"> 
 
-    <table cellspacing="0" cellpading="0" cols="100,*">
+    <table cellspacing="0" cellpading="0" >
       <tr>
 	<td valign="top">
 	  <table width="80" bgcolor="lightblue"> 
@@ -18,34 +18,55 @@
 		  <tr>
 		    <td>
 		      <font size="-1"> 
-			<a href="/" target="_top">Prva stran</a>
+			<a href="../">Prva stran</a>
 		      </font>
 
 		  <tr>
 		    <td>
 		      <font size="-1"> 
-			<a href="/pregled/">Teèajnica</a>
+			<a href="../pregled/">Teèajnica</a>
 		      </font>
+		<tr>
+		  <td>
+		    <font size="-1"> 
+		      <a href="../stat/">Grafi</a>
+		    </font>
+
 		  <tr>
 		    <td>
 		      <font size="-1"> 
-			<a href="/registracija.html">Registracija</a>
+			<a href="../registracija.html">Registracija</a>
 		      </font>
 		  <tr>
 		    <td>
 		      <font size="-1"> 		      
-			<a href="/narocila/">Trgovanje</a>
+			<a href="../narocila/">Trgovanje</a>
 		      </font>
 		  <tr>
 		    <td>
 		      <font size="-1"> 
-			<a href="/stanje/">Stanje na raèunu</a>
+			<a href="../stanje/">Stanje</a>
 		      </font>
 		  <tr>
 		    <td>
 		      <font size="-1">
-			<a href="/navodila/">Navodila</a>
+			<a href="../navodila/">Navodila</a>
 		      </font>
+		   <tr>
+		      <td>
+			<font size="-1">
+			   <a href="../spisek.html">Elektronski spisek</a>
+			</font>
+		   <tr>
+		      <td>
+		        <font size="-1">
+			   <a href="../arhiv/">Arhiv spiska</a>
+			</font>
+		    <tr>
+		       <td>
+			 <font size="-1">
+			  <a href="http://www.e5.ijs.si">Dom</a>
+			 </font>
 
 		</table>
 		<br>
@@ -73,6 +94,14 @@
 		Pogodbe so oznaèene s prvimi ¹tirimi èrkami priimka
 		kandidata.
 
+	      <p>
+		<i>Primer:</i> imate pogodbo za prodajo 3 KUCA po
+		52,00. Na volitvah je kandidat dosegel 45,00
+		odstotkov. Va¹ zaslu¾ek je 7*3,00 = 21,00, saj ste
+		KUCA prodali dra¾je, kot pa je njegova cena.
+		Kupec pa ima 21,00 izgube, saj je KUCA
+		kupil predrago.
+
 	      <h2>Odpiranje raèuna</h2>
 
 	      <p>
@@ -81,10 +110,11 @@
 		predsedni¹kih kandidatov. Postopek je <a
 		  href="/registracija.html">tu</a> podrobneje opisan.
 
-	      <h3>Stanje na raèunu</h3>
+	      <h3>Stanje</h3>
 	      
 	      <p>
-		Stanje na raèunu v prvi vrstici ka¾e vsoto kolièin vseh sklenjenih
+		Stanje na raèunu v prvi vrstici ka¾e vsoto kolièin
+		vseh sklenjenih 
 		pogodb za posameznega kandidata. Kolièina za nakupe je
 		pozitivna, za prodaje negativna.  Zadnji stolpec
 		(<b>SIT</b>) je
@@ -92,7 +122,7 @@
 		nasprotnim predznakom.
 
 	      <p>
-		Po odprtju raèuna je stanje v vseh stolpcih enako 0.
+		Po odprtju raèuna je stanje v vseh stolpcih enako 0. 
 
 	      <p>
 		<i>Primer:</i> pri sklenitvi pogodbe za nakup 3 POLJ
@@ -148,11 +178,14 @@
 		polovici so trenutno najbolj¹e ponudbe in
 		povpra¹evanja. Zaslon se osve¾i vsakih 10 sekund.
 	      <p>
-		V spodnji polovici je obrazec za vnos naroèil.  V
-		obrazcu doloèite pogodbo, ali gre za nakup ali
-		prodajo, kolièino in ceno. Kolièina je celo ¹tevilo,
-		omejena je samo s stanjem na raèunu. Cena je realno
-		¹tevilo med 0 in 100.
+		Najbolj¹e ponudbe so najcenej¹e, najbolj¹e
+		povpra¹evanje je tako, ki ponuja najveè. V spodnji
+		vrstici so poravnalne cene v tekoèem dnevu.
+	      <p>
+		V spodnji polovici sta obrazca za vnos naroèil.  V
+		obrazcu doloèite pogodbo, kolièino in ceno. Kolièina
+		je celo ¹tevilo, omejena je samo s stanjem na
+		raèunu. Cena je realno ¹tevilo med 0 in 100.
 	      <p>
 		Ponudbe se ob prejemu uvrstijo v vrsto ponudb,
 		povpra¹evanja pa v vrsto povpra¹evanj.
@@ -187,6 +220,13 @@
 		izpade iz vrste, drugemu naroèilu pa se kolièina
 		ustrezno zmanj¹a.
 
+	      <p>
+		<b>Opomba:</b> sklepate lahko pogodbe za prodajo,
+		èetudi je va¹e stanje za posameznega kandidata enako
+		0. Nobene potrebe ni, da najprej kupujete in potem
+		prodajate. Edina omejitev je opisana <a
+		  href="#omejitev">zgoraj</a>. 
+
 	      <h2>Teèajnica</h2>
 	      
 	      <p>
@@ -199,6 +239,13 @@
 		Najmanj¹a in najveèja cena se doloèita iz sklenjenih
 		pogodb. Obseg je ¹tevilo sklenjenih pogodb.
 
+	      <h2>Elektronski spisek</h2>
+	      
+	      <p>
+		Vpra¹anja o trgovanju lahko naslovite tudi na
+		<a href="mailto:bpk@e5.ijs.si">elektronski
+		  spisek</a>. Prej¹njo razpravo poglejte v <a
+		  href="../arhiv/">arhivu</a>.
     </table>    
   </body>
 </html>

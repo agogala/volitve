@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
+# $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
 #
-# $Id: MakePregled.py 1.12 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
+# $Id: MakePregled.py 1.13 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
 # Naredi dokument pregled.html: zares opravi delo.
 
 import pg95
@@ -15,10 +15,16 @@ import MakeTecaj
 # Imamo kar stalno povezavo z bazo:
 conn = DBConn.db_conn
 
-def CollectCols(list, kol='<td align="right">'):
+def CollectCols(list, kol='<td align="right">', links=''):
     val = ""
-    for l in list:
-	val = val + kol + l + "\n"
+    if links!='':
+	cnt = 1
+	for l in list:
+	    val = val + kol + '<a href=/trg/pogodbe/%s>' % links[cnt] + l + "</a>\n"
+	    cnt = cnt + 1
+    else:
+	for l in list:
+	    val = val + kol + l + "\n"
     return val
 
 def run(srcdir, destdir, templates):
@@ -36,16 +42,29 @@ def run(srcdir, destdir, templates):
 
     tecaj = MakeTecaj.Tecaji('today', 1)
 
+    # Doloèimo ¹tevilo poslov v zadnji uri, max in min ceno v zadnji uri.    
+    db_zadnjaura = conn.query("SELECT papir_id, max(cena), min(cena), count(kolicina) FROM posli WHERE abstime(datetime(datum,ura)) > ('now'::abstime - '1hour'::reltime) GROUP BY papir_id ORDER by papir_id")
+
+    zadnjaura = {}
+    for p in db_zadnjaura:
+	zadnjaura[p[0]] = (p[1],p[2],p[3])
+
     html_head="<thead><tr><th>"
-    html_pon="\n<tbody><tr><th align=left>Ponudbe"
-    html_povp="\n<tr><th align=left>Povpr."
+    html_pon='\n<tbody><tr><th align=left><font color="red">Ponudbe</font>'
+    html_povp='\n<tr><th align=left><font color="blue">Povpr.</font>'
     html_cena="\n<tr><th align=left>Por. cena"
+    html_posl="\n<tr><th align=left>©tevilo"
+    html_max="\n<tr><th align=left>Max. cena"
+    html_min="\n<tr><th align=left>Min. cena"
     vsota=0
     for p in db_pap:
 	html_head=html_head + '<th>' + p[0] + '\n'
 	html_pon = html_pon + '<td align="right">' 
 	html_povp = html_povp + '<td align="right">'
 	html_cena = html_cena + '<td align="right">'
+	html_posl = html_posl + '<td align="right">'
+	html_max = html_max + '<td align="right">'
+	html_min = html_min + '<td align="right">'
 	if ponudbe.has_key(p[0]):	    
 	   html_pon=html_pon + Util.FormatFloat(string.atof(ponudbe[p[0]]))
 	if povpr.has_key(p[0]):
@@ -53,6 +72,10 @@ def run(srcdir, destdir, templates):
 	if tecaj.has_key(p[0]):
 	    html_cena=html_cena + Util.FormatFloat(tecaj[p[0]][0])
 	    vsota = vsota + tecaj[p[0]][0]
+	if zadnjaura.has_key(p[0]):
+	    html_posl = html_posl + zadnjaura[p[0]][2]
+	    html_max = html_max + Util.FormatFloat(string.atof(zadnjaura[p[0]][0]))
+	    html_min = html_min + Util.FormatFloat(string.atof(zadnjaura[p[0]][1]))
 
 ##     FIFO = "<thead><tr><th><th>Ponudba<th>Povpra¹evanje</tr>\n<tbody><tr>\n"
 ##     for p in db_pap:
@@ -68,10 +91,12 @@ def run(srcdir, destdir, templates):
 
     html_head = html_head + '<th>Vsota\n'
     html_cena = html_cena + '<td align="right">' + Util.FormatFloat(vsota)
-    FIFO = html_head + html_pon + html_povp + html_cena
+    FIFO = html_head + html_pon + html_povp + html_cena + html_max + html_min + html_posl
+
     t = time.localtime(time.time())
     datum = time.strftime('%d.%m.%y',t)
     ura = time.strftime('%H:%M',t)
+
 
     # Preberi obrazec:
     templname = srcdir + '/' + templates['Pregled']['ime'] + '.in'
@@ -105,7 +130,7 @@ def updateuser(srcdir, destdir, templates, user):
     usr_ponudbe = conn.query("SELECT oid, papir_id, cena, -kolicina, datum, ura FROM fifo WHERE ponudnik='%s' AND kolicina<0 ORDER BY papir_id, cena, datum, ura" % user)
 
     if len(usr_ponudbe)>0:
-	FIFO = 'Ponudbe:\n<table cellspacing="1" bgcolor="lightblue" border="1">\n'
+	FIFO = '<font color="red">Ponudbe:</font>\n<table cellspacing="1" bgcolor="lightblue" border="1">\n'
 	FIFO = FIFO + "<thead><tr><th>Preklièi<th>Papir<th>Cena<th>Kolièina<th>Datum<th>Ura</tr><tbody>\n"
 	for f in usr_ponudbe:
 	    FIFO = FIFO + MakeUserRow(f)
@@ -116,7 +141,7 @@ def updateuser(srcdir, destdir, templates, user):
     usr_povpr = conn.query("SELECT oid, papir_id, cena, kolicina, datum, ura FROM fifo WHERE ponudnik='%s' AND kolicina>0 ORDER BY papir_id, cena, datum, ura" % user)
     
     if len(usr_povpr)>0:
-	FIFO = FIFO + 'Povpra¹evanje:\n<table cellspacing="1" bgcolor="lightblue" border="1">\n'
+	FIFO = FIFO + '<font color="blue">Povpra¹evanja:</font>\n<table cellspacing="1" bgcolor="lightblue" border="1">\n'
 	FIFO = FIFO + "<tr><th>Preklièi<th>Papir<th>Cena<th>Kolièina<th>Datum<th>Ura</tr>\n"
 	for f in usr_povpr:
 	    FIFO = FIFO + MakeUserRow(f)
@@ -146,23 +171,17 @@ def updateuser(srcdir, destdir, templates, user):
 	    denar = denar + string.atof(f[2])
 	    posli = Util.FormatFloat(string.atof(f[2]))
 
-    # Vsota kolièin:
-    Papirji.append("Vsota")
-    Kolicine.append("%d" % vsota)
-    Cena.append('')
+    # Vsota kolièin in stanje:
+    Papirji2 = ['Vsota', 'SIT']
+    Kolicine2 = ['%d' % vsota, posli]
+    Cena2 = ['', Util.FormatFloat(denar)] 
 
-    # Stanje:
-    Papirji.append("SIT")
-    Kolicine.append(posli)
-    Cena.append(Util.FormatFloat(denar))
-
-    Stanje = "<thead><tr>" + CollectCols(Papirji, "<th>") + "</tr>\n"
-    Stanje = Stanje + "<tbody><tr><th>Kolièina" + CollectCols(Kolicine) + "</tr>\n"
-    Stanje = Stanje + "<tr><th>Por. cena" + CollectCols(Cena) + "</tr>\n"
-
-##     Stanje = "<tr>" + CollectCols(conn.listfields()) + "</tr>\n"
-##     for f in usr_stanje:
-## 	Stanje = Stanje + "<tr>" + CollectCols(f) + "</tr>\n"
+    Stanje = "<thead><tr>" + CollectCols(Papirji, "<th>") 
+    Stanje = Stanje + CollectCols(Papirji2, "<th>") + "</tr>\n"
+    Stanje = Stanje + "<tbody><tr><th>Kolièina" + CollectCols(Kolicine, '<td align="right">', Papirji) 
+    Stanje = Stanje + CollectCols(Kolicine2) + "</tr>\n"
+    Stanje = Stanje + "<tr><th>Por. cena" + CollectCols(Cena) 
+    Stanje = Stanje + CollectCols(Cena2) + "</tr>\n"
 
     (result, userid) = Registrator.UserID(user)
     if result!=0: # Error selecting user!

@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
+ * $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
  *
- * $Id: manager.cpp 1.3 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
+ * $Id: manager.cpp 1.4 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
  *
  * Poganja in nadzira procese. Èe se kak sesuje, ga sku¹a ponovno
  * pognati. O sesutju tudi poroèa.
@@ -206,6 +206,11 @@ int Manager::run_observerd()
 
 int Manager::run_marketd()
 {
+  // Preveri, ali naj trg ¹e teèe:
+  time_t t = time(NULL);
+  if (t>=CLOSING_TIME)
+    return 0;
+
   ACE_Process_Options options;
   options.command_line ("./marketd");
 

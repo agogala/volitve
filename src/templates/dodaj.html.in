@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<!-- $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $ $Id: dodaj.html.in 1.5 Sun, 26 Oct 1997 21:47:33 +0000 andrej $ -->
+<!-- $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $ $Id: dodaj.html.in 1.6 Fri, 21 Nov 1997 17:06:57 +0000 andrej $ -->
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
@@ -8,51 +8,81 @@
 
   <body bgcolor="#ffe8b8"> 
     <hr>
+<center>
+      <table cellspacing="8">
+	<tr>
+	  <td align="center">
+	    <h1><font color="red">Prodaja</font></h1>
+	    <form action="/trg/broker" method=post>
+	    <input type="hidden" name="Vrsta" value="Prodaja">
 
-    <center>
-    <h1>Naročilo</h1>
-
-      <form action="/trg/broker" method=post>
-	<table border="1" bgcolor="lightblue">
-	  <tr><td>
-	      <table cellspacing="4" cellpading="10" >
-		<colgroup>
-		  <cols>
-		  <cols>
-		<tr>
-		  <td valign="baseline">	  
-		    Kandidat:
-		  </td>
-		  <td valign="baseline">
-		    Vrsta:
-		    <input type="radio" name="Vrsta" value="Prodaja" checked="checked">Prodaja
-		    <input type="radio" name="Vrsta" Value="Nakup">Nakup
-		  </td>
-		<tr>
-		  <td rowspan="2">	  
-		    <select name="Papir" size="%(DolzinaPapirjev)s" selected>
-			%(Papirji)s
-		    </select>
-		  </td>
-		  <td valign="top">
-		    Količina:
-		    <input type="text" name="Kolicina" value=1 maxlength=2 size=2>
-		  </td>
-		</tr>
-		<tr>
-		  <td valign="top">
-		    Cena:
-		    <input type="text" name="Cena" value=50 maxlength=5 size=5><br>
-		  </td>
-		</tr>
-		<tr>
-		  <td colspan="2" align="center">
-		    <input type="submit" value="            Dodaj             ">
-		  </td>
-		</tr>
-	      </table>
-	</table>
-      </form>    
+	      <table border="1" bgcolor="lightblue">
+		<tr><td>
+		    <table cellspacing="4" cellpading="10" >		      
+		    <tr>
+		      <td rowspan="2">	  
+			<select name="Papir" size="%(DolzinaPapirjev)s">
+			    %(Papirji)s
+			</select>
+		      </td>
+		      <td valign="top">
+			Količina:
+			<input type="text" name="Kolicina" value=1 maxlength=2 size=2>
+		      </td>		      
+		    </tr>
+		    <tr>
+		      <td valign="top">
+			Cena:
+			<input type="text" name="Cena" value=50 maxlength=5 size=5><br>
+		      </td>
+		    </tr>
+		    <tr>
+		      <td colspan="2" align="center">
+			<input type="submit" value="            Dodaj             ">
+		      </td>
+		    </tr>
+		  </table>
+	    </table>
+	    </form>    
+	<td align="center">
+	  <h1><font color="blue">Nakup</font></h1>
+	  <form action="/trg/broker" method=post>
+	    <input type="hidden" name="Vrsta" value="Nakup">
+	    <table border="1" bgcolor="lightblue">
+	      <tr><td>
+		  <table cellspacing="4" cellpading="10" >
+		    <tr>
+		      <td rowspan="2">	  
+			<select name="Papir" size="%(DolzinaPapirjev)s">
+			    %(Papirji)s
+			</select>
+		      </td>
+		      <td valign="top">
+			Količina:
+			<input type="text" name="Kolicina" value=1 maxlength=2 size=2>
+		      </td>
+		    </tr>
+		    <tr>
+			      <td valign="top">
+			Cena:
+			<input type="text" name="Cena" value=50 maxlength=5 size=5><br>
+		      </td>
+		    </tr>
+		    <tr>
+		      <td colspan="2" align="center">
+			<input type="submit" value="            Dodaj             ">
+		      </td>
+		    </tr>
+		  </table>
+	    </table>
+	  </form>    
+    </table>
+    <br>
+      <font color="red"><b>
+	Trgovanje se zaključi v petek 21. novembra 1997 ob 24:00.
+	</b>
+      </font>
     </center>
+
   </body>
 </html>

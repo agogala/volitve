@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
+# $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
 #
-# $Id: Registrator.py 1.9 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
+# $Id: Registrator.py 1.10 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
 # Se ukvarja z registracijo uporabnikov
 
 import pg95
@@ -17,6 +17,8 @@ db_conn = DBConn.db_conn
 
 # Preveri, èe je hash v bazi:
 def Validate(hash):
+    if admin_cfg.MarketClosed():
+	return AdminConst.Register.MarketClosed
     gethash = db_conn.query(
 	"SELECT email, hash, accessed FROM registracije WHERE hash='%s'" %\
 	hash)
@@ -71,6 +73,8 @@ def EncryptPasswd(passwd):
     return crypt.crypt(passwd, salt)
 
 def Registriraj(hash, username, passwd):
+    if admin_cfg.MarketClosed():
+	return AdminConst.Register.MarketClosed
     # Poi¹èi hash:
     gethash = db_conn.query(
 	"SELECT email, hash, accessed FROM registracije WHERE hash='%s'" %\

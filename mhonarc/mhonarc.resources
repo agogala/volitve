@@ -1,0 +1,175 @@
+<!-- MHonArc definicije za BPK mailing listo -->
+
+<!-- Konverterji: -->
+<CharsetConverters>
+iso-8859-2:-decode-
+windows-1250:win_cs'win2lat2:win_cs.pl
+</CharsetConverters>
+
+<!-- Naslov -->
+<Title>
+Elektronski spisek BPK - urejen po času
+</Title>
+
+<TTitle>
+Elektronski spisek BPK - urejen po vsebini
+</TTitle>
+
+<!-- Več strani -->
+<IDXSIZE>
+100
+</IDXSIZE>
+<MULTIPG>
+
+<!-- Html: -->
+<!-- ****************** Glavna stran -->
+<IdxPgBegin>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
+<TITLE>$IDXTITLE$</TITLE>
+</HEAD>
+<BODY bgcolor="#ffe8b8">
+<H1>$IDXTITLE$</H1>
+</IdxPgBegin>
+
+<ListBegin>
+<UL>
+<LI><A HREF="$TIDXFNAME$">Seznam po vsebini</A></LI>
+</UL>
+$PREVPGLINK$$NEXTPGLINK$
+<HR>
+<UL>
+</ListBegin>
+
+<NextPgLink chop>
+[<A HREF="$NEXTPG$">Naslednja stran</A>]
+</NextPgLink>
+
+<NextPgLinkIA chop>
+[Naslednja stran]
+</NextPgLinkIA>
+
+<PrevPgLink chop>
+[<A HREF="$PREVPG$">Prejšnja stran</A>]
+</PrevPgLink>
+
+<PrevPgLinkIA chop>
+[Prejšnja stran]
+</PrevPgLinkIA>
+
+<LiTemplate>
+<LI><STRONG>$SUBJECT$</STRONG>,<EM>$FROM$
+</LI>
+</LiTemplate>
+
+
+
+<!-- ****************** Thread index -->
+<TIdxPgBegin>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
+<TITLE>$TIDXTITLE$</TITLE>
+</HEAD>
+<BODY bgcolor="#ffe8b8">
+<H1>$TIDXTITLE$</H1>
+</TIdxPgBegin>
+
+<THead>
+<UL>
+<LI><A HREF="$IDXFNAME$">Seznam po času</A></LI>
+</UL>
+$TPREVPGLINK$$TNEXTPGLINK$
+<HR>
+<UL>
+</THead>
+
+<TLiNone>
+<LI><EM>Sporočila ni na voljo</EM>
+</TLiNone>
+
+<TSubjectBeg>
+&lt;Verjetno nadaljevanje&gt;<BR>
+</TSubjectBeg>
+
+<TNextPgLink chop>
+[<A HREF="$TNEXTPG$">Naslednja stran</A>]
+</TNextPgLink>
+
+<TNextPgLinkIA chop>
+[Naslednja stran]
+</TNextPgLinkIA>
+
+<TPrevPgLink chop>
+[<A HREF="$TPREVPG$">Prejšnja stran</A>]
+</TPrevPgLink>
+
+<TPrevPgLinkIA chop>
+[Prejšnja stran]
+</TPrevPgLinkIA>
+
+<!-- ****************** Sporočilo -->
+<MsgPgBegin>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
+<TITLE>$SUBJECTNA:72$</TITLE>
+<LINK REV="made" HREF="mailto:$FROMADDR$">
+</HEAD>
+<BODY bgcolor="#ffe8b8">
+</MsgPgBegin>
+
+<TopLinks>
+<HR>
+$PREVBUTTON$$NEXTBUTTON$$TPREVBUTTON$$TNEXTBUTTON$[<A
+HREF="$IDXFNAME$#$MSGNUM$">Seznam po času</A>][<A
+HREF="$TIDXFNAME$#$MSGNUM$">Seznam po vsebini</A>]
+</TopLinks>
+
+<FolupBegin>
+<dl>
+<dt><strong>Nadaljevanja</strong><dt>
+</FolupBegin>
+ 
+<FolupLiTxt>
+<dd><strong>$SUBJECT$</strong>, <em>$FROMNAME$</em></dd>
+</FolupLiTxt>
+
+<FolupEnd>
+</dl>
+</FolupEnd>
+
+
+<RefsBegin>
+<dl>
+<dt><strong>Odgovori</strong><dt>
+</RefsBegin>
+ 
+<RefsLiTxt>
+<dd><strong>$SUBJECT$</strong>, <em>$FROMNAME$</em></dd>
+</RefsLiTxt>
+
+<RefsEnd>
+</dl>
+</RefsEnd>
+
+<BotLinks>
+<HR>
+<UL>
+$PREVLINK$$NEXTLINK$
+$TPREVLINK$$TNEXTLINK$
+<LI>Seznami:
+<UL>
+<LI><A HREF="$IDXFNAME$#$MSGNUM$">
+<STRONG>Po času</STRONG></A></LI>
+<LI><A HREF="$TIDXFNAME$#$MSGNUM$">
+<STRONG>Po vsebini</STRONG></A></LI>
+</UL>
+</LI>
+</UL>
+</BotLinks>
+

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
+# $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
 #
-# $Id: MakeTecaj.py 1.7 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
+# $Id: MakeTecaj.py 1.8 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
 #
 # Pripravi teèajnico.
 
@@ -183,7 +183,7 @@ def HTMLTecaji(dan='yesterday'):
 ##	else:
 ##	    tb = tb + '<td>\n'
 	tb = tb + '\n'
-    tb = tb + '<tr><th align="left">Vsota<td align="right">%s<td><td><td>%d\n' % (Util.FormatFloat(vsota_t), vsota_o)
+    tb = tb + '<tr><th align="left">Vsota<td align="right">%s<td><td><td align="right">%d\n' % (Util.FormatFloat(vsota_t), vsota_o)
 
     datum = conn.query("SELECT '%s'::date AS datum" % dan)[0][0]
     datum = Util.RewriteDate(datum)

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
+# $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
 #
-# $Id: admin_cfg.py 1.2.2.6 Sat, 08 Nov 1997 07:02:11 +0000 andrej $
+# $Id: admin_cfg.py 1.2.2.7 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
 #
 # Konfiguracija za administracijo:
 
@@ -16,6 +16,7 @@ templates = {"Dodaj": {'dir': '/narocila', 'ime': 'dodaj.html'},
 	     "Pregled": {'dir': '/narocila', 'ime': 'pregled.html'},
 	     "RegisterNew": {'ime': 'register-new.txt'},
 	     "RegisterOld": {'ime': 'register-old.txt'},
+	     "NoRegistration": {'ime': 'no-registration.txt'},
 	     "HTAccess": {'dir': '/uporabniki', 'ime': 'htaccess'},
 	     "Stanje": {'dir': '/uporabniki', 'ime': 'stanje.html'},
 	     "Tecaj": {'dir': '/pregled/tecaji', 'ime': 'tecaj.html'},
@@ -36,3 +37,11 @@ PasswdFile = "/home/andrej/sola/volitve/src/admin/cfg/htpasswd"
 
 def ReadCfg():
     return
+
+# Trgovanje teèe, ali je ustavljeno:
+_ClosingTime = 880153200 # 'Sat Nov 22 00:00:00 1997' :-)))
+#_ClosingTime = 880117058 # 'Sat Nov 22 00:00:00 1997' :-)))
+
+def MarketClosed():
+    import time
+    return time.time()>=_ClosingTime

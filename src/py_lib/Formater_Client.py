@@ -1,4 +1,4 @@
-# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
+# $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
 #
 # $Id: Formater_Client.py 1.1 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
 #

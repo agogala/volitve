@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.26 Sat, 08 Nov 1997 08:02:11 +0100 andrej $
+# $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
 #
-# $Id: RegisterReply.py 1.6 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
+# $Id: RegisterReply.py 1.7 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
 # Pripravi vse za registracijo - direktorij + odgovor
 
 import rfc822
@@ -41,28 +41,32 @@ def run(srcdir, templates):
     replyto = message.getheader(ekey)
     name, email = message.getaddr(ekey)
     email = NormalizeAddress(email)
-    
-    pg95.set_defbase(admin_cfg.DB_Name)
-    conn = pg95.connect()
-    exists = conn.query("SELECT * FROM stranke WHERE EMail='%s'" % email)
-    if exists:
-	filekey = 'RegisterOld'
-    else:
-	filekey = 'RegisterNew'
 
-    # Preveri, èe ¾e obstaja tak e-mail v ¹e ne izkori¹èenih registracijah
-    rereg = conn.query("SELECT hash FROM Registracije WHERE EMail='%s'" % email)
-    
-    if rereg:
-	urlkey = rereg[0][0]
+    if admin_cfg.MarketClosed():
+	filekey = 'NoRegistration'
+	urlkey = ''
     else:
-	urlkey = MakeUrl(replyto)
-	conn.query(
-	    "INSERT INTO Registracije (EMail, hash, accessed) " + 
-	    "VALUES ('%s', '%s', 'f')" % \
-	    (email, urlkey))
+	pg95.set_defbase(admin_cfg.DB_Name)
+	conn = pg95.connect()
+	exists = conn.query("SELECT * FROM stranke WHERE EMail='%s'" % email)
+	if exists:
+	    filekey = 'RegisterOld'
+	else:
+	    filekey = 'RegisterNew'
 
-    url = 'http://rozle.e5.ijs.si:4242/registriraj/' + urlkey
+	# Preveri, èe ¾e obstaja tak e-mail v ¹e ne izkori¹èenih registracijah
+	rereg = conn.query("SELECT hash FROM Registracije WHERE EMail='%s'" % email)
+    
+	if rereg:
+	    urlkey = rereg[0][0]
+	else:
+	    urlkey = MakeUrl(replyto)
+	    conn.query(
+		"INSERT INTO Registracije (EMail, hash, accessed) " + 
+		"VALUES ('%s', '%s', 'f')" % \
+		(email, urlkey))
+
+	url = 'http://rozle.e5.ijs.si:4242/registriraj/' + urlkey
 
     # Preberi obrazec:
     templname = srcdir + '/' + templates[filekey]['ime'] 

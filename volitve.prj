@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 3 3)
 (Project-Description "Blagovna borza predsednikov")
-(Project-Version volitve 0 26)
-(Parent-Version volitve 0 25)
+(Project-Version volitve 0 27)
+(Parent-Version volitve 0 26)
 
-(Version-Log "Izracun pogodb")
+(Version-Log "Statistika. arhiv liste, zaustavljanje programa.")
 (New-Version-Log "")
-(Checkin-Time "Sat, 08 Nov 1997 08:02:11 +0100")
+(Checkin-Time "Fri, 21 Nov 1997 18:06:57 +0100")
 (Checkin-Login andrej)
 (Populate-Ignore ("~$" "^apache" "^Proto/" "^Tmp/"
                   "^test-cpp/" ".obj/"  ".shobj/" "^Bookmarks"
@@ -21,7 +21,7 @@
 ;; Files added by populate at Thu, 28 Aug 1997 18:56:22 +0200:
 
 ;; Kronologija in TODO
-  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.25 644))
+  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.26 644))
   (TODO (volitve/32_TODO 1.3 644))
   (tips (volitve/41_tips 1.1 644))
 
@@ -82,31 +82,47 @@
   (src/Observer/Makefile (volitve/17_Makefile 1.9 644))
 
 ;; HTML:
-  (src/HTML/index.html (volitve/18_index.html 1.4.2.7 644))
+  (src/HTML/index.html (volitve/18_index.html 1.4.2.8 644))
   (src/HTML/pregled/.htaccess (volitve/b/9_.htaccess 1.5 644))
   (src/HTML/pregled/index.html (volitve/b/12_index.html 1.6 644))
   (src/HTML/pregled/kazalo.html (../narocila/kazalo.html) :symlink)
-  (src/HTML/registracija.html (volitve/b/15_index.html 1.1.2.7 644))
-  (src/HTML/narocila/kazalo.html (volitve/b/17_kazalo.htm 1.4 644))
+  (src/HTML/registracija.html (volitve/b/15_index.html 1.1.2.8 644))
+  (src/HTML/narocila/kazalo.html (volitve/b/17_kazalo.htm 1.5 644))
   (src/HTML/narocila/index.html (volitve/b/18_index.html 1.8 644))
-  (src/HTML/narocila/dodaj.html (volitve/b/19_dodaj.html 1.8 644))
-  (src/HTML/narocila/pregled.html (volitve/b/10_pregled.ht 1.18 644))
+  (src/HTML/narocila/dodaj.html (volitve/b/19_dodaj.html 1.9 644))
+  (src/HTML/narocila/pregled.html (volitve/b/10_pregled.ht 1.19 644))
   (src/HTML/uporabniki/.htaccess (volitve/c/0_.htaccess 1.2 644))
   (src/HTML/stanje/kazalo.html (../narocila/kazalo.html) :symlink)
   (src/HTML/stanje/index.html (volitve/c/0_index.html 1.3 644))
-  (src/HTML/navodila/index.html (volitve/c/21_index.html 1.3 644))
+  (src/HTML/navodila/index.html (volitve/c/21_index.html 1.4 644))
   (src/HTML/napaka/404.html (volitve/b/0_404.html 1.1 644))
   (src/HTML/napaka/401.html (volitve/c/0_401.html 1.1 644))
   (src/HTML/napaka/500.html (volitve/c/24_500.html 1.1 644))
   (src/HTML/pregled/tecaji () :directory)
-  (src/HTML/spisek.html (volitve/b/0_spisek.html 1.1 644))
+  (src/HTML/spisek.html (volitve/b/0_spisek.html 1.2 644))
+;; Statistika:
+  (src/HTML/stat/vsota.html (volitve/b/0_vsota.html 1.1 644))
+  (src/HTML/stat/przd.html (volitve/c/0_przd.html 1.1 644))
+  (src/HTML/stat/napoved.html (volitve/c/30_napoved.ht 1.1 644))
+  (src/HTML/stat/hourly.html (volitve/c/31_hourly.htm 1.1 644))
+  (src/HTML/stat/daily.html (volitve/c/32_daily.html 1.1 644))
+  (src/HTML/stat/cene.html (volitve/c/33_cene.html 1.1 644))
+  (src/HTML/stat/grafi.html (volitve/c/34_grafi.html 1.1 644))
+  (src/HTML/stat/index.html (volitve/c/35_index.html 1.1 644))
+  (src/HTML/stat/kazalo.html (../narocila/kazalo.html) :symlink)
+
+;; Zaustavljen HTML:
+  (src/2HTML/spisek.html (volitve/c/36_spisek.htm 1.1 644))
+  (src/2HTML/narocila/kazalo.html (volitve/c/37_kazalo.htm 1.1 644))
+  (src/2HTML/navodila/index.html (volitve/c/38_index.html 1.1 644))
+  (src/2HTML/index.html (volitve/c/39_index.html 1.1 644))
 
 ;;Primer:
   (src/HTML/uporabniki/147736/.htaccess (volitve/c/2_.htaccess 1.1 644))
   (src/HTML/narocila/.htaccess (volitve/c/3_.htaccess 1.5 644))
 
 ;; Konfiguracija
-  (src/include/Config.h (volitve/21_Config.h 1.15 644))
+  (src/include/Config.h (volitve/21_Config.h 1.16 644))
 
 ;; Skupne zadeve
   (src/include/StrSet.h (volitve/b/48_StrSet.h 1.2 744))
@@ -120,7 +136,7 @@
   (src/Market/Market.h (volitve/26_Request.h 1.6 644))
   (src/Market/Market.cpp (volitve/27_Request.cp 1.14 644))
   (src/Market/Market_Handler.h (volitve/47_Market_Han 1.2 644))
-  (src/Market/Market_Handler.cpp (volitve/28_Market_Han 1.9 644))
+  (src/Market/Market_Handler.cpp (volitve/28_Market_Han 1.10 644))
   (src/Market/Request.cpp (volitve/48_Request.cp 1.10 644))
   (src/Market/Request.h (volitve/49_Request.h 1.7 644))
   (src/Market/Makefile (volitve/29_Makefile 1.14 644)) 
@@ -133,7 +149,7 @@
   (src/Market/Stanje.cpp (volitve/c/0_Stanje.cpp 1.2 644))
 
 ;; Manager:
-  (src/Manager/manager.cpp (volitve/b/44_manager.cp 1.3 644))
+  (src/Manager/manager.cpp (volitve/b/44_manager.cp 1.4 644))
   (src/Manager/Makefile (volitve/b/45_Makefile 1.2 644))
   (src/Manager/initfmt.py (../Observer/initfmt.py) :symlink)
   (src/Manager/initadm.py (../Admin/initadm.py) :symlink)
@@ -185,7 +201,7 @@
   (src/py_lib/Redirect.py (volitve/c/5_Redirect.p 1.4 644))
   (src/py_lib/Uporabniki.py (volitve/c/6_Uporabniki 1.5 644))
   (src/py_lib/Admin_Client.py (volitve/c/18_Admin_Clie 1.1 644))
-  (src/py_lib/Reg_Client.py (volitve/b/3_Reg_Client 1.5 644))
+  (src/py_lib/Reg_Client.py (volitve/b/3_Reg_Client 1.6 644))
   (src/py_lib/Preklic.py (volitve/c/0_Preklic.py 1.4 644))
 ;; Gesla:
   (src/admin/cfg/htpasswd (volitve/c/7_.htpasswd 1.9 644))
@@ -225,31 +241,32 @@
   (src/admin/mk-pogodbe.py (volitve/c/27_mk-pogodbe 1.1 755))
 
 ;; Konfiguracija
-  (src/admin/cfg/admin_cfg.py (volitve/b/27_admin_cfg. 1.2.2.6 644))
+  (src/admin/cfg/admin_cfg.py (volitve/b/27_admin_cfg. 1.2.2.7 644))
 ;; Knji¾nica
-  (src/admin/lib/MakePregled.py (volitve/b/28_MakePregle 1.12 644))
+  (src/admin/lib/MakePregled.py (volitve/b/28_MakePregle 1.13 644))
   (src/admin/lib/Observer.py (volitve/b/29_Observer.p 1.2 644))
   (src/admin/lib/MakeDodaj.py (volitve/b/30_MakeDodaj. 1.5 644))
-  (src/admin/lib/RegisterReply.py (volitve/c/9_RegisterRe 1.6 644))
-  (src/admin/lib/Registrator.py (volitve/c/19_Registrato 1.9 644))
+  (src/admin/lib/RegisterReply.py (volitve/c/9_RegisterRe 1.7 644))
+  (src/admin/lib/Registrator.py (volitve/c/19_Registrato 1.10 644))
   (src/admin/lib/Util.py (volitve/51_Util.py 1.4 644))
-  (src/admin/lib/AdminConst.py (volitve/b/46_AdminConst 1.1 644))
+  (src/admin/lib/AdminConst.py (volitve/b/46_AdminConst 1.2 644))
   (src/admin/lib/DBConn.py (volitve/c/20_DBConn.py 1.1 644))
-  (src/admin/lib/MakeTecaj.py (volitve/c/0_MakeTecaj.py 1.7 644))
+  (src/admin/lib/MakeTecaj.py (volitve/c/0_MakeTecaj.py 1.8 644))
   (src/admin/lib/Okroznica.py (volitve/c/25_Okroznica. 1.1 644))
-  (src/admin/lib/MakePogodbe.py (volitve/c/28_MakePogodb 1.1 644))
+  (src/admin/lib/MakePogodbe.py (volitve/c/28_MakePogodb 1.2 644))
 
 ;; Obrazci:
-  (src/templates/pregled.html.in (volitve/b/31_pregled.ht 1.7 644))
-  (src/templates/dodaj.html.in (volitve/b/32_dodaj.html 1.5 644))
+  (src/templates/pregled.html.in (volitve/b/31_pregled.ht 1.8 644))
+  (src/templates/dodaj.html.in (volitve/b/32_dodaj.html 1.6 644))
   (src/templates/register-old.txt (volitve/c/10_register-o 1.2 644))
   (src/templates/register-new.txt (volitve/c/11_register-n 1.4 644))
   (src/templates/stanje.html.in (volitve/b/0_stanje.html.in 1.6 644))
   (src/templates/htaccess.in (volitve/b/1_htaccess.i 1.5 644))
-  (src/templates/reg_form.html.in (volitve/b/47_reg_form.h 1.5 644))
+  (src/templates/reg_form.html.in (volitve/b/47_reg_form.h 1.6 644))
   (src/templates/tecaj.html.in (volitve/b/0_tecaj.html.in 1.3 644))
   (src/templates/tecaji.html.in (volitve/b/0_tecaji.html.in 1.1 644))
-  (src/templates/pogodbe.html.in (volitve/c/29_pogodbe.ht 1.1 644))
+  (src/templates/pogodbe.html.in (volitve/c/29_pogodbe.ht 1.2 644))
+  (src/templates/no-registration.txt (volitve/c/40_no-registr 1.1 644))
 
 ;; HTTP konfiguracija:
   (apache_1.2.4/conf/httpd.conf (volitve/b/33_httpd.conf 1.2 644))
@@ -257,6 +274,22 @@
   (apache_1.2.4/conf/access.conf (volitve/b/35_access.con 1.2 644))
   (apache_1.2.4/conf/mime.types (volitve/b/36_mime.types 1.1 644))
 
+;; Arhiv mailing liste:
+;; Tole se uporablja
+  (mhonarc/bpk.res (volitve/c/41_bpk.res 1.1 666))
+  (mhonarc/win_cs.pl (volitve/c/42_win_cs.pl 1.1 666))
+;; Tole so bili poskusi:
+  (mhonarc/mhonarc.resources (volitve/c/43_mhonarc.re 1.1 666))
+  (mhonarc/bpk1.res (volitve/c/44_bpk1.res 1.1 666))
+
+;; Izraèun statistik:
+  (src/stat/perf.pl (volitve/c/45_perf.pl 1.1 755))
+  (src/stat/przd.par (volitve/c/46_przd.par 1.1 644))
+  (src/stat/cene.par (volitve/c/47_cene.par 1.1 644))
+  (src/stat/vsota.par (volitve/c/48_vsota.par 1.1 644))
+  (src/stat/mkgraph.py (volitve/c/49_mkgraph.py 1.1 755))
+  (src/stat/mkgraph.pl (volitve/c/50_mkgraph.pl 1.1 755))
+  (src/stat/mkpie.pl (volitve/c/51_mkpie.pl 1.1 755))
 
 )
 (Merge-Parents)

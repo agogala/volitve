@@ -9,7 +9,19 @@
     <h1>Pogodbe: %(username)s; %(paper)s </h1>
     
     <p>
-      Izraèunano dne <b>%(Datum)s</b> ob <b>%(Ura)s</b>.
+      <table>
+      <tr>
+	  <td>Povpreèna cena nakupov: 
+	  <td align="right"><font color="blue"><b>%(nakupi)s</b></font>.
+	<tr>
+	  <td>Povpreèna cena prodaj:
+	  <td align="right"><font color="red"><b>%(prodaje)s</b></font>.
+	</tr>
+	<tr>
+	  <td>    <a href="/trg/vhod">Nazaj</a>
+
+    </table>
+    <hr>
     <p>
     <table border="1" cellspacing="1" bgcolor="lightblue" frame="box" rules="Groups">
       %(Pogodbe)s
