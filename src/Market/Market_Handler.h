@@ -1,21 +1,19 @@
 /* -*- C++ -*- */
 /*
- * $ProjectId$
+ * $ProjectHeader: volitve D.2 Wed, 03 Sep 1997 07:39:11 +0200 andrej $
  *
- * $Id: market.h 1.1 Thu, 28 Aug 1997 17:15:39 +0000 andrej $
+ * $Id: Market_Handler.h 1.1 Wed, 03 Sep 1997 05:39:11 +0000 andrej $
  *
- * Blagovna borza. Glavni program.
+ * Blagovna borza. Market_Handler sprejema in dela z odjemalci.
  *
  */
 
 #if !defined (MARKET_H)
 #define MARKET_H
 
-#include <ace/Get_Opt.h>
 #include <ace/Acceptor.h>
 #include <ace/LSOCK_Acceptor.h>
 #include <ace/Synch.h>
-#include <ace/Singleton.h>
 
 #include "Config.h"
 
@@ -52,14 +50,6 @@ private:
   char peer_name_[MAXHOSTNAMELEN + 1];
   // Host we are connected to.
 };
-
-// Our Reactor Singleton.
-typedef ACE_Singleton<ACE_Reactor, ACE_Null_Mutex>
-	REACTOR;
-
-// Our ACE_Test_and_Set Singleton.
-typedef ACE_Singleton<ACE_Test_and_Set <ACE_Null_Mutex, sig_atomic_t>, ACE_Null_Mutex>
-	QUIT_HANDLER;
 
 // Specialize a Market Acceptor.
 typedef ACE_Acceptor <Market_Handler, ACE_LSOCK_ACCEPTOR>

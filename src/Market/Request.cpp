@@ -1,136 +1,134 @@
+/* -*- C++ -*- */
 /*
- * $ProjectId$
+ * $ProjectHeader: volitve D.2 Wed, 03 Sep 1997 07:39:11 +0200 andrej $
  *
- * $Id: Request.cpp 1.2 Thu, 28 Aug 1997 21:38:14 +0000 andrej $
+ * $Id: Request.cpp 1.1 Wed, 03 Sep 1997 05:39:11 +0000 andrej $
  *
- * Zahtevek.
+ * Zahtevek za blagovno borzo.
+ *
  */
 
-// Prièakujemo GNU String razred:
 #include <String.h>
-#include <ace/OS.h>
-
+#include <ace/Log_Msg.h>
 #include "Request.h"
-#include "Config.h"
+#include "Query.h"
 
 Request::Request()
 {
-  this->LastRC_ = 0;
-  this->db = NULL;
+  Valid_ = false;
+}
+
+Request::Request(char * rs)
+{
+
+  Valid_ = this->Read_i(rs) == 0;
+
+}
+
+// Preberi iz trenutne vrstice:
+Request::Request(PgDatabase &db)
+{
+  Valid_ = this->Read_i(db);
 }
 
 Request::~Request()
 {
-  delete this->db;
 }
 
-int Request::LastRC()
+bool Request::IsValid(PgDatabase &db) const
 {
-  return this->LastRC_;
-}
+  if (this-> Valid_) {
+    ((Request*)this)->Valid_ = (0 < this-> Cena_) && (this-> Cena_ <= 100);
+    if (!this-> Valid_)
+      ACE_ERROR_RETURN((LM_ERROR, "Price %f out of range\n", this->Cena_),-1);
+    // Preveri kolièino: (to je potrebno ¹e razmisliti)
 
-char *Request::Result()
-{
-  return this->Result_;
-}
-
-int Request::open()
-{
-  // Tole bi moral prebrati iz parametrov
-  db = new PgDatabase(DB_NAME);
-
-  if ( db->ConnectionBad() ) {
-    ACE_ERROR_RETURN((LM_ERROR, "Error %s connecting to database %s\n", 
-		      db->ErrorMessage(), DB_NAME), -1); 
+    // Itd...
   }
+  return Valid_;
+}
+  
+int Request::Store(PgDatabase &db) const
+{
+  // Èe ni veljaven zahtevek, zavrnemo shranjevanje...
+  // Kako enostavno bi to bilo, èe bi lahko vrgel kak exception!
+  if (!IsValid(db)) {
+    ACE_ERROR_RETURN((LM_ERROR, "Request not valid. Can't save\n"), -1);
+  }
+
+  Query insert(
+    "INSERT INTO zahtevki"
+    "VALUES ('%s', %f, %d, %s, TODAY, NOW, %s)");
+
+  int status;
+
+  if ((status = db.Exec
+      (insert.Params(NULL, this->Vrsta_, this->Cena_, this->Kolicina_, 
+		     this->Papir_ID_, this->Ponudnik_))) != PGRES_COMMAND_OK) {
+    ACE_ERROR_RETURN((LM_ERROR, "Error inserting requests: %d, %s\n",
+		      status, db.ErrorMessage()),-1);
+  }
+
+  return 0;
 }
 
-/* Procedura, ki vse opravi: */
-
-int Request::Add(char *Line)
+const char *Request::Ponudnik() const
 {
-  /* Preberi zahtevek .. tale del bi moral prenesti v poseben objekt,
-     ki bi se znal narediti tudi iz rezultata querija. */
+  return this->Ponudnik_;
+}
 
+const char *Request::Papir_ID() const
+{
+  return this->Papir_ID_;
+}
+
+// Vrne negativno vrednost, ce je nakup, pozitivno ce je prodaja.
+unsigned int Request::Kolicina() const
+{
+  return this->Kolicina_;
+}
+
+double Request::Cena() const
+{
+  return this->Cena_ * (this->Vrsta_ == 'N' ? -1 : 1) ;
+}
+
+// Vrne razlog zakaj zadeva ni veljavna
+/*char *Request::LastError() const
+{
+  return this->LastError_;
+}*/
+
+int Request::Read_i(PgDatabase &db)
+{
+  return 0;
+}
+
+int Request::Read_i(char * rs)
+{
+
+  Valid_ = false;
+
+  // Err, tole je precej kruto narejeno:
   enum { KIND = 0, SYMBOL = 1, SHARES = 2, PRICE = 3, ACCOUNT = 4 };
 
   String words[5];
 
   // 0    1      2      3     4
   // KIND SYMBOL SHARES PRICE ACCOUNT
-  int n = split(String(Line), words, 5, String(" "));
+  int n = split(String(rs), words, 5, String(" "));
 
   if (n!=5) {
-    LastRC_ = -1;
-    ACE_ERROR_RETURN((LM_ERROR, "Wrong number of words\n"), LastRC_);
+    ACE_ERROR_RETURN((LM_ERROR, "Wrong number of words"), -1);
   }
   
   // BUY ali SELL
   // Zaenkrat uporabljamo kar tele funkcije - ne glede na Locale ipd.
-  int Shares = atoi(words[SHARES].chars());      // Kolièina
-  double Price = atof(words[PRICE].chars());     // Cena
+  this->Kolicina_ = atoi(words[SHARES].chars());      // Kolièina
+  this->Cena_ = atof(words[PRICE].chars());     // Cena
+  this->Vrsta_ = words[KIND][0] == 'B' ? 'N' : 'P';
+  strcpy(this->Ponudnik_, words[ACCOUNT].chars());
+  strcpy(this->Papir_ID_, words[SYMBOL].chars());
 
-  ACE_DEBUG((LM_DEBUG, "Request: V: %s, P: %s, S: %d, C: %f, R: %s\n",
-	     words[KIND].chars(), words[SYMBOL].chars(), 
-	     Shares, Price, words[ACCOUNT].chars()));
-  
-  /* Preveri veljavnost */
-  
-  if ((Price<=0) || (Price>100)) {
-    ACE_ERROR_RETURN((LM_ERROR, "Price %f out of range\n", Price), -1);
-  }
-  
-  /* Preveriti je treba ¹e: ali je papir veljaven, ali je raèun veljaven,
-     ali ima raèun ¹e dovolj odprtih pozicij, ¹e kaj?*/ 
-
-  /* Dodaj */
-
-  /* Poi¹èemo vse kandidate: */
-
-  char MatchFIFO[] = 
-    "SELECT *\n"
-    "FROM fifo\n"
-    "WHERE\n"
-    "     vrsta = '%s' and\n"
-    "     cena <= %f and\n"
-    "     papir_id = '%s'\n"
-    "ORDER BY\n"
-    "     cena, ura";
-
-  int status;
-  
-  char statement[8192]; // 8K je omejitev v PostgreSQL, èe se ne motim
-  
-  sprintf(statement, MatchFIFO, "P", Price, words[SYMBOL].chars() );
-
-  cout << statement << endl;
-  
-  if (status =  db->Exec(statement) != PGRES_TUPLES_OK) 
-    ACE_ERROR_RETURN((LM_ERROR, "Error executing query: %d, %s \n",
-		      status, db->ErrorMessage()),-1);
-
-  db->DisplayTuples();
-  
-  char InsertPosli[] = "";
-
-  char DeleteFIFO[] = "";
-
-  char InsertFIFO[] = "";
-
-  for (int i=0; i<db->Tuples() && Shares>0; i++) {
-    /* Sklepaj posle: */
-    
-  } 
-  
-  
-  strcpy(this->Result_, "OK");
-  LastRC_ = 0;
-  return LastRC_;
+  return 0;
 }
-
-#if defined (ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION)
-template class ACE_Singleton<Request, ACE_Null_Mutex>;
-#elif defined (ACE_HAS_TEMPLATE_INSTANTIATION_PRAGMA)
-#pragma instantiate ACE_Singleton<Request, ACE_Null_Mutex>
-#endif /* ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION */
-

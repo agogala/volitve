@@ -7,6 +7,15 @@ CREATE TABLE Fifo
 	Ura		time,
 	Ponudnik	char(10));
 
+CREATE TABLE Zahtevki
+	(Vrsta		char(1),
+	Cena 		float,	
+	Kolicina	int,
+	Papir_ID	char(4),
+	Datum		date,
+	Ura		time,
+	Ponudnik	char(10));
+
 CREATE TABLE Papirji
 	(Papir_ID	char(4));
 

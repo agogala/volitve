@@ -1,43 +1,64 @@
-// -*- C++ -*-
+/* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve D.1 Tue, 02 Sep 1997 07:42:33 +0200 andrej $
+ * $ProjectHeader: volitve D.2 Wed, 03 Sep 1997 07:39:11 +0200 andrej $
  *
- * $Id: Request.h 1.2 Thu, 28 Aug 1997 21:38:14 +0000 andrej $
+ * $Id: Request.h 1.1 Wed, 03 Sep 1997 05:39:11 +0000 andrej $
  *
- * Zahtevek. Nikakor ne bi delal v veè nitnem okolju. Treba premisliti.
+ * Zahtevek za blagovno borzo.
+ *
  */
 
-#if !defined(REQUEST_H)
+#if !defined (REQUEST_H)
 #define REQUEST_H
 
-#include <ace/Synch.h>
-#include <ace/Singleton.h>
 #include <libpq++.h>
+#include "Config.h"
 
-class Request
+class Request 
 {
- public:
+public:
+  // Konstruktorji:
   Request();
+  // Preberi string
+  Request(char * rs);
+  // Preberi iz trenutne vrstice:
+  Request(PgDatabase &db);
   ~Request();
+
+  // Preveri veljavnost (glede na trenutno bazo):
+  bool IsValid(PgDatabase &db) const;
   
-  /* Odpri povezavo z bazo */
-  int open(void);
+  // Preberi iz tabele:
+  int Read(PgDatabase &db);
+  // Shrani v tabelo:
+  int Store(PgDatabase &db) const;
 
-  /* Dodaj zahtevek */
-  int Add(char *Line);
+  // Atributi:
+  const char *Ponudnik() const;
+  const char *Papir_ID() const;
+  // Vrne negativno vrednost, ce je nakup, pozitivno ce je prodaja.
+  unsigned int Kolicina() const;
+  double Cena() const;
 
-  char *Result();
+  // Vrne razlog zakaj zadeva ni veljavna
+  //  char *LastError() const;
 
-  int LastRC();
+private:
+  bool Valid_;
 
- private:
-  int LastRC_;
-  char Result_[256];
-  PgDatabase *db;
+  char Ponudnik_[MAX_PONUDNIK];
+  char Papir_ID_[MAX_PAPIR_ID];
+  unsigned int Kolicina_;
+  double Cena_;
+  char Vrsta_;
+  //  date Datum_;
+  //  time Ura_;
+
+  //  String LastError_;
+
+  // Interne funkcije 
+  int Read_i(PgDatabase &db);
+  int Read_i(char * rs);
 };
 
-// Request singleton
-typedef ACE_Singleton<Request, ACE_Null_Mutex>
-	REQUEST;
-
-#endif /* REQUEST_H */
+#endif REQUEST_H

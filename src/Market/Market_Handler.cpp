@@ -1,7 +1,8 @@
 // Default constructor.
 
-#include "market.h"
+#include "marketd.h"
 #include "Request.h"
+#include "Market.h"
 #include "Notifier.h"
 
 Market_Handler::Market_Handler (void)
@@ -60,10 +61,11 @@ Market_Handler::handle_input (ACE_HANDLE)
 	if (strlen (rs) == n)
 	  {
 	    ACE_DEBUG ((LM_DEBUG, "(%P|%t) Request: length %d content '%s'\n", n, rs));
-	    int rc = REQUEST::instance ()-> Add(rs);
+	    Request req(rs);
+	    int rc = MARKET::instance ()-> Add(req);
 
 	    /* report back */
-	    strcpy(&rs[1], REQUEST::instance ()-> Result());
+	    strcpy(&rs[1], MARKET::instance ()-> Result());
 	    rs[0] = strlen(&rs[1]);
 
 	    this->peer ().send_n ((void *) rs, rs[0]+1, 0);
@@ -110,3 +112,9 @@ Market_Handler::open (void *)
 		"(%P|%t) connected to client %s\n", this->peer_name_));
       return 0;
 }
+
+#if defined (ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION)
+template class ACE_Acceptor<Market_Handler, ACE_LSOCK_ACCEPTOR>;
+#elif defined (ACE_HAS_TEMPLATE_INSTANTIATION_PRAGMA)
+#pragma instantiate ACE_Acceptor<Market_Handler, ACE_LSOCK_ACCEPTOR>
+#endif

@@ -1,15 +1,16 @@
 /*
  * $ProjectId$
  *
- * $Id: market.cpp 1.3 Tue, 02 Sep 1997 05:42:33 +0000 andrej $
+ * $Id: marketd.cpp 1.4 Wed, 03 Sep 1997 05:39:11 +0000 andrej $
  *
  */
 
 #include <ace/INET_Addr.h>
 
-#include "market.h"
+#include "marketd.h"
+#include "Market_Handler.h"
 #include "Notifier.h"
-#include "Request.h"
+#include "Market.h"
 
 class Options
 {
@@ -18,7 +19,7 @@ class Options
 public:
   void parse_args (int argc, char *argv[]);
   char *market_path (void);
-  char *notifier_path (void);
+  //  char *notifier_path (void);
   u_short broadcast_port (void);
 
 private:
@@ -27,60 +28,32 @@ private:
   u_short broadcast_port_;
 };
 
-char 
-*Options::market_path (void)
-{
-  return this->market_path_;
-}
-
-char
-*Options::notifier_path (void)
-{
-  return this->notifier_path_;
-}
-
-u_short
-Options::broadcast_port (void)
-{
-  return this->broadcast_port_;
-}
-
-// Parse the command-line options.
-
-void
-Options::parse_args (int argc, char *argv[])
-{
-  this->market_path_ = MARKET_DEFAULT_PATH;
-  this->notifier_path_ = NOTIFIER_DEFAULT_PATH;
-  this->broadcast_port_ = NOTIFIER_DEFAULT_PORT;
-
-  ACE_Get_Opt get_opt (argc, argv, "m:n:");
-
-  for (int c; (c = get_opt ()) != -1; )
-     switch (c)
-       {
-       case 'm':
-	 this->market_path_ = ACE_OS::strdup (get_opt.optarg);
-	 break;
-       case 'n':
-	 this->broadcast_port_ = ACE_OS::atoi (get_opt.optarg);
-	 break;
-       default:
-	 break;
-       }
-}
-
 // Our Options Singleton.
 typedef ACE_Singleton<Options, ACE_Null_Mutex>
 	OPTIONS;
 
+// Funkcija, ki vse naredi. Posebej je zato, da lahko na koncu zbri¹emo 
+// socket. (zaenkrat ne znam drugaèe...)
+int ReactorLoop();
+
 int
 main (int argc, char *argv[])
 {
-  // Acceptor factory.
-  Market_Acceptor peer_acceptor;
 
   OPTIONS::instance ()->parse_args (argc, argv);
+  
+  int rc = ReactorLoop();
+
+  // Zbri¹i socket.
+  ACE_OS::unlink(OPTIONS::instance ()->market_path());
+
+}
+
+// Handles all work:
+int ReactorLoop()
+{
+  // Acceptor factory.
+  Market_Acceptor peer_acceptor;
 
   //  Notifier notifier(ACE_INET_Addr (OPTIONS::instance ()->broadcast_port()),
   //  		    OPTIONS::instance ()->broadcast_port());
@@ -89,9 +62,9 @@ main (int argc, char *argv[])
   // the default ACE_Reactor::instance ().
 
   // Pove¾i se z bazo [...] Bolj opisna napaka?
-  if (REQUEST::instance ()->open()==-1)
+  if (MARKET::instance ()->open()==-1)
     ACE_ERROR_RETURN ((LM_ERROR, 
-		       "Error opening Database connection\n"), -1);
+		       "Error opening database connection\n"), -1);
 
   if (peer_acceptor.open
       (ACE_UNIX_Addr (OPTIONS::instance ()->market_path ()),
@@ -146,28 +119,67 @@ main (int argc, char *argv[])
   ACE_DEBUG ((LM_DEBUG,
 	      "(%P|%t) shutting down market daemon\n"));
 
-  //  REACTOR::instance ()->close();
-  //peer_acceptor.acceptor.close();
-  //peer_acceptor.close();
-  // Kako drugaèe zbrisati UNIX_socket?
-
-  ACE_OS::unlink(OPTIONS::instance ()->market_path());
-
   return 0;
 }
 
+// Options implementation:
+
+char 
+*Options::market_path (void)
+{
+  return this->market_path_;
+}
+
+/*char
+*Options::notifier_path (void)
+{
+  return this->notifier_path_;
+}*/
+
+u_short
+Options::broadcast_port (void)
+{
+  return this->broadcast_port_;
+}
+
+// Parse the command-line options.
+
+void
+Options::parse_args (int argc, char *argv[])
+{
+  this->market_path_ = MARKET_DEFAULT_PATH;
+  //  this->notifier_path_ = NOTIFIER_DEFAULT_PATH;
+  this->broadcast_port_ = NOTIFIER_DEFAULT_PORT;
+
+  ACE_Get_Opt get_opt (argc, argv, "m:b:");
+
+  for (int c; (c = get_opt ()) != -1; )
+     switch (c)
+       {
+       case 'm':
+	 this->market_path_ = ACE_OS::strdup (get_opt.optarg);
+	 break;
+       case 'b':
+	 this->broadcast_port_ = ACE_OS::atoi (get_opt.optarg);
+	 break;
+       default:
+	 break;
+       }
+}
+
+// Instantiations:
+
 #if defined (ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION)
-template class ACE_Acceptor<Market_Handler, ACE_LSOCK_ACCEPTOR>;
 template class ACE_Singleton<ACE_Reactor, ACE_Null_Mutex>;
 template class ACE_Singleton<ACE_Test_and_Set <ACE_Null_Mutex, sig_atomic_t>, ACE_Null_Mutex>;
 template class ACE_Singleton<Options, ACE_Null_Mutex>;
 template class ACE_Svc_Handler<ACE_LSOCK_STREAM, ACE_NULL_SYNCH>;
 template class ACE_Test_and_Set<ACE_Null_Mutex, sig_atomic_t>;
 #elif defined (ACE_HAS_TEMPLATE_INSTANTIATION_PRAGMA)
-#pragma instantiate ACE_Acceptor<Market_Handler, ACE_LSOCK_ACCEPTOR>
 #pragma instantiate ACE_Singleton<ACE_Reactor, ACE_Null_Mutex>
 #pragma instantiate ACE_Singleton<ACE_Test_and_Set <ACE_Null_Mutex, sig_atomic_t>, ACE_Null_Mutex>
 #pragma instantiate ACE_Singleton<Options, ACE_Null_Mutex>
 #pragma instantiate ACE_Svc_Handler<ACE_LSOCK_STREAM, ACE_NULL_SYNCH>
 #pragma instantiate ACE_Test_and_Set<ACE_Null_Mutex, sig_atomic_t>
 #endif /* ACE_HAS_EXPLICIT_TEMPLATE_INSTANTIATION */
+
