@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
+# $ProjectHeader: volitve 0.21 Tue, 21 Oct 1997 21:26:41 +0200 andrej $
 #
-# $Id: MakePregled.py 1.6 Thu, 09 Oct 1997 13:19:34 +0000 andrej $
+# $Id: MakePregled.py 1.7 Tue, 21 Oct 1997 19:26:41 +0000 andrej $
 # Naredi dokument pregled.html: zares opravi delo.
 
 import pg95
@@ -56,9 +56,6 @@ def run(srcdir, destdir, templates):
 		templates['Pregled']['ime'] 
     Util.MakeTemplate(templname, destname, locals())
 
-def RewriteDate(d):
-    return '%s.%s.%s' % (d[3:5], d[0:2], d[8:10])
-
 def MakeUserRow(f):
     val = "<tr>\n"
     # OID:
@@ -70,7 +67,7 @@ def MakeUserRow(f):
     # Kolièina
     val = val + '<td align="right">\n' + f[3]
     # Datum
-    val = val + '<td>\n' + RewriteDate(f[4])
+    val = val + '<td>\n' + Util.RewriteDate(f[4])
     # Ura
     val = val + '<td>\n' + f[5]
     val = val + "</tr>\n"

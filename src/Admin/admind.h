@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
+ * $ProjectHeader: volitve 0.21 Tue, 21 Oct 1997 21:26:41 +0200 andrej $
  *
  * $Id: admind.h 1.1 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
  *

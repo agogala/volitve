@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 3 3)
 (Project-Description "Blagovna borza predsednikov")
-(Project-Version volitve 0 20)
-(Parent-Version volitve 0 19)
+(Project-Version volitve 0 21)
+(Parent-Version volitve 0 20)
 
-(Version-Log "Dodal managerja. Dodal preklic naroèil. Registracija konèno dela.")
+(Version-Log "Zaklepanje datotek, teèajnica.")
 (New-Version-Log "")
-(Checkin-Time "Sun, 19 Oct 1997 19:07:54 +0200")
+(Checkin-Time "Tue, 21 Oct 1997 21:26:41 +0200")
 (Checkin-Login andrej)
 (Populate-Ignore ("~$" "^apache" "^Proto/" "^Tmp/"
                   "^test-cpp/" ".obj/"  ".shobj/" "^Bookmarks"
@@ -21,7 +21,7 @@
 ;; Files added by populate at Thu, 28 Aug 1997 18:56:22 +0200:
 
 ;; Kronologija in TODO
-  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.19 644))
+  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.20 644))
   (TODO (volitve/32_TODO 1.3 644))
   (tips (volitve/41_tips 1.1 644))
 
@@ -208,17 +208,17 @@
   (src/admin/reg-mail.py (volitve/c/8_reg-mail.p 1.1 755))
   (src/admin/mk-tecaj.py (volitve/b/0_mk-tecaj.py 1.1 775))
 ;; Konfiguracija
-  (src/admin/cfg/admin_cfg.py (volitve/b/27_admin_cfg. 1.2.2.3 644))
+  (src/admin/cfg/admin_cfg.py (volitve/b/27_admin_cfg. 1.2.2.4 644))
 ;; Knji¾nica
-  (src/admin/lib/MakePregled.py (volitve/b/28_MakePregle 1.6 644))
+  (src/admin/lib/MakePregled.py (volitve/b/28_MakePregle 1.7 644))
   (src/admin/lib/Observer.py (volitve/b/29_Observer.p 1.2 644))
   (src/admin/lib/MakeDodaj.py (volitve/b/30_MakeDodaj. 1.4 644))
   (src/admin/lib/RegisterReply.py (volitve/c/9_RegisterRe 1.5 644))
   (src/admin/lib/Registrator.py (volitve/c/19_Registrato 1.6 644))
-  (src/admin/lib/Util.py (volitve/51_Util.py 1.1 664))
+  (src/admin/lib/Util.py (volitve/51_Util.py 1.2 664))
   (src/admin/lib/AdminConst.py (volitve/b/46_AdminConst 1.1 644))
   (src/admin/lib/DBConn.py (volitve/c/20_DBConn.py 1.1 644))
-  (src/admin/lib/MakeTecaj.py (volitve/c/0_MakeTecaj.py 1.1 664))
+  (src/admin/lib/MakeTecaj.py (volitve/c/0_MakeTecaj.py 1.2 664))
 
 ;; Obrazci:
   (src/templates/pregled.html.in (volitve/b/31_pregled.ht 1.3 644))
@@ -228,6 +228,7 @@
   (src/templates/stanje.html.in (volitve/b/0_stanje.html.in 1.4 644))
   (src/templates/htaccess.in (volitve/b/1_htaccess.i 1.3 644))
   (src/templates/reg_form.html.in (volitve/b/47_reg_form.h 1.3 644))
+  (src/templates/tecaj.html.in (volitve/b/0_tecaj.html.in 1.1 664))
 
 ;; HTTP konfiguracija:
   (apache_1.2.4/conf/httpd.conf (volitve/b/33_httpd.conf 1.1 644))

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.20 Sun, 19 Oct 1997 19:07:54 +0200 andrej $
+# $ProjectHeader: volitve 0.21 Tue, 21 Oct 1997 21:26:41 +0200 andrej $
 #
-# $Id: admin_cfg.py 1.2.2.3 Sun, 05 Oct 1997 20:53:12 +0000 andrej $
+# $Id: admin_cfg.py 1.2.2.4 Tue, 21 Oct 1997 19:26:41 +0000 andrej $
 #
 # Konfiguracija za administracijo:
 
@@ -17,7 +17,8 @@ templates = {"Dodaj": {'dir': '/narocila', 'ime': 'dodaj.html'},
 	     "RegisterNew": {'ime': 'register-new.txt'},
 	     "RegisterOld": {'ime': 'register-old.txt'},
 	     "HTAccess": {'dir': '/uporabniki', 'ime': 'htaccess'},
-	     "Stanje": {'dir': '/uporabniki', 'ime': 'stanje.html'}}
+	     "Stanje": {'dir': '/uporabniki', 'ime': 'stanje.html'},
+	     "Tecaj": {'dir': '/pregled', 'ime': 'tecaj.html'}}
 
 # Baza:
 DB_Name = "volitve"
