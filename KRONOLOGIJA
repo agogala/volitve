@@ -1,3 +1,7 @@
+0.9
+Zaèel z registracijo uporabnikov. Zadeva je zaenkrat taka, da mora uporabnik
+poslati po¹to in ko dobi odgovor, lahko dela naprej.
+
 0.8
 Zadevo prevedel na Linuxu.
 Market deamon se na Linuxu sesuva - kaze da je problem z vektorji zahtevkov. 

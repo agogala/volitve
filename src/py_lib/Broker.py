@@ -1,10 +1,11 @@
-# $ProjectHeader: volitve 0.8 Tue, 09 Sep 1997 00:58:50 -2200 andrej $
+# $ProjectHeader: volitve 0.9 Wed, 10 Sep 1997 18:15:50 +0200 andrej $
 #
-# $Id: Broker.py 1.2 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+# $Id: Broker.py 1.3 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
 #
 # Prevede podatke iz obrazca v zahtevek za trg.
 #import Apache
 import sys
+import os
 import cgi
 import Count
 import Market_Client
@@ -19,7 +20,7 @@ def HandleForm(form):
     # Preverimo veljavnost podatkov:
 
     # Polja: Ponudnik je zaèasen
-    fields = ["Papir", "Vrsta", "Kolicina", "Cena", "Ponudnik"]
+    fields = ["Papir", "Vrsta", "Kolicina", "Cena"]
     reqfields = fields
 
     if not CheckForm.CheckForm(form, fields, reqfields):
@@ -42,7 +43,8 @@ def HandleForm(form):
 	
 	cena = string.atof(form["Cena"].value)
 	
-	ponudnik = form["Ponudnik"].value
+	#	ponudnik = form["Ponudnik"].value
+	ponudnik = os.environ["REMOTE_USER"]
 
 	zahtevek = "%(vrsta)s %(papir)s %(kol)s %(cena)s %(ponudnik)s" % locals()
     except: 

@@ -1,0 +1,14 @@
+From: %(serveradmin)s
+To: %(replyto)s
+Subject: Registracija za borzo
+Mime-version: 1.0
+Content-Type: text/plain; charset=iso-8859-2
+Content-transfer-encoding: Quoted-Printable 
+
+Spo=B9tovani,
+
+priklju=E8ite se na URL: %(url)s
+
+Lep pozdrav,
+
+Administrator..

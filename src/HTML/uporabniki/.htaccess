@@ -1,0 +1,19 @@
+# $ProjectHeader: volitve 0.9 Wed, 10 Sep 1997 18:15:50 +0200 andrej $
+#
+# $Id: .htaccess 1.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
+#
+# Apache nastavitve za direktorij uporabniki
+
+AuthUserFile  /home/andrej/sola/volitve/src/py_lib/.htpasswd
+AuthGroupFile /dev/null
+AuthName      "Borza kandidatov"
+AuthType      Basic
+ 
+Options All
+<Limit GET POST PUT>
+require valid-user
+</Limit>
+
+# S tem prepreèimo dostop do tega direktorija:
+RewriteEngine On
+RewriteRule !.+ /trg/vhod 

@@ -1,0 +1,11 @@
+AuthUserFile  /home/andrej/sola/volitve/src/py_lib/.htpasswd
+AuthGroupFile /dev/null
+AuthName      "Borza kandidatov"
+AuthType      Basic
+ 
+Options All
+<Limit GET POST PUT>
+require user LUKA
+</Limit>
+
+allow from all

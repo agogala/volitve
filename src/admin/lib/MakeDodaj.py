@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.8 Tue, 09 Sep 1997 00:58:50 -2200 andrej $
+# $ProjectHeader: volitve 0.9 Wed, 10 Sep 1997 18:15:50 +0200 andrej $
 #
-# $Id: MakeDodaj.py 1.2 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+# $Id: MakeDodaj.py 1.3 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
 # Naredi dokument dodaj.html: zares opravi delo.
 
 import pg95
@@ -16,10 +16,10 @@ def run(srcdir, destdir, templates):
     #    print "Papirji:\n", Papirji
     DolzinaPapirjev=len(db_papirji)
 
-    db_stranke = conn.query("SELECT stranka_id FROM stranke ORDER BY stranka_id")
-    Ponudniki = ""
-    for s in db_stranke:
-	Ponudniki = Ponudniki + "<OPTION>%s\n" % s
+##     db_stranke = conn.query("SELECT stranka_id FROM stranke ORDER BY stranka_id")
+##     Ponudniki = ""
+##     for s in db_stranke:
+## 	Ponudniki = Ponudniki + "<OPTION>%s\n" % s
 #    print "Ponudniki:\n", Ponudniki
 
     # Preberi obrazec:

@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.8 Tue, 09 Sep 1997 00:58:50 -2200 andrej $
+ * $ProjectHeader: volitve 0.9 Wed, 10 Sep 1997 18:15:50 +0200 andrej $
  *
- * $Id: State.h 1.1 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
+ * $Id: State.h 1.1.2.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
  *
  * Hrani informacijo o stanju sprememb. Spremenjen je samo, èe je
  * nova ¹tevilka veèja od prej¹jne.
@@ -10,8 +10,11 @@
 #if !defined(STATE_H)
 #define STATE_H
 
-class State 
+#include <ace/Synch.h>
+
+class State : public ACE_Test_and_Set <ACE_Null_Mutex, sig_atomic_t>
 {
+  /*
  public:
   State();
 
@@ -21,7 +24,7 @@ class State
  private:
   unsigned int val_;
   bool changed_;
-
+  */
 };
 
 #endif // STAT_H

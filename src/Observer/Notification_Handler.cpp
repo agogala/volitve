@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.8 Tue, 09 Sep 1997 00:58:50 -2200 andrej $
+ * $ProjectHeader: volitve 0.9 Wed, 10 Sep 1997 18:15:50 +0200 andrej $
  *
- * $Id: Notification_Handler.cpp 1.1 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
+ * $Id: Notification_Handler.cpp 1.1.2.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
  *
  * Zaznava spremembe na trgu.
  */
@@ -79,7 +79,7 @@ Notification_Handler::handle_input (ACE_HANDLE)
 	if (strlen (buff) == n)
 	  {
 	    ACE_DEBUG ((LM_DEBUG, "(%P|%t) Notification: length %d content '%s'\n", n, buff));
-	    state_->SetVal(ACE_OS::atoi(buff));
+	    state_->set(1);
 	  }
 	else
 	  ACE_ERROR ((LM_ERROR, "(%P|%t) error, strlen(buff) = %d, n = %d\n",

@@ -1,8 +1,8 @@
 // -*- C++ -*-
 /* 
- * $ProjectHeader: volitve 0.8 Tue, 09 Sep 1997 00:58:50 -2200 andrej $
+ * $ProjectHeader: volitve 0.9 Wed, 10 Sep 1997 18:15:50 +0200 andrej $
  *
- * $Id: Config.h 1.7 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+ * $Id: Config.h 1.8 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
  *
  * Konfiguracija.
 */
@@ -30,7 +30,7 @@
 
 /* Velikosti polj: */
 // Papirji:
-#define MAX_PAPIR_ID 4
+#define MAX_PAPIR_ID 8
 
 // Velikost raèunov:
 #define MAX_PONUDNIK 10

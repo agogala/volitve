@@ -1,0 +1,13 @@
+# -*- python -*-
+# $ProjectHeader: volitve 0.9 Wed, 10 Sep 1997 18:15:50 +0200 andrej $
+#
+# $Id: vhod 1.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
+#
+# cgi skript, ki preusmeri uporabnika na njegovo stran
+
+import cgi
+import Redirect
+
+# Preberi zahtevek
+form = cgi.FieldStorage()
+Redirect.HandleRequest(form)

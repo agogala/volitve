@@ -1,14 +1,14 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.8 Tue, 09 Sep 1997 00:58:50 -2200 andrej $
+ * $ProjectHeader: volitve 0.9 Wed, 10 Sep 1997 18:15:50 +0200 andrej $
  *
- * $Id: State.cpp 1.1 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
+ * $Id: State.cpp 1.1.2.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
  *
  * Hrani informacijo o stanju sprememb. Spremenjen je samo, èe je
  * nova ¹tevilka veèja od prej¹jne.
  */
 
 #include "State.h"
-
+/*
 State::State()
 {
   val_ = 0;
@@ -25,3 +25,4 @@ int State::Changed()
 {
   return changed_;
 }
+*/
