@@ -1,4 +1,4 @@
-<!-- $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $ $Id: reg_form.html.in 1.4 Mon, 03 Nov 1997 13:25:50 +0000 andrej $ -->
+<!-- $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $ $Id: reg_form.html.in 1.5 Tue, 04 Nov 1997 18:56:32 +0000 andrej $ -->
     <h1>Registracija</h1>
 
     <table>
@@ -13,7 +13,7 @@
 		  <table cellspacing="1" cellpadding="10">		    
 		    <tr>		      
 		      <td>Ime:
-		      <td align="right"><input type="text" name="username">
+		      <td align="right"><input type="text" name="username" maxlength="10">
 		    <tr>
 		      <td>Geslo: 
 		      <td align="right"><input type="password" name="passwd">
@@ -29,7 +29,7 @@
 	    </table>
 	  </form>	  
 	<td valign="top">
-	  Pri vnosu uporabljajte le èrke iz angle¹ke abecede, t.j. ne uporabljajte ¹umnikov. Èe je kdo ¾e uporabil enako ime, se bo obrazec pojavil ¹e enkrat.
+	  Pri vnosu uporabljajte le èrke iz angle¹ke abecede, t.j. ne uporabljajte ¹umnikov. Ime je omejeno na 10 èrk. Èe je kdo ¾e uporabil enako ime, se bo obrazec pojavil ¹e enkrat.
 	  <br>
 	  Geslo vnesite dvakrat zaradi preverjanja.
     </table>

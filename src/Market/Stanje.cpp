@@ -1,7 +1,7 @@
 /* 
- * $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
+ * $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
  *
- * $Id: Stanje.cpp 1.1 Fri, 03 Oct 1997 15:45:58 +0000 andrej $
+ * $Id: Stanje.cpp 1.2 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
  *
  * Stanje stranke in hramba le teh.
  */
@@ -41,6 +41,7 @@ Stanje& Stanje::operator=(const Stanje& s)
 int
 Stanje::Read(PgDatabase &db, const char *User_ID)
 {
+  delete User_ID_;
   User_ID_ = new char[strlen(User_ID)+1];
   strcpy(User_ID_, User_ID);
 
@@ -65,6 +66,7 @@ Stanje::Read(PgDatabase &db, const char *User_ID)
     buff = new char[MAX_PAPIR_ID+1];
     strcpy(buff, (char *)db.GetValue(i, indPapir_ID));
     rstrip(buff);
+    erase(buff);
     double kol =  atof(db.GetValue(i, indKolicina));
     value_type val(buff, kol);
     insert(val);
@@ -130,6 +132,14 @@ Stanje::Spremeni(PgDatabase &db, const char* Papir_ID,
     "      stranka_id='%s'";
 
   // Papir:
+#if defined(DEBUG)
+  cout << UpdateStanje.Params
+			  (NULL, 
+			   (double)Kolicina,
+			   Papir_ID,
+			   User_ID_) << endl;
+#endif
+
   if ((!db.ExecCommandOk(UpdateStanje.Params
 			  (NULL, 
 			   (double)Kolicina,
@@ -140,6 +150,14 @@ Stanje::Spremeni(PgDatabase &db, const char* Papir_ID,
   }
 
   // Denar:
+#if defined(DEBUG)
+  cout << UpdateStanje.Params
+			  (NULL, 
+			   -(double)Kolicina * Cena,
+			   denar_ID, 
+			   User_ID_) << endl;
+#endif
+
   if ((!db.ExecCommandOk(UpdateStanje.Params
 			  (NULL, 
 			   -(double)Kolicina * Cena,
@@ -167,13 +185,26 @@ ShrambaStanj::Get(PgDatabase &db, const char* User_ID)
 {
   iterator i;
 
-  if ((i=find(User_ID)) == end()) {
-    Stanje *s = new Stanje;
-    if (s->Read(db, User_ID)<0)
-      return end();
-    return insert(value_type(User_ID, s)).first;
-  } else
-    return i;
+#if defined(DEBUG)
+  cout << "Shramba: " << User_ID << endl;
+#endif
+
+  if ((i=find(User_ID)) != end()) 
+    if (!strcmp(((*i).second)->User_ID(), User_ID)) {
+#if defined(DEBUG)
+      cout << "** V shrambi" << endl;
+#endif
+      return i;
+    }
+#if defined(DEBUG)
+  cout << "** Nov" << endl;
+#endif
+
+  Stanje *s = new Stanje;
+  if (s->Read(db, User_ID)<0)
+    return end();
+  
+  return insert(value_type(User_ID, s)).first;
 }
 
 Stanje dummyStanje;

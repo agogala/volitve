@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
+# $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
 #
-# $Id: Broker.py 1.7 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
+# $Id: Broker.py 1.8 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
 #
 # Prevede podatke iz obrazca v zahtevek za trg.
 #import Apache
@@ -69,9 +69,9 @@ def HandleForm(form):
 		
 	
 	#	ponudnik = form["Ponudnik"].value
-	ponudnik = os.environ["REMOTE_USER"]
+	ponudnik = os.environ["REMOTE_USER"][:10]
 
-	zahtevek = "%(vrsta)s %(papir)s %(kol)s %(cena)s %(ponudnik)s" % locals()
+	zahtevek = '%(vrsta)s %(papir)s %(kol)s %(cena)s "%(ponudnik)s"' % locals()
     except: 
 	# Tule bi moral poroèati kaj je narobe:
 	return FormatResponse.FormatResponse(

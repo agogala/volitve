@@ -1,3 +1,14 @@
+0.25
+Izognil sem se shrambi stanj.
+Odpravil nekaj napak pri uporabnikih (pozabil sem, da sem omejil dolzino na 10 znakov).
+Dodatni problemi s presledki pri uporabniskih imenih.
+Manjsi popravki pri racunanju tecajnice.
+Poravnalne cene so sedaj v pregledu.
+Pri stanju se ne racuna vec tecajnice, le pri pregledu. Racunamo na to, da bo 
+vedno azurna.
+Dodal debug nacin v Config.h in marketd - tako lahko teceta dva marketa hkrati.
+Dodal okroznico.
+
 0.24
 Popravil napake v omejevanju.
 Dvignil omejitev na 25.

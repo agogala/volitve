@@ -11,7 +11,7 @@ va¹ kljuè je
 
 %(hash)s
 
-Vpi=B9ite ga v obrazec na spletni strani
+Vpi¹ite ga v obrazec na spletni strani
 <http://borza.e5.ijs.si/registracija.html> in pritisnite tipko
 Naprej. Na naslednji strani izpolnite uporabni¹ko ime in geslo. Po
 izpolnitvi obrazca, se bo odprla trgovalna stran.

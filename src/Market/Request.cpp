@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
+ * $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
  *
- * $Id: Request.cpp 1.9 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
+ * $Id: Request.cpp 1.10 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
@@ -177,6 +177,7 @@ int Request::Store(PgDatabase &db)
       "       papir_id, 'today' AS datum,\n"
       "       'now' AS ura, ponudnik,\n"
       "       't' AS preklic\n"
+      "FROM fifo\n"
       "WHERE oid=%s";
 
     if (!db.ExecCommandOk
@@ -248,12 +249,14 @@ int
 Request::Omeji(PgDatabase &db)
 {
   // Preveri napake [...]
-  Stanje *s;
-  s = (*(STANJA::instance() ->Get(db, Ponudnik_))).second;
+  Stanje *s = new Stanje;
+  s->Read(db, Ponudnik_);
+  //  s = (*(STANJA::instance() ->Get(db, Ponudnik_))).second;
 
   // Zaznamek o spremembi se shrani drugje
   Kolicina_ = s->Omeji(db, Papir_ID_, Kolicina_);
 
+  delete s;
   return 0;
 }
   

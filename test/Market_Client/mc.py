@@ -5,24 +5,29 @@ import string
 import time
 import sys
 
+def send(sock, r):
+    sock.send(chr(len(r)) + r)
+    response = sock.recv(1024)
+    print "Response was: %s" % response
+
+
 HOST="rozle"
 PORT=5001
 
 sock = socket(AF_UNIX, SOCK_STREAM)
 
-sock.connect("/tmp/market")
+sock.connect("/tmp/market-d")
 
 sock.setsockopt(SOL_SOCKET, SO_KEEPALIVE, 1)
 
-b="BUY KUCA 5 58 miha"
+send(sock, "BUY KUCA 4 50 Tomo")
 
-s="BUY KUCA 2 60.1 miha"
+#send(sock, "SELL KUCA 72 1 Mitja")
 
-r="SELL KOVA 1 9.0 andrej"
+#send(sock, "SELL PERS 72 25 Mitja")
 
-sock.send(chr(len(r)) + r)
-response = sock.recv(1024)
-print "Response was: %s" % response
+send(sock, "BUY PERS 5 25 Bostjan")
+
 
 ## while 1:
 ##     sock.send(chr(len(s)) + s)

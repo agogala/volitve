@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
-# $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
+# $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
 #
-# $Id: Makefile 1.12 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
+# $Id: Makefile 1.13 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
 #
 # Makefile za market deamon.
 # 
@@ -37,6 +37,10 @@ INCLDIRS += -I$(PG_ROOT)/include
 LDLIBS += -lpq++ -lpq -lg++ -lstdc++ -lbb
 
 LDFLAGS += -L$(PG_ROOT)/lib -L../lib 
+
+ifeq ($(DEBUG),1)
+CCFLAGS += -DDEBUG
+endif
 
 #LIBS 	+= /usr/local/lib/ccmalloc.o
 LIBS	+= .obj/Stanje.o

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
+# $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
 #
-# $Id: MakePregled.py 1.10 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
+# $Id: MakePregled.py 1.11 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
 # Naredi dokument pregled.html: zares opravi delo.
 
 import pg95
@@ -10,6 +10,7 @@ import DBConn
 import Registrator
 import string
 import time
+from MakeTecaj import Tecaji
 
 # Imamo kar stalno povezavo z bazo:
 conn = DBConn.db_conn
@@ -33,17 +34,23 @@ def run(srcdir, destdir, templates):
 
     db_pap = conn.query("SELECT papir_id FROM papirji ORDER BY papir_id")
 
+    tecaj = Tecaji('today', 1)
+
     html_head="<thead><tr><th>"
-    html_pon="<tbody><tr><th align=left>Ponudbe"
-    html_povp="<tr><th align=left>Povpra¹evanja"
+    html_pon="\n<tbody><tr><th align=left>Ponudbe"
+    html_povp="\n<tr><th align=left>Povpra¹evanja"
+    html_cena="\n<tr><th align=left>Por. cena"
     for p in db_pap:
 	html_head=html_head + '<th>' + p[0] + '\n'
 	html_pon = html_pon + '<td align="right">' 
 	html_povp = html_povp + '<td align="right">'
+	html_cena = html_cena + '<td align="right">'
 	if ponudbe.has_key(p[0]):	    
 	   html_pon=html_pon + Util.FormatFloat(string.atof(ponudbe[p[0]]))
 	if povpr.has_key(p[0]):
 	    html_povp=html_povp + Util.FormatFloat(string.atof(povpr[p[0]]))
+	if tecaj.has_key(p[0]):
+	    html_cena=html_cena + Util.FormatFloat(tecaj[p[0]][0])
 
 ##     FIFO = "<thead><tr><th><th>Ponudba<th>Povpra¹evanje</tr>\n<tbody><tr>\n"
 ##     for p in db_pap:
@@ -57,13 +64,19 @@ def run(srcdir, destdir, templates):
 ## 	    pov = ""
 ## 	FIFO = FIFO + '<tr>\n<th align="left">%s\n<td align="right">%s\n<td align="right">%s\n</tr>\n' % (p[0], pon, pov)
 
-    FIFO = html_head + html_pon + html_povp
+    FIFO = html_head + html_pon + html_povp + html_cena
+    t = time.localtime(time.time())
+    datum = time.strftime('%d.%m.%y',t)
+    ura = time.strftime('%H:%M',t)
+
 
     # Preberi obrazec:
     templname = srcdir + '/' + templates['Pregled']['ime'] + '.in'
     destname = destdir + templates['Pregled']['dir'] + '/' + \
 		templates['Pregled']['ime'] 
-    Util.MakeTemplate(templname, destname, locals())
+    Util.MakeTemplate(templname, destname, {'FIFO':FIFO,
+					    'datum':datum,
+					    'ura':ura})
 
 def MakeUserRow(f):
     val = "<tr>\n"
@@ -83,7 +96,8 @@ def MakeUserRow(f):
     return val
 
 def updateuser(srcdir, destdir, templates, user):
-    from MakeTecaj import Tecaji
+
+    user = user[:10]
 
     usr_ponudbe = conn.query("SELECT oid, papir_id, cena, -kolicina, datum, ura FROM fifo WHERE ponudnik='%s' AND kolicina<0 ORDER BY papir_id, cena, datum, ura" % user)
 
@@ -112,7 +126,7 @@ def updateuser(srcdir, destdir, templates, user):
     Papirji = ['']
     Kolicine = []
     Cena = []
-    tecaj = Tecaji('today', 1)
+    tecaj = Tecaji('today')
     denar = 0
     for f in usr_stanje:
 	if string.strip(f[1])<>"denar":

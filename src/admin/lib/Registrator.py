@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
+# $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
 #
-# $Id: Registrator.py 1.7 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
+# $Id: Registrator.py 1.8 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
 # Se ukvarja z registracijo uporabnikov
 
 import pg95
@@ -46,7 +46,7 @@ def UserID(user):
     if _USERMAP.has_key(user):
 	result = _USERMAP[user]
     else:
-	list = db_conn.query("SELECT oid FROM stranke WHERE stranka_id='%s'" % user)
+	list = db_conn.query("SELECT oid FROM stranke WHERE stranka_id='%s'" % user[:10])
 	if len(list)==0:
 	    return (AdminConst.UserID.NoUser, "")
 	result = list[0][0]

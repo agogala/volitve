@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
+ * $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
  *
- * $Id: Notifier.cpp 1.6 Fri, 26 Sep 1997 16:28:00 +0000 andrej $
+ * $Id: Notifier.cpp 1.7 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
  *
  * Po¹lji broadcast, èe se je zgodila kaka sprememba na trgu.
  */
@@ -89,9 +89,11 @@ int Notifier::notify (const char *user)
   if (!opened)
     ACE_ERROR_RETURN((LM_ERROR, "Notifier not opened\n"), -1);
   
-  char msg[NOTIFIER_MESSAGE_LENGTH+1] = "Change ";
+  char msg[NOTIFIER_MESSAGE_LENGTH+1] = "Change \"";
 
-  strncpy(msg + 7, user, NOTIFIER_MESSAGE_LENGTH - 7);
+  strncpy(msg + 8, user, NOTIFIER_MESSAGE_LENGTH - 8);
+
+  strcpy(msg + strlen(msg), "\"");
 
   ACE_DEBUG ((LM_DEBUG,
 		"(%P|%t) Handle output: %s\n", msg));

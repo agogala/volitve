@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
+ * $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
  *
- * $Id: Market.cpp 1.13 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
+ * $Id: Market.cpp 1.14 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
  *
  * Trg. Zna dodajati zahtevke.
  */
@@ -170,11 +170,7 @@ int Market::Add(Request &req, strset *userset = NULL)
     // AddLog()...
     int ReqKolicina = req.Kolicina();
 
-    ACE_DEBUG((LM_DEBUG, "Kolièina: %d\n", ReqKolicina));
-
     req.Omeji(*db);
-
-    ACE_DEBUG((LM_DEBUG, "Omejena kolièina: %d\n", req.Kolicina()));
       
     // Ime stranke:
     char *ime;
@@ -208,15 +204,11 @@ int Market::Add(Request &req, strset *userset = NULL)
 	}
 	
 	req.Spremeni(0);
-	ACE_DEBUG((LM_DEBUG, "Celo naroèilo\n"));
 
       } else {
 	Kolicina = abs(vecreq[i]->Kolicina());
 	req.Spremeni(req.Kolicina() + vecreq[i]->Kolicina());
 	ReqKolicina += vecreq[i]->Kolicina();
-
-	ACE_DEBUG((LM_DEBUG, "Del naroèila, kolièina: %d\n",ReqKolicina));
-	ACE_DEBUG((LM_DEBUG, "Omejena kolièina: %d\n",req.Kolicina()));
 
 	if (error = (!db->ExecCommandOk(DeleteFIFO.Params
 					(NULL, vecreq[i]->ID())))) {
@@ -253,26 +245,31 @@ int Market::Add(Request &req, strset *userset = NULL)
 	    break;
 	  }
 
-	  Stanje *st;
-	  st = (*(STANJA::instance() ->Get(*db, buy->Ponudnik()))).second;
-  
+	  Stanje *st = new Stanje;
+	  st->Read(*db, buy->Ponudnik());
+	  //	  st = (*(STANJA::instance() ->Get(*db, buy->Ponudnik()))).second;
+	  
 	  if (error = 
 	      (st->Spremeni(*db, buy->Papir_ID(), Kolicina, 
 			    vecreq[i]->Cena())<0)) {
 	    ACE_ERROR((LM_ERROR, "Error changing buyer's stanje: %s\n",
 		       db->ErrorMessage()));
+	    delete st;
 	    break;
 	  }
-
-	  st = (*(STANJA::instance() ->Get(*db, sell->Ponudnik()))).second;
+	  
+	  st->Read(*db, sell->Ponudnik());
+	  //	  st = (*(STANJA::instance() ->Get(*db, sell->Ponudnik()))).second;
 	  if (error = 
 	      (st->Spremeni(*db, sell->Papir_ID(), -Kolicina, 
 			    vecreq[i]->Cena())<0)) {
 	    ACE_ERROR((LM_ERROR, "Error changing seller's stanje: %s\n",
 		       db->ErrorMessage()));
+	    delete st;
 	    break;
 	  }
 
+	  delete st;
 	  // Shrani ime v mno¾ico:
 	  if (userset!=NULL) {
 	    // Kupec:
@@ -303,11 +300,6 @@ int Market::Add(Request &req, strset *userset = NULL)
       "       papir_id, datum, ura, ponudnik\n"
       "FROM zahtevki\n"
       "WHERE oid=%s";
-
-    ACE_DEBUG((LM_DEBUG, "========\n"));
-    ACE_DEBUG((LM_DEBUG, "Kolièina: %d\n", ReqKolicina));
-    ACE_DEBUG((LM_DEBUG, "Omejena kolièina: %d\n", req.Kolicina()));
-
 
     if ((!error) && (req.Kolicina()!=0)) {
       if (error = (!db->ExecCommandOk(InsertFIFO.Params

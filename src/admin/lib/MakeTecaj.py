@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
+# $ProjectHeader: volitve 0.25 Tue, 04 Nov 1997 19:56:32 +0100 andrej $
 #
-# $Id: MakeTecaj.py 1.5 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
+# $Id: MakeTecaj.py 1.6 Tue, 04 Nov 1997 18:56:32 +0000 andrej $
 #
 # Pripravi teèajnico.
 
@@ -30,7 +30,7 @@ def IzracunajTecaj(dan='yesterday'):
 	    "min(cena) as MinCena,\n" + 
 	    "max(cena) as MaxCena,\n" +
 	    "count(kolicina) AS obseg,\n" +
-	    "sum(float8(kolicina) * cena) AS promet\n" +
+	    "sum(kolicina) AS promet\n" +
 	    "FROM posli\n" +
 	    "WHERE datum='%(dan)s' and kupec!=prodajalec\n" +
 	    "GROUP BY papir_id") % {'dan': dan})
@@ -46,28 +46,29 @@ def IzracunajTecaj(dan='yesterday'):
 		db_manjkajo.remove((f[1],))
 		vstavil = 1
 	# Izraèunamo ¹e preostale teèaje:
-	manjkajo = '('
-	for p in db_manjkajo:
-	    manjkajo = manjkajo + "'%s'" % p[0] + ','
-	manjkajo = manjkajo[:-1] + ')'
-	stari_tecaji = conn.query((
-	    "SELECT max(datum) as datum,\n" +
-	    "papir_id\n" +
-	    "FROM Tecajnica\n" +
-	    "WHERE datum<'%(dan)s' and\n" + 
-	    "papir_id in " + manjkajo + "\n" +
-	    "GROUP BY papir_id\n" +
-	    "ORDER BY papir_id") % {'dan':dan})
+	if len(db_manjkajo)>0:
+	    manjkajo = '('
+	    for p in db_manjkajo:
+		manjkajo = manjkajo + "'%s'" % p[0] + ','
+	    manjkajo = manjkajo[:-1] + ')'
+	    stari_tecaji = conn.query((
+		"SELECT max(datum) as datum,\n" +
+		"papir_id\n" +
+		"FROM Tecajnica\n" +
+		"WHERE datum<'%(dan)s' and\n" + 
+		"papir_id in " + manjkajo + "\n" +
+		"GROUP BY papir_id\n" +
+		"ORDER BY papir_id") % {'dan':dan})
 	
-	for st in stari_tecaji:
-	    if st[0]<>'':
-		conn.query(
-		    ("INSERT INTO Tecajnica\n" +
-		    "SELECT '%s'::date,\n" +
-		    "papir_id, tecaj\n" +
-		    "FROM Tecajnica\n" +
-		    "WHERE datum='%s'\n" +  
-		    "AND papir_id='%s'")  % (dan,st[0],st[1]))
+	    for st in stari_tecaji:
+		if st[0]<>'':
+		    conn.query(
+			("INSERT INTO Tecajnica\n" +
+			 "SELECT '%s'::date,\n" +
+			 "papir_id, tecaj\n" +
+			 "FROM Tecajnica\n" +
+			 "WHERE datum='%s'\n" +  
+			 "AND papir_id='%s'")  % (dan,st[0],st[1]))
 	conn.query("commit")
     except:
 	conn.query("rollback")
