@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.7 Mon, 08 Sep 1997 17:37:41 +0200 andrej $
+ * $ProjectHeader: volitve 0.8 Tue, 09 Sep 1997 00:58:50 -2200 andrej $
  *
- * $Id: observerd.cpp 1.4 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
+ * $Id: observerd.cpp 1.5 Tue, 09 Sep 1997 22:58:50 +0000 andrej $
  *
  * Observer deamon. 
  */
@@ -36,7 +36,7 @@ main (int argc, char *argv[])
   else if (REACTOR::instance ()->schedule_timer
 	   (&formater,
 	    NULL,
-	    ACE_Time_Value(30),
+	    ACE_Time_Value(1),
 	    ACE_Time_Value(30)) == -1)
     ACE_ERROR_RETURN((LM_ERROR,
 		      "can'(%P|%t) can't register with reactor\n"), -1);

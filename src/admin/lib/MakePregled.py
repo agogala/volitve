@@ -1,4 +1,4 @@
-# $ProjectHeader: volitve 0.7 Mon, 08 Sep 1997 17:37:41 +0200 andrej $
+# $ProjectHeader: volitve 0.8 Tue, 09 Sep 1997 00:58:50 -2200 andrej $
 #
 # $Id: MakePregled.py 1.3 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
 # Naredi dokument pregled.html: zares opravi delo.

@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.7 Mon, 08 Sep 1997 17:37:41 +0200 andrej $
+ * $ProjectHeader: volitve 0.8 Tue, 09 Sep 1997 00:58:50 -2200 andrej $
  *
- * $Id: VectorRequest.cpp 1.2 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+ * $Id: VectorRequest.cpp 1.3 Tue, 09 Sep 1997 22:58:50 +0000 andrej $
  *
  * Implementacija enostavnega vektorja -- STL, ACE in g++ na Rozletu
  * ne gredo skupaj.
@@ -12,7 +12,10 @@
 
 VectorRequest::VectorRequest(unsigned int size)
 {
-  content = new Request[size];
+  if (size!=0)
+    content = new Request[size];
+  else
+    content = NULL;
   Size_ = size;
   Filled_ = 0;
 }
@@ -41,6 +44,5 @@ Request VectorRequest::operator[](unsigned int i)
     return content[i];
   else // Sicer pa vrnemo kar zadnjega ... kako lahko vrnem napako?
     return content[Filled_-1];
-    
 }
 

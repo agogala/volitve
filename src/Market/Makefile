@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
-# $ProjectHeader: volitve 0.7 Mon, 08 Sep 1997 17:37:41 +0200 andrej $
+# $ProjectHeader: volitve 0.8 Tue, 09 Sep 1997 00:58:50 -2200 andrej $
 #
-# $Id: Makefile 1.7 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
+# $Id: Makefile 1.8 Tue, 09 Sep 1997 22:58:50 +0000 andrej $
 #
 # Makefile za market deamon.
 # 
@@ -37,7 +37,9 @@ LDLIBS += -lpq++ -lpq -lg++
 LDFLAGS += -L$(PG_ROOT)/lib 
 
 # Tole potrebujemo samo zaradi debugiranja na Solarisu.
+ifeq ($(OS),SunOS)
 LDFLAGS += -R$(ACE_ROOT)/ace
+endif
 
 INCLDIRS += -I../include
 
@@ -71,6 +73,7 @@ include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 .obj/Request.o .shobj/Request.so: Request.cpp Request.h ../include/Config.h Query.h
 .obj/VectorRequest.o .shobj/VectorRequest.so: VectorRequest.cpp VectorRequest.h Request.h \
  ../include/Config.h
+.obj/Notifier.o .shobj/Notifier.so: Notifier.cpp marketd.h Notifier.h ../include/Config.h
 .obj/Query.o .shobj/Query.so: Query.cpp Query.h
 
 # IF YOU PUT ANYTHING HERE IT WILL GO AWAY

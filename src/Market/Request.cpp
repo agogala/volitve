@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.7 Mon, 08 Sep 1997 17:37:41 +0200 andrej $
+ * $ProjectHeader: volitve 0.8 Tue, 09 Sep 1997 00:58:50 -2200 andrej $
  *
- * $Id: Request.cpp 1.2 Thu, 04 Sep 1997 02:15:14 +0000 andrej $
+ * $Id: Request.cpp 1.3 Tue, 09 Sep 1997 22:58:50 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
@@ -17,6 +17,11 @@
 Request::Request()
 {
   Valid_ = false;
+  ACE_OS::memset(&ID_, '\0', sizeof(ID_));
+  ACE_OS::memset(&Ponudnik_, '\0', sizeof(Ponudnik_));
+  ACE_OS::memset(&Papir_ID_, '\0', sizeof(Papir_ID_));
+  Kolicina_ = 0;
+  Cena_ = 0;
 }
 
 Request::Request(const char * rs)
@@ -31,6 +36,21 @@ Request::Request(PgDatabase &db, const int tup_num)
 {
   Valid_ = this->Read_i(db, tup_num) == 0;
 }
+
+/*
+Request::Request(Request &req)
+{
+  ACE_OS::strcpy(Ponudnik_, req.Ponudnik());
+  ACE_OS::strcpy(Papir_ID_, req.Papir_ID());
+  
+  Kolicina_ = req.Kolicina();
+  Cena_ = req.Cena();
+
+  Valid_ = req.Valid_;
+
+  ACE_OS::strcpy(ID_, req.ID_);
+}
+*/
 
 Request::~Request()
 {
@@ -178,6 +198,8 @@ int Request::Read_i(const char * rs)
   //  this->Vrsta_ = words[KIND][0] == 'B' ? 'N' : 'P';
   ACE_OS::strcpy(this->Ponudnik_, words[ACCOUNT].chars());
   ACE_OS::strcpy(this->Papir_ID_, words[SYMBOL].chars());
+
+  ACE_OS::memset(&ID_, '\0', sizeof(ID_));
 
   return 0;
 }

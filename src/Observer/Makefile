@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
-# $ProjectHeader: volitve 0.7 Mon, 08 Sep 1997 17:37:41 +0200 andrej $
+# $ProjectHeader: volitve 0.8 Tue, 09 Sep 1997 00:58:50 -2200 andrej $
 #
-# $Id: Makefile 1.3 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
+# $Id: Makefile 1.4 Tue, 09 Sep 1997 22:58:50 +0000 andrej $
 #
 # Makefile za opazovalca.
 #----------------------------------------------------------------------------
@@ -37,9 +37,16 @@ LDFLAGS  += .obj/config.o -L$(PYTHON_ROOT)/lib/python1.4/config -lModules -lPyth
 INCLDIRS += -I$(PYTHON_ROOT)/include/python1.4 -I$(PYTHON_ROOT)/lib/python1.4/config
 
 #Postgres:
-LDLIBS += -lpq++ -lpq -lg++
+LDLIBS  += -lpq++ -lpq -lg++
 LDFLAGS += -L$(PG_ROOT)/lib 
 
+#Linux:
+ifeq ($(OS),Linux)
+LDLIBS  += -lreadline -ltermcap
+LDFLAGS += -rdynamic
+endif
+
+#LDFLAGS += $(platf_ldflags)
 
 #----------------------------------------------------------------------------
 #	Include macros and targets

@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve 0.7 Mon, 08 Sep 1997 17:37:41 +0200 andrej $
+ * $ProjectHeader: volitve 0.8 Tue, 09 Sep 1997 00:58:50 -2200 andrej $
  *
- * $Id: Request.h 1.2 Thu, 04 Sep 1997 02:15:14 +0000 andrej $
+ * $Id: Request.h 1.3 Tue, 09 Sep 1997 22:58:50 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
@@ -23,6 +23,9 @@ public:
   Request(const char * rs);
   // Preberi iz trenutne vrstice:
   Request(PgDatabase &db, int tup_num);
+  // Naredi kopijo
+  //  Request(Request &req);
+  // Sprosti spomin
   ~Request();
 
   // Preveri veljavnost (glede na trenutno bazo):
