@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
+ * $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
  *
  * $Id: State.cpp 1.1.2.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
  *

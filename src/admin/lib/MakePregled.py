@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
+# $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
 #
-# $Id: MakePregled.py 1.9 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
+# $Id: MakePregled.py 1.10 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
 # Naredi dokument pregled.html: zares opravi delo.
 
 import pg95
@@ -38,8 +38,8 @@ def run(srcdir, destdir, templates):
     html_povp="<tr><th align=left>Povpra¹evanja"
     for p in db_pap:
 	html_head=html_head + '<th>' + p[0] + '\n'
-	html_pon = html_pon + '<td>' 
-	html_povp = html_povp + '<td>'
+	html_pon = html_pon + '<td align="right">' 
+	html_povp = html_povp + '<td align="right">'
 	if ponudbe.has_key(p[0]):	    
 	   html_pon=html_pon + Util.FormatFloat(string.atof(ponudbe[p[0]]))
 	if povpr.has_key(p[0]):
@@ -72,7 +72,7 @@ def MakeUserRow(f):
     #Papir:
     val = val + '<th align="left">\n' + f[1]
     # Cena
-    val = val + '<td align="right">\n' + f[2]
+    val = val + '<td align="right">\n' + Util.FormatFloat(string.atof(f[2]))
     # Kolièina
     val = val + '<td align="right">\n' + f[3]
     # Datum

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
+# $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
 #
-# $Id: MakeTecaj.py 1.4 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
+# $Id: MakeTecaj.py 1.5 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
 #
 # Pripravi teèajnico.
 
@@ -37,38 +37,37 @@ def IzracunajTecaj(dan='yesterday'):
 	vstavil = 0
 	# Pobri¹i prej¹nje teèaje:
 	conn.query("DELETE FROM Tecajnica WHERE datum='%s'" % dan)
+	db_manjkajo = conn.query("SELECT Papir_id FROM Papirji")
 	for f in db_tecaji:
 	    if f[1]<>"":
 		conn.query(
 		    "INSERT INTO Tecajnica\n" + 
 		    "VALUES('%s', '%s', %s, %s, %s, %s, %s)" % f)
+		db_manjkajo.remove((f[1],))
 		vstavil = 1
 	# Izraèunamo ¹e preostale teèaje:
-	if vstavil:
-	    db_manjkajo = conn.query((
-		"SELECT D.papir_id\n" +
-		"FROM Papirji D, Tecajnica D1\n" +
-		"WHERE D.papir_id!=D1.papir_id and D1.datum='%s'\n" +
-		"ORDER BY papir_id") % dan)
-	else:
-	    db_manjkajo = conn.query("SELECT Papir_id FROM Papirji")
 	manjkajo = '('
 	for p in db_manjkajo:
 	    manjkajo = manjkajo + "'%s'" % p[0] + ','
 	manjkajo = manjkajo[:-1] + ')'
-	vrednosti = conn.query((
-	    "SELECT max(datum),\n" +
-	    "papir_id, tecaj\n" +
+	stari_tecaji = conn.query((
+	    "SELECT max(datum) as datum,\n" +
+	    "papir_id\n" +
 	    "FROM Tecajnica\n" +
 	    "WHERE datum<'%(dan)s' and\n" + 
 	    "papir_id in " + manjkajo + "\n" +
-	    "GROUP BY papir_id, tecaj\n" +
+	    "GROUP BY papir_id\n" +
 	    "ORDER BY papir_id") % {'dan':dan})
-	for v in vrednosti:
-	    if v[0]<>'':
+	
+	for st in stari_tecaji:
+	    if st[0]<>'':
 		conn.query(
-		    "INSERT INTO Tecajnica\n" +
-		    "VALUES('%s', '%s', %s)" % (dan,v[1],v[2]))
+		    ("INSERT INTO Tecajnica\n" +
+		    "SELECT '%s'::date,\n" +
+		    "papir_id, tecaj\n" +
+		    "FROM Tecajnica\n" +
+		    "WHERE datum='%s'\n" +  
+		    "AND papir_id='%s'")  % (dan,st[0],st[1]))
 	conn.query("commit")
     except:
 	conn.query("rollback")
@@ -146,7 +145,7 @@ def Tecaji(dan='yesterday', refresh=0):
     return tecaji
 
 def HTMLTecaji(dan='yesterday'):
-    tecaji = Tecaji(dan)
+    tecaji = Tecaji(dan, 1)
     db_pap = conn.query("SELECT papir_id FROM papirji ORDER BY papir_id")
     
 ##     db_odprti = conn.query(
@@ -206,6 +205,7 @@ def run(srcdir, destdir, templates, dan='yesterday'):
     # Seznam vseh tecajnic:
     tdir = os.listdir(destdir + templates['Tecaj']['dir'])
     tdir.sort()
+    tdir.reverse()
     tecajnice = ""
     topdir = templates['Tecaj']['dir']
     for t in tdir:

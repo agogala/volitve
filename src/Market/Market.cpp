@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
+ * $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
  *
- * $Id: Market.cpp 1.12 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
+ * $Id: Market.cpp 1.13 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
  *
  * Trg. Zna dodajati zahtevke.
  */
@@ -168,7 +168,13 @@ int Market::Add(Request &req, strset *userset = NULL)
     Query UpdateFIFO = "UPDATE fifo SET kolicina=%d WHERE oid=%s";
 
     // AddLog()...
+    int ReqKolicina = req.Kolicina();
+
+    ACE_DEBUG((LM_DEBUG, "Kolièina: %d\n", ReqKolicina));
+
     req.Omeji(*db);
+
+    ACE_DEBUG((LM_DEBUG, "Omejena kolièina: %d\n", req.Kolicina()));
       
     // Ime stranke:
     char *ime;
@@ -184,6 +190,7 @@ int Market::Add(Request &req, strset *userset = NULL)
       Request *sell = (req.Kolicina()<0 ? &req : vecreq[i]);
 
       // AddLog()...
+      int VecReqKolicina = vecreq[i]->Kolicina();
       vecreq[i]->Omeji(*db);
       
       // Popravi FIFO:
@@ -193,7 +200,7 @@ int Market::Add(Request &req, strset *userset = NULL)
 	
 	if (error = (!db->ExecCommandOk(UpdateFIFO.Params
 					(NULL, 
-					 vecreq[i]->Kolicina() + req.Kolicina(),
+					 VecReqKolicina + req.Kolicina(),
 					 vecreq[i]->ID())))) {
 	  ACE_ERROR((LM_ERROR, "Error updating FIFO: %s\n", 
 		     db->ErrorMessage()));
@@ -201,11 +208,16 @@ int Market::Add(Request &req, strset *userset = NULL)
 	}
 	
 	req.Spremeni(0);
+	ACE_DEBUG((LM_DEBUG, "Celo naroèilo\n"));
 
       } else {
 	Kolicina = abs(vecreq[i]->Kolicina());
 	req.Spremeni(req.Kolicina() + vecreq[i]->Kolicina());
-	
+	ReqKolicina += vecreq[i]->Kolicina();
+
+	ACE_DEBUG((LM_DEBUG, "Del naroèila, kolièina: %d\n",ReqKolicina));
+	ACE_DEBUG((LM_DEBUG, "Omejena kolièina: %d\n",req.Kolicina()));
+
 	if (error = (!db->ExecCommandOk(DeleteFIFO.Params
 					(NULL, vecreq[i]->ID())))) {
 	  ACE_ERROR((LM_ERROR, "Error deleting from FIFO: %s\n", 
@@ -292,9 +304,14 @@ int Market::Add(Request &req, strset *userset = NULL)
       "FROM zahtevki\n"
       "WHERE oid=%s";
 
+    ACE_DEBUG((LM_DEBUG, "========\n"));
+    ACE_DEBUG((LM_DEBUG, "Kolièina: %d\n", ReqKolicina));
+    ACE_DEBUG((LM_DEBUG, "Omejena kolièina: %d\n", req.Kolicina()));
+
+
     if ((!error) && (req.Kolicina()!=0)) {
       if (error = (!db->ExecCommandOk(InsertFIFO.Params
-				      (NULL, req.Kolicina(), req.ID())))) {
+				      (NULL, ReqKolicina, req.ID())))) {
 	ACE_ERROR((LM_ERROR, "Error inserting into FIFO: %s\n", 
 		   db->ErrorMessage()));
       } 

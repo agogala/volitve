@@ -1,3 +1,10 @@
+0.24
+Popravil napake v omejevanju.
+Dvignil omejitev na 25.
+Dodal vse kandidate.
+Napisal kratka navodila.
+Verzija, ki gre ven...
+
 0.23
 Dodal povezovanje z observerjem tako, da ta sedaj takoj lahko generira
 novo stanje ipd. 

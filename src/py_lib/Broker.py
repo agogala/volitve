@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
+# $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
 #
-# $Id: Broker.py 1.6 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
+# $Id: Broker.py 1.7 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
 #
 # Prevede podatke iz obrazca v zahtevek za trg.
 #import Apache
@@ -11,6 +11,7 @@ import Market_Client
 import CheckForm
 import string
 import FormatResponse
+import cgi_config
 from ErrorText import MarketErrorText
 
 rel_msg = \
@@ -18,8 +19,7 @@ rel_msg = \
 	"Dokument je preseljen na drugo lokacijo"
 rel_title = "Preseljen dokument",
 rel_headers = {'Status' : '302 relocate',
-	       'Location' : '/narocila/pregled.html',
-	       'Window-target': 'pregled'}
+	       'Location' : '/narocila/dodaj.html'}
 
 back_msg = '<hr><a href="/narocila/dodaj.html">Nazaj</a>'
 
@@ -54,9 +54,19 @@ def HandleForm(form):
 	papir = form["Papir"].value
 
 	# Kolièina:
-	kol = string.atoi(form["Kolicina"].value)
-	
-	cena = string.atof(form["Cena"].value)
+	try:
+	    kol = string.atoi(form["Kolicina"].value)
+	except:
+	    return FormatResponse.FormatResponse(
+		"<H1>Napaka</H1> Kolièina nima prave vrednosti." + back_msg)
+
+	try:
+	    cena = string.atof(ReformatFloat(form["Cena"].value))
+	except:
+	    return FormatResponse.FormatResponse(
+		"<H1>Napaka</H1> Cena nima prave vrednosti." + back_msg,
+		"Napaka")
+		
 	
 	#	ponudnik = form["Ponudnik"].value
 	ponudnik = os.environ["REMOTE_USER"]
@@ -66,7 +76,7 @@ def HandleForm(form):
 	# Tule bi moral poroèati kaj je narobe:
 	return FormatResponse.FormatResponse(
 	    "<H1>Napaka</H1>" + \
-	    sys.exc_type + sys.exc_value + sys.exc_traceback,
+	    sys.exc_type,
 	    "Napaka")
 
     #    msg =  "Po¹iljam: %s<P>" % zahtevek 
@@ -87,6 +97,17 @@ def HandleForm(form):
 		    Formater_Client.formater_client.response()
 	    except:
 		pass
+## 	    try:
+## 		f = open(cgi_config.htmldir + '/narocila/pregled.html', "r")
+## 		msg = f.read()
+## 		f.close()
+## 		print "Content-Type: text/html"
+## 		print "Window-target: pregled"
+## 		print "Content-Length: %d" % len(msg)
+## 		print
+## 		print msg
+## 		return
+## 	    except:
 	    msg = rel_msg
 	    title = rel_title
 	    headers = rel_headers
@@ -95,7 +116,7 @@ def HandleForm(form):
 	    try:
 		msg = '<H1>Napaka</H1>\n' + MarketErrorText[response] + back_msg
 	    except:
-		msg = '<H1>Napaka</H1>\n Pri¹lo je do neznane napake: %s' % response + back_msg
+		msg = '<H1>Napaka</H1>\n Pri¹lo je do napake: %s' % response + back_msg
     except:
 	#	pass
 	msg = "<H1>Zaprt trg</H1>\n" + \
@@ -107,3 +128,13 @@ def HandleForm(form):
 	msg, title, headers
 	)
     
+def ReformatFloat(s):
+    r = ''
+    for i in s:
+	if i=='.':
+	    r = r + ','
+	elif i==',':
+	    r = r + '.'
+	else:
+	    r = r + i
+    return r

@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<!-- $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $ $Id: pregled.html.in 1.4 Tue, 28 Oct 1997 20:15:29 +0000 andrej $ -->
+<!-- $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $ $Id: pregled.html.in 1.5 Mon, 03 Nov 1997 13:25:50 +0000 andrej $ -->
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2">
@@ -11,12 +11,9 @@
       
       <h1>Najboljša ponudba in povpraševanje</h1>
       
-      <!--      <table border="2" bgcolor="lightblue">
-    <tr><td>-->
       <table border="1" cellspacing="1" bgcolor="lightblue">
-      %(FIFO)s
-    </table>
-      <!--    </table>-->
+%(FIFO)s
+      </table>
 
     </center>
     

@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
+ * $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
  *
- * $Id: Formater.cpp 1.1.2.4 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
+ * $Id: Formater.cpp 1.1.2.5 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
  *
  * Oblikuje HTML datoteke.
  */
@@ -74,22 +74,27 @@ int Formater::handle_timeout(const ACE_Time_Value &,
 int 
 Formater::mkPregled()
 {
+  int rc = 0;
+
   if (!initialized_)
     init();
 
   ACE_DEBUG((LM_DEBUG, "Formatting pregled.\n"));
 
   if (PyRun_SimpleString("MakePregled.run(admin_cfg.tempdir, admin_cfg.htmldir, admin_cfg.templates)")) {
-    ACE_ERROR_RETURN((LM_ERROR, "Error running MakePregled\n"),100);
+    ACE_ERROR((LM_ERROR, "Error running MakePregled\n"));
+    rc = 100;
   }
 
   state_->set(false);
-  return 0;
+  return rc;
 }
 
 int
 Formater::mkUser(const char *User)
 {
+  int rc=0;
+
   if (!initialized_)
     init();
 
@@ -98,8 +103,8 @@ Formater::mkUser(const char *User)
   ACE_OS::sprintf(cmd, "MakePregled.defupdateuser('%s')", User);
   ACE_DEBUG((LM_DEBUG, "Formatting: %s\n", User));
   if (PyRun_SimpleString(cmd)) {
-    ACE_ERROR_RETURN((LM_ERROR, "Error running MakePregled.defupdateuser\n"),
-		     100);
+    ACE_ERROR((LM_ERROR, "Error running MakePregled.defupdateuser\n"));
+    rc = 100;
   }
 
   // Zbri¹i username, èe obstaja v mno¾ici.
@@ -110,7 +115,7 @@ Formater::mkUser(const char *User)
     delete ime;
   }
 
-  return 0;
+  return rc;
 }
 
 // Handler:

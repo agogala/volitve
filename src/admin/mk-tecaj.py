@@ -1,7 +1,7 @@
 #!/net/rozle/export/share/sol/bin/python
-# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
+# $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
 #
-# $Id: mk-tecaj.py 1.1 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
+# $Id: mk-tecaj.py 1.2 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
 # Naredi tecaj.html
 
 import os, sys
@@ -14,8 +14,15 @@ try:
     sys.path = ['.', '../cfg'] + sys.path
     import admin_cfg
     admin_cfg.ReadCfg()
+
+    if len(sys.argv)==2:
+	dan = sys.argv[1]
+    else:
+	dan = 'yesterday'
+
     import MakeTecaj
-    MakeTecaj.run(admin_cfg.tempdir, admin_cfg.htmldir, admin_cfg.templates)
+    MakeTecaj.run(admin_cfg.tempdir, admin_cfg.htmldir, 
+		  admin_cfg.templates, dan)
 
 except:
     sys.stderr.write('*** Error running %s ***\n' % exename)

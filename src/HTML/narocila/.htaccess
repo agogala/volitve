@@ -12,4 +12,5 @@ require valid-user
 <files pregled.html>
 header set Refresh 10
 header set Pragma no-cache
+header set Window-target pregled
 </files>

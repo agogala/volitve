@@ -6,7 +6,7 @@ AuthType      Basic
  
 Options All
 <Limit GET POST PUT>
-require user %(username)s
+require user "%(username)s"
 </Limit>
 
 allow from all

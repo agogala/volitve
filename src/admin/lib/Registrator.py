@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
+# $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
 #
-# $Id: Registrator.py 1.6 Tue, 30 Sep 1997 16:27:41 +0000 andrej $
+# $Id: Registrator.py 1.7 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
 # Se ukvarja z registracijo uporabnikov
 
 import pg95
@@ -129,8 +129,10 @@ VALUES('%s','denar',0)" % username)
 		outf.write(line)
 		continue
 	    if line[:l]==username and line[l]==':':
-		# Na¹el uporabnika:
-		outf.write('%s:%s\n' % (username, cpasswd))
+		if not found:
+		    # Na¹el uporabnika:
+		    outf.write('%s:%s\n' % (username, cpasswd))
+		    found = 1		
 	    else:
 		# Prekopiramo vrstico:
 		outf.write(line)
@@ -151,9 +153,6 @@ VALUES('%s','denar',0)" % username)
 	userdir = userroot + '/' + ID
 	os.mkdir(userdir)
 
-	MakePregled.updateuser(admin_cfg.tempdir, userroot, 
-			       admin_cfg.templates, username)
-
 	templname = admin_cfg.tempdir + '/' + \
 		    admin_cfg.templates['HTAccess']['ime'] + '.in'
 	destname = userdir + '/.htaccess'
@@ -168,6 +167,17 @@ VALUES('%s','denar',0)" % username)
 	    os.unlink(tmpname)
 	except:
 	    pass
+	try:
+	    del _USERDIR[user]
+	except:
+	    pass
 	raise ety, evl, etr
+
+    # Èe je vse v redu, naredimo ¹e pregled: 
+    # Le ta namreè izraèuna trenutne poravnalne cene in zato 
+    # uporablja transakcije...
+    MakePregled.updateuser(admin_cfg.tempdir, userroot, 
+			   admin_cfg.templates, username)
+
 
     return AdminConst.Register.OK

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
+# $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
 #
-# $Id: Reg_Client.py 1.4 Thu, 09 Oct 1997 13:19:34 +0000 andrej $
+# $Id: Reg_Client.py 1.5 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
 #
 # Registriraj uporabnika:
 
@@ -79,7 +79,7 @@ def HandleRegister(form):
     # Registriraj:
     username = form['username'].value
     passwd = form['passwd'].value
-    Admin_Client.admin_client.send("Register %s %s %s" % (hash, username, passwd))
+    Admin_Client.admin_client.send('Register %s "%s" "%s"' % (hash, username, passwd))
     resp = string.atoi(Admin_Client.admin_client.response())
     if resp==0:
 	# redirect:

@@ -1,4 +1,4 @@
-<!-- $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $ $Id: reg_form.html.in 1.3 Sun, 19 Oct 1997 17:07:54 +0000 andrej $ -->
+<!-- $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $ $Id: reg_form.html.in 1.4 Mon, 03 Nov 1997 13:25:50 +0000 andrej $ -->
     <h1>Registracija</h1>
 
     <table>
@@ -29,10 +29,10 @@
 	    </table>
 	  </form>	  
 	<td valign="top">
-	  Ime je poljuben niz znakov.<br>
+	  Pri vnosu uporabljajte le èrke iz angle¹ke abecede, t.j. ne uporabljajte ¹umnikov. Èe je kdo ¾e uporabil enako ime, se bo obrazec pojavil ¹e enkrat.
 	  <br>
-	  Geslo vnesite dvakrat.
+	  Geslo vnesite dvakrat zaradi preverjanja.
     </table>
     
     <hr>
-<!--    <address><a href="mailto:andrej@e5.ijs.si">Andrej Gogala</a></address>-->
+    Èe imate te¾ave, pi¹ite na <a href="mailto:borza-admin@e5.ijs.si">borza-admin@e5.ijs.si</a>.

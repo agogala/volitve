@@ -1,8 +1,8 @@
 // -*- C++ -*-
 /* 
- * $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
+ * $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
  *
- * $Id: Config.h 1.12 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
+ * $Id: Config.h 1.13 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
  *
  * Konfiguracija.
 */
@@ -48,6 +48,6 @@
 #define DB_NAME "volitve"
 
 /* Najveèja dovoljena kolièina */
-#define MAX_KOL 10
+#define MAX_KOL 25
 
 #endif

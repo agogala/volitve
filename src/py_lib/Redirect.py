@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
+# $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
 #
-# $Id: Redirect.py 1.3 Tue, 28 Oct 1997 20:15:29 +0000 andrej $
+# $Id: Redirect.py 1.4 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
 #
 # Preusmeri uporabnika v njegov direktorij.
 
@@ -15,6 +15,12 @@ rel_msg = \
 "\n" \
 "Document relocated\n" \
 
+failed = \
+"Status: 302 relocate\n" \
+"Location: /napaka/401.html\n" \
+"Content-Type: text/plain\n" \
+"\n" \
+"Document relocated\n" \
 
 def HandleRequest(form):
     user = os.environ['REMOTE_USER']
@@ -22,5 +28,8 @@ def HandleRequest(form):
 ## 	Formater_Client.formater_client.send("MakeUser %s" % user)
 ## 	# Get response, but ignore it:
 ## 	Formater_Client.formater_client.response()
+#    try:
     oid = Uporabniki.UserID(user)
     print rel_msg % oid
+#    except Uporabniki.NoSuchUser:
+#	print failed

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.23 Tue, 28 Oct 1997 21:15:29 +0100 andrej $
+# $ProjectHeader: volitve 0.24 Mon, 03 Nov 1997 14:25:50 +0100 andrej $
 #
-# $Id: Uporabniki.py 1.4 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
+# $Id: Uporabniki.py 1.5 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
 #
 # Definira preslikavo iz uporabni¹kega imena v ID. Pa ¹e kaj?
 
@@ -13,6 +13,8 @@ import string
 
 _USERMAP = {}
 
+NoSuchUser = "NoSuchUser"
+
 # Povsem podobna funkcija je v Registratorju v administraciji.
 # Tale v bistvu klièe tisto funkcijo.
 def UserID(user):
@@ -23,11 +25,11 @@ def UserID(user):
     else:
 	if Admin_Client.admin_client.open()<0:
 	    raise "Administrator down"
-	Admin_Client.admin_client.send('UserID ' + user)
+	Admin_Client.admin_client.send('UserID "%s"' % user)
 	result = Admin_Client.admin_client.response()
 
 	if result[:3]=="100":
-	    raise "No such user: " + user
+	    raise "NoSuchUser"
 	result = result[4:]
 	_USERMAP[user] = result
     return result
