@@ -1,3 +1,4 @@
+// -*- C++ -*-
 /* Konfiguracija */
 
 #if !defined(CONFIG_H)
@@ -17,5 +18,15 @@
 
 /* Define broadcast message size */
 #define NOTIFIER_MESSAGE_SIZE 8
+
+/* Some sizes */
+#define MAX_KIND 4
+
+#define MAX_SYMBOL 4
+
+#define MAX_ACCOUNT 8
+
+/* Default database name */
+#define DB_NAME "volitve"
 
 #endif

@@ -1,3 +1,9 @@
+0.2
+Zaèel delo na trgovanju. Ugotovil, da moram narediti poseben objekt za
+zahtevke, ki se bo naredil iz Stringa, ali pa iz rezultat
+querija. Potrebno je se pogruntati vse querije, dodati preverjanje
+veljavnosti zahtevka. Izmeriti cas trajanja zahtevka. 
+
 0.1
 Prva verzija. Delno zadovoljen s komunikacijo med opazovalci, trgom in
 zahtevki. Za zahtevke uporabljam UNIX_domain, za opazovalce pa

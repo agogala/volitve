@@ -1,7 +1,8 @@
+// -*- C++ -*-
 /*
- * $ProjectId$
+ * $ProjectHeader: volitve 0.2 Thu, 28 Aug 1997 23:38:14 +0200 andrej $
  *
- * $Id: Request.h 1.1 Thu, 28 Aug 1997 17:15:39 +0000 andrej $
+ * $Id: Request.h 1.2 Thu, 28 Aug 1997 21:38:14 +0000 andrej $
  *
  * Zahtevek. Nikakor ne bi delal v veè nitnem okolju. Treba premisliti.
  */
@@ -19,6 +20,9 @@ class Request
   Request();
   ~Request();
   
+  /* Odpri povezavo z bazo */
+  int open(void);
+
   /* Dodaj zahtevek */
   int Add(char *Line);
 
@@ -29,6 +33,7 @@ class Request
  private:
   int LastRC_;
   char Result_[256];
+  PgDatabase *db;
 };
 
 // Request singleton

@@ -1,0 +1,15 @@
+* Dokonèaj sklepanje poslov
+	* Zahtevki kot samostojen objekt
+	* Preverjanje zahtevkov
+	* Avtomatizirati izvajanje Querijev - parametri (Python!) in podobni 
+	  ¹tosi
+* Preveri kako je s CGI pri Apache serverju
+	* CGI interface
+* Pregled trga
+	* Osve¾evanje
+	* Kako je z osebnimi pregledi trga? Ali lahko Java applet kako 
+	  sporoèi svojo identiteto - prek URL-ja?
+* Linux:
+	* ACE na Linuxu
+	* Apache na Linuxu
+* HTML datoteke

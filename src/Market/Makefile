@@ -9,11 +9,15 @@
 #	Local macros
 #----------------------------------------------------------------------------
 
-BIN   	= market
+#BIN   	= market
 
-FILES 	= Market_Handler \
-	  Request \
-	  Notifier
+#FILES 	= Market_Handler \
+#	  Request \
+#	  Notifier
+
+BIN	= testR
+
+FILES	= Request
 
 LSRC	= $(addsuffix .cpp,$(FILES))
 LOBJ	= $(addsuffix .o,$(FILES))
@@ -27,7 +31,7 @@ BUILD	= $(VBIN)
 
 INCLDIRS += -I$(PG_ROOT)/include
 
-LDLIBS += -lpq++ -lpq
+LDLIBS += -lpq++ -lpq -lg++
 
 LDFLAGS += -L$(PG_ROOT)/lib
 
