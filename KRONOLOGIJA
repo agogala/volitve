@@ -1,0 +1,6 @@
+0.1
+Prva verzija. Delno zadovoljen s komunikacijo med opazovalci, trgom in
+zahtevki. Za zahtevke uporabljam UNIX_domain, za opazovalce pa
+INET_domain in broadcast. Tudi tu bi mogoèe uporabil
+UNIX_domain. Nekoè bomo morali biti pozorni na autentikacijo
+klientov. Zaenkrat nas pa to ne zanima.

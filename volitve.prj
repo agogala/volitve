@@ -1,0 +1,73 @@
+;; -*- Lisp -*-
+(Created-By-Prcs-Version 1 3 3)
+(Project-Description "Blagovna borza predsednikov")
+(Project-Version volitve 0 1)
+(Parent-Version volitve 0 0)
+
+(Version-Log "Prva verzija. Komunikacija med programi bi morala nekako delati.")
+(New-Version-Log "")
+(Checkin-Time "Thu, 28 Aug 1997 19:15:39 +0200")
+(Checkin-Login andrej)
+(Populate-Ignore ("~$" "^apache" "^Proto/" "^Tmp/"
+		  "^test-cpp/" ".obj/"  ".shobj/" "^Bookmarks"
+		  ".old/" ".bak$" "^doc/ODBC/"))
+(Project-Keywords)
+(Files
+;; This is a comment.  Fill in files here.
+;; For example:  (prcs/checkout.cc ())
+
+;; Files added by populate at Thu, 28 Aug 1997 18:56:22 +0200:
+
+;; Kronologija
+  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.1 644))
+
+;; SQL datoteke in testi z libpq++
+;; Poisci ustrezen posel
+  (SQL/match.sql (volitve/1_match.sql 1.1 640))
+;; Naredi bazo
+  (SQL/baza.sql (volitve/2_baza.sql 1.1 640))
+
+;; Napolni bazo
+  (SQL/pop-stranke.sql (volitve/3_pop-strank 1.1 640))
+  (SQL/pop-fifo.sql (volitve/4_pop-fifo.s 1.1 640))
+
+;; Testni podatki
+  (SQL/fifo.txt (volitve/5_fifo.txt 1.1 640))
+  (SQL/stranke.txt (volitve/6_stranke.tx 1.1 640))
+
+;; Testni programi
+  (SQL/list-fifo.cc (volitve/7_list-fifo. 1.1 640))
+  (SQL/list-fifo-dyn.cc (volitve/8_list-fifo- 1.1 640))
+  (SQL/list-fifo-cursor.cc (volitve/9_list-fifo- 1.1 640))
+  (SQL/Makefile (volitve/10_Makefile 1.1 640))
+
+;; Dokumenti:
+  (doc/nacrt/osnutek.html (volitve/11_osnutek.ht 1.1 740))
+  (doc/nacrt/pregled.jpg (volitve/12_pregled.jp 1.1 740))
+  (doc/nacrt/pregled.gif (volitve/13_pregled.gi 1.1 740) :no-keywords)
+  (doc/nacrt/pregled.fig (volitve/14_pregled.fi 1.1 740))
+  (doc/nacrt/pregled.ps (volitve/15_pregled.ps 1.1 740))
+  (doc/html () :directory)
+
+;; Source:
+  (src/Observer/observer.cpp (volitve/16_observer.c 1.1 644))
+  (src/Observer/Makefile (volitve/17_Makefile 1.1 644))
+  (src/HTML/index.html (volitve/18_index.html 1.1 644))
+  (src/HTML/dodaj.html (volitve/19_dodaj.html 1.1 644)) 
+  (src/HTML/pregled.html (volitve/20_pregled.ht 1.1 644))
+  (src/include/Config.h (volitve/21_Config.h 1.1 644))
+  (src/Market/Notifier.cpp (volitve/22_Notifier.c 1.1 644))
+  (src/Market/Notifier.h (volitve/23_Notifier.h 1.1 644))
+  (src/Market/market.h (volitve/24_market.h 1.1 644)) 
+  (src/Market/market.cpp (volitve/25_market.cpp 1.1 644))
+  (src/Market/Request.h (volitve/26_Request.h 1.1 644))
+  (src/Market/Request.cpp (volitve/27_Request.cp 1.1 644))
+  (src/Market/Market_Handler.cpp (volitve/28_Market_Han 1.1 644))
+  (src/Market/Makefile (volitve/29_Makefile 1.1 644)) 
+
+;; Testni programi:
+  (test/Observer_Client/oc.py (volitve/30_oc.py 1.1 755))
+  (test/Market_Client/mc.py (volitve/31_mc.py 1.1 755))
+)
+(Merge-Parents)
+(New-Merge-Parents)

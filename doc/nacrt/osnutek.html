@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-2">
+    <title>Osnutek volilne borze</title>
+  </head>
+
+  <body bgcolor="white" text="blue">
+    <h1>Osnutek volilne borze</h1>
+
+    <h2>Kaj in za koga</h2>
+
+    Blagovna borza, odjemalci se priklapljajo preko Interneta
+    (WWW). Papirji so predsedniški kandidati. Trgovanje precej
+    enostavno, vsak ponudnik ima lahko hkrati odprtih le 10
+    pozicij. Trguje se v procentih. Zapade na ponedeljek po prvem
+    krogu volitev. Drugi krog, drugi papirji.
+
+    <p>
+      Predpostavka je, da je večina odjemalcev Netscape ali IE vsaj
+      3.0. Ostali bodo bolj podprti bolj slabo, še posebej če nimajo Jave.
+
+    <p>
+      Strežnik bo nek Unix, uporabljali bomo javno dostopen SW. Moje
+      preference so PostgreSQL za SQL strežnik, Apache za Web server,
+      Python za CGI skripte, C in C++ za trg, knjižnica ACE za
+      komunikacijo in sinhronizacijo procesov (zato C++). Java za
+      kliente.
+
+    <h2>Tabele</h2>
+    <dl>
+      <dt>
+	Fifo
+      <dd>
+	Vsebuje odprte pozicije. Atributi:
+	<table border="1">
+	  <tr>
+	    <td><i>Ime</i>
+	    <td><i>Tip</i>
+	    <td><i>Razlaga</i>
+	  <tr>
+	    <td>Vrsta
+	    <td>char(1)
+	    <td>Nakup/Prodaja
+	  <tr>
+	    <td>Cena</td>
+	    <td>float
+	    <td>Ponujena cena</td>
+	  <tr>
+	    <td>Kolicina
+	    <td>int
+	    <td>Ponujena količina. Vsota vseh odprtih pozicij ne sme
+	      preseči 10.
+	  <tr>
+	    <td>Papir_ID</td>
+	    <td>char(4)</td>
+	    <td>Oznaka papirja</td>
+	  <tr>
+	    <td>Ura</td>
+	    <td>time</td>
+	    <td>Ura prejetja ponudbe</td>
+	  <tr>
+	    <td>Datum</td>
+	    <td>date</td>
+	    <td>Datum prejetja ponudbe</td>
+	  <tr>
+	    <td>Ponudnik</td>
+	    <td>char(10)</td>
+	    <td>Oznaka ponudnika</td>
+	</table>
+
+      <dt>
+	Papirji
+      <dd>
+	Šifrant papirjev. Atributi:
+	<table border="1">
+	  <tr>
+	    <td><i>Ime</i>
+	    <td><i>Tip</i>
+	    <td><i>Razlaga</i>
+	  <tr>
+	    <td>Papir_ID
+	    <td>char(4)
+	    <td>Enolična oznaka papirja
+	</table>
+	Definiran je enoličen indeks glede na šifro papirja.
+
+      <dt>
+	Stranke
+      <dd>
+	Vsebuje seznam strank. Atributi:
+	<table border="1">
+	  <tr>
+	    <td><i>Ime</i>
+	    <td><i>Tip</i>
+	    <td><i>Razlaga</i>
+	  <tr>
+	    <td>Stranka_ID
+	    <td>char(10)
+	    <td>Enolična oznaka stranke
+	  <tr>
+	    <td>Naziv</td>
+	    <td>text</td>
+	    <td>Naziv stranke</td>
+	  <tr>
+	    <td>EMail</td>
+	    <td>text</td>
+	    <td>Naslov elektronske pošte</td>
+	</table>
+
+      <dt>
+	Posli
+      <dd>
+	Vsebuje sklenjene posle. Atributi:
+	<table border="1">
+	  <tr>
+	    <td><i>Ime</i>
+	    <td><i>Tip</i>
+	    <td><i>Razlaga</i>
+	  <tr>
+	    <td>Datum
+	    <td>date
+	    <td>Datum sklenitve posla.
+	  <tr>
+	    <td>Ura</td>
+	    <td>time</td>
+	    <td>Ura sklenitve posla</td>
+	  <tr>
+	    <td>Papir_ID</td>
+	    <td>char(4)</td>
+	    <td>Oznaka papirja</td>
+	  <tr>
+	    <td>Cena</td>
+	    <td>float</td>
+	    <td>Cena</td>
+	  <tr>
+	    <td>Kolicina
+	    <td>int
+	    <td>Količina sklenjenega posla
+	  <tr>
+	    <td>Kupec</td>
+	    <td>char(10)</td>
+	    <td>Oznaka kupca</td>
+	  <tr>
+	    <td>Prodajalec</td>
+	    <td>char(10)</td>
+	    <td>Oznaka prodajalca</td>
+	</table>
+    </dl>
+
+    V zgornji tabeli uporabljam tipe specifične za PostgreSQL. To je
+    potrebno še malce premisliti.
+
+    <h2>Skica delovanja</h2>
+
+    <img src="pregled.gif">
+    
+    Ponudba je veljavna če so izpolnjeni naslednji pogoji:
+    <ol>
+      <li>Stranka obstaja v bazi.
+      <li>Papir obstaja v bazi.
+      <li>Cena je med 0 in 100%.
+      <li>Stranka ima skupaj s to ponudbo manj kot 11 odprtih
+	pozicij. Tudi če bi se ponudba zaprla, skupno število pa
+	presega 10, je ponudba neveljavna.
+    </ol>
+
+    <h2>Protokol dodajanja ponudbe</h2>
+
+    Odjemalec se pozanima, če lahko da ponudbo (če nima že izpoljnjene
+    kvote) in dobi zaporedno številko. Potem pošlje ponudbo z vsemi
+    podatki. Če ustreza vsem pogojem, se uvrsti v FIFO, ali pa
+    zapre. Sicer pa se lahko zgodi ena od naslednjih zadev:
+
+    <ul>
+      <li>Podatki niso v pravi obliki (npr. cena>100)
+      <li>Ponudba je zavrnjena ker je že preveč odprtih pozicij.
+      <li>Še kaj?
+    </ul>
+
+    Zaporedne številke uporabljamo zato, da se izognemo problemom, če
+    nekdo dvakrat zapored pošlje isto ponudbo. Čeprav je to povsem
+    legitimno - ves čas kupuješ isto zadevo, ne boš se zafrkaval z
+    izpoljnevanjem istih obrazcev vedno znova.... think, think...
+    
+    <h2>Opombe</h2>
+
+    Problem, ki nastopi, je preverjanje števila odprtih pozicij. Zgodi
+    se lahko, da ima nekdo 9 odprtih pozicij in v zelo kratkem času
+    pošlje dve ponudbi. Ker preverjanje števila ponudb traja nekaj
+    časa, se lahko zgodi, da bi obe ponudbi dodal hkrati. Ideji, ki se
+    porodita:
+
+    <ul>
+      <li>Število odprtih pozicij je shranjeno v zapisu o stranki. SQL
+	server poskrbi za to, da ne moremo brati ko se številka
+	spreminja (je to res?). Ali pa to posebej zaščitimo.
+      <li>Celoten postopek dodajanja ponudbe je zaščiten.
+    </ul>
+    
+<!--    Dodaten problem je npr. če klient pošlje formo, pa zaradi
+    predolgega čakanja prekine in pošlje še enkrat - tako bi se lahko
+    zgodilo, da je dvakrat poslal isto ponudbo. To je potrebno še
+    razmisliti... Mogoče bi moral določati zaporedne številke
+    ponudbam? S tem bi mogoče počakal, stvar bi pa tako zastavil, da
+    bi jo lahko dodal kasneje. (stvar je v bistvu že odločena - glej
+    protokol dodajanja sprememb)-->
+
+    Dodaten problem predstavlja sortiranje stringov. Kaže, da
+    PostgreSQL 6.1 ne uporablja strcoll(), temveč strcmp(), ki pa ni
+    občutljiv na locale. Poleg tega tudi strcoll() na Linuxu (še) ni
+    implementiran pravilno. Zaenkrat ni videti potrebe po sortiranju,
+    kjer bi nastopili šumniki. Sem pa prepričan da se bo pojavila tik
+    pred koncem.
+
+    Vsaka povezava s postgresom odpre nov proces. Četudi narediš
+    free(), pa objekt v libpg++ <b>ne</b> zapre povezave. To je
+    potrebno še malce raziskati... Mogoče je potem bolje imeti ves čas
+    odprtih nekaj povezav. In narediti vse serijsko... Ali pa imeti
+    nek objekt, ki odpira in hrani povezave. Zbirka povezav.... S
+    časom jih potem zapira...
+
+    <hr>
+    <address><a href="mailto:andrej@e5.ijs.si">Andrej Gogala</a></address>
+<!-- Created: Fri Aug 15 01:52:27 MET DST 1997 -->
+<!-- hhmts start -->
+Last modified: Sun Aug 17 18:36:40 MET DST 1997
+<!-- hhmts end -->
+  </body>
+</html>
