@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
+ * $ProjectHeader: volitve 0.28 Sat, 27 Dec 1997 16:06:49 +0100 andrej $
  *
- * $Id: Market_Handler.cpp 1.10 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
+ * $Id: Market_Handler.cpp 1.11 Sat, 27 Dec 1997 15:06:49 +0000 andrej $
  *
  * Sprejema zahtevke od klientov.
  */
@@ -59,11 +59,6 @@ Market_Handler::handle_input (ACE_HANDLE)
 	n = this->peer ().recv_n ((void *) &rs, len);
 
 	rs[n] = '\0';
-
-	// Preveri, ali naj trg ¹e teèe:
-	time_t t = time(NULL);
-	if (t>=CLOSING_TIME)
-	  return 0;
 	
 	if (n != len)
 	  ACE_ERROR_RETURN ((LM_ERROR, "(%P|%t) %p at host %s\n",
@@ -76,10 +71,18 @@ Market_Handler::handle_input (ACE_HANDLE)
 	    strset userset;
 	    int rc;
 
-	    if (req.Preklic()) 
-	      rc = MARKET::instance ()-> Cancel(req, &userset);
-	    else
-	      rc = MARKET::instance ()-> Add(req, &userset);
+	    // Preveri, ali naj trg ¹e teèe:
+	    time_t t = time(NULL);
+	    if ((t>=CLOSING_TIME) || (t<=STARTING_TIME)) {
+	      ACE_DEBUG((LM_DEBUG, "(%P|%t) Refused: market closed\n"));
+	      rc = 300; // Market Closed
+	    }
+	    else {
+	      if (req.Preklic()) 
+		rc = MARKET::instance ()-> Cancel(req, &userset);
+	      else
+		rc = MARKET::instance ()-> Add(req, &userset);
+	    }
 
 	    // report back 
 	    int2code(rc, &rs[1]);

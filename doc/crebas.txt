@@ -1,0 +1,81 @@
+; ============================================================
+;   Database name:  "BORZA"                                   
+;   DBMS name:      PARADOX 5 & 7 for Windows                 
+;   Created on:     11.12.97  14:54                           
+; ============================================================
+
+; ------------------------------------------------------------
+;   procedure for testing the existence of a file
+; ------------------------------------------------------------
+proc canCreate(name String) logical
+   message("Creating file \""+name+".db\" ...")
+   if isTable(name) then
+      if msgQuestion("Confirmation", "File \""+name+".db\" already exist. "+
+                     "Do you want to remplace it ?") <> "Yes" then
+         return False
+      endif
+   endif
+   return True
+endProc
+
+; ------------------------------------------------------------
+;   main methode
+; ------------------------------------------------------------
+method run(var eventInfo Event)
+var
+    newTab  Table
+endVar
+
+if canCreate("STRANKA") then
+; ============================================================
+;   Table: "STRANKA"                                          
+; ============================================================
+newTab = create "STRANKA" as "Paradox" with
+    "STRANKA_ID"        : "A10",
+    "NAZIV"             : "F",
+    "EMAIL"             : "F"
+    key "STRANKA_ID"
+endCreate
+
+;   end of table "STRANKA"
+endif
+
+if canCreate("PAPIRJI") then
+; ============================================================
+;   Table: "PAPIRJI"                                          
+; ============================================================
+newTab = create "PAPIRJI" as "Paradox" with
+    "PAPIR_ID"          : "A8",
+    "NAZIV"             : "F",
+    "URL"               : "F"
+    key "PAPIR_ID"
+endCreate
+
+;   end of table "PAPIRJI"
+endif
+
+if canCreate("ZAHTEVKI") then
+; ============================================================
+;   Table: "ZAHTEVKI"                                         
+; ============================================================
+newTab = create "ZAHTEVKI" as "Paradox" with
+    "STRANKA_ID"        : "A10",
+    "PAPIR_ID"          : "A8",
+    "ZAHTEVEK_ID"       : "+",
+    "CENA"              : "$",
+    "KOLICINA"          : "I",
+    "PAPIR_ZAHTEVKI"    : "A8",
+    "DATUM"             : "D",
+    "URA"               : "T",
+    "PONUDNIK"          : "A10",
+    "PREKLIC"           : "L"
+    key "STRANKA_ID", "PAPIR_ID", "ZAHTEVEK_ID"
+endCreate
+
+;   end of table "ZAHTEVKI"
+endif
+
+
+msgInfo("Message", "The database has been successfully created.")
+
+endMethod

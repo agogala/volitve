@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
+# $ProjectHeader: volitve 0.28 Sat, 27 Dec 1997 16:06:49 +0100 andrej $
 #
-# $Id: MakeTecaj.py 1.8 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
+# $Id: MakeTecaj.py 1.9 Sat, 27 Dec 1997 15:06:49 +0000 andrej $
 #
 # Pripravi teèajnico.
 
@@ -12,6 +12,7 @@ import Registrator
 import string
 import os
 import sys
+import time
 
 # Imamo kar stalno povezavo z bazo:
 conn = DBConn.db_conn
@@ -23,18 +24,33 @@ def IzracunajTecaj(dan='yesterday'):
     conn.query("begin")
     try:
 	# Izracunaj tecaje za dani dan:
-	db_tecaji = conn.query((
-	    "SELECT '%(dan)s'::date,\n" +
-	    "Papir_id,\n" + 
-	    "sum(float8(kolicina) * cena) / float8(sum(kolicina)) AS tecaj,\n" +
-	    "min(cena) as MinCena,\n" + 
-	    "max(cena) as MaxCena,\n" +
-	    "count(kolicina) AS obseg,\n" +
-	    "sum(kolicina) AS promet\n" +
-	    "FROM posli\n" +
-	    "WHERE datum='%(dan)s' and kupec!=prodajalec\n" +
-	    "GROUP BY papir_id") % {'dan': dan})
-	vstavil = 0
+	if time.time()>admin_cfg.StartingTime()+3*(24*60*60):
+	    # Kljuèna predpostavka: teèaji za en dan pred 'dan' obstajajo!!!
+	    db_tecaji = conn.query((
+		"SELECT '%(dan)s'::date,\n" +
+		"D.Papir_id,\n" + 
+		"sum(float8(D.kolicina) * D.cena) / float8(sum(D.kolicina)) AS tecaj,\n" +
+		"min(D.cena) as MinCena,\n" + 
+		"max(D.cena) as MaxCena,\n" +
+		"count(D.kolicina) AS obseg,\n" +
+		"sum(D.kolicina) AS promet\n" +
+		"FROM posli D, tecajnica D1\n" +
+		"WHERE D.datum='%(dan)s' and D.kupec!=D.prodajalec\n" +
+		"and D.papir_id=D1.papir_id and D1.datum='%(dan)s'::date - 1\n" +
+		"and D.cena > (D1.tecaj - 20) and D.cena < (D1.tecaj + 20)\n" +
+		"GROUP BY D.papir_id") % {'dan': dan})
+	else:
+	    db_tecaji = conn.query((
+		"SELECT '%(dan)s'::date,\n" +
+		"D.Papir_id,\n" + 
+		"sum(float8(D.kolicina) * D.cena) / float8(sum(D.kolicina)) AS tecaj,\n" +
+		"min(D.cena) as MinCena,\n" + 
+		"max(D.cena) as MaxCena,\n" +
+		"count(D.kolicina) AS obseg,\n" +
+		"sum(D.kolicina) AS promet\n" +
+		"FROM posli D\n" +
+		"WHERE D.datum='%(dan)s' and D.kupec!=D.prodajalec\n" +
+		"GROUP BY D.papir_id") % {'dan': dan})	    
 	# Pobri¹i prej¹nje teèaje:
 	conn.query("DELETE FROM Tecajnica WHERE datum='%s'" % dan)
 	db_manjkajo = conn.query("SELECT Papir_id FROM Papirji")

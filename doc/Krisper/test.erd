@@ -1,0 +1,89 @@
+Storage 
+{
+	{ Format 1.20 }
+	{ GeneratedFrom TERD-version-1.66 }
+	{ WrittenBy andrej }
+	{ WrittenOn "Thu Dec 18 18:45:52 1997" }
+}
+
+Document 
+{
+	{ Type "Entity Relationship Diagram" }
+	{ Name test.erd }
+	{ Author andrej }
+	{ CreatedOn "Thu Dec 18 18:43:06 1997" }
+	{ Annotation "" }
+}
+
+EntityType 1161056
+{
+	{ Name "" }
+	{ Annotation "Stranka" }
+	{ Parent 0 }
+}
+
+EntityType 1064880
+{
+	{ Name "" }
+	{ Annotation "" }
+	{ Parent 0 }
+}
+
+BinaryRelationship 1183672
+{
+	{ Name "" }
+	{ Annotation "" }
+	{ Parent 0 }
+	{ Node1 1161056 }
+	{ Node2 1064880 }
+	{ Constraint1 "" }
+	{ Constraint2 "" }
+	{ RoleName1 "" }
+	{ RoleName2 "" }
+}
+
+View 1416624
+{
+	{ Index "0" }
+	{ Parent 0 }
+}
+
+Box 1452952
+{
+	{ View 1416624 }
+	{ Subject 1161056 }
+	{ Position 50 50 }
+	{ Size 76 38 }
+	{ Font "-Adobe-helvetica-medium-r-normal--10*" }
+	{ TextAlignment Center }
+}
+
+Box 1456472
+{
+	{ View 1416624 }
+	{ Subject 1064880 }
+	{ Position 230 50 }
+	{ Size 76 38 }
+	{ Font "-Adobe-helvetica-medium-r-normal--10*" }
+	{ TextAlignment Center }
+}
+
+C2Line 1465528
+{
+	{ View 1416624 }
+	{ Subject 1183672 }
+	{ End1 1452952 }
+	{ End2 1456472 }
+	{ Curved False }
+	{ Points 2 }
+	{ Point 88 50 }
+	{ Point 192 50 }
+	{ NamePosition 140 40 }
+	{ Font "-Adobe-helvetica-medium-r-normal--10*" }
+	{ TextAlignment Center }
+	{ C1Position 101 60 }
+	{ C2Position 179 60 }
+	{ R1Position 101 40 }
+	{ R2Position 179 40 }
+}
+

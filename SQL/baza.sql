@@ -1,6 +1,6 @@
--- $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
+-- $ProjectHeader: volitve 0.28 Sat, 27 Dec 1997 16:06:49 +0100 andrej $
 --
--- $Id: baza.sql 1.3.2.7 Sun, 26 Oct 1997 21:47:33 +0000 andrej $
+-- $Id: baza.sql 1.3.2.8 Sat, 27 Dec 1997 15:06:49 +0000 andrej $
 --
 -- Skreira bazo.
 
@@ -96,3 +96,13 @@ CREATE TABLE Spremembe
 	Ponudnik	char(10),
 	Razlog		text);
 
+
+-- Poravnave:
+CREATE TABLE Poravnave
+	(Papir_ID	char(8),
+	Cena		float);
+
+-- Rezultati:
+CREATE TABLE Rezultati
+	(Stranka_ID	char(10),
+	Rezultat	float);

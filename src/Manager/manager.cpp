@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
+ * $ProjectHeader: volitve 0.28 Sat, 27 Dec 1997 16:06:49 +0100 andrej $
  *
- * $Id: manager.cpp 1.4 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
+ * $Id: manager.cpp 1.5 Sat, 27 Dec 1997 15:06:49 +0000 andrej $
  *
  * Poganja in nadzira procese. Èe se kak sesuje, ga sku¹a ponovno
  * pognati. O sesutju tudi poroèa.
@@ -71,6 +71,11 @@ int main()
       (SIGCHLD, &manager) == -1)
     ACE_ERROR_RETURN ((LM_ERROR,
 		       "registering service with ACE_Reactor\n"), -1);
+
+  if (REACTOR::instance ()->register_handler
+      (SIGHUP, &manager) == -1)
+    ACE_ERROR_RETURN ((LM_ERROR,
+		       "registering service with ACE_Reactor\n"), -1);
     
   // Run forever, managing children.
   ACE_DEBUG ((LM_DEBUG,
@@ -119,6 +124,7 @@ int Manager::close()
 {
   // Remove ourselfs from REACTOR:
   REACTOR:: instance() ->remove_handler(SIGCHLD);
+  REACTOR:: instance() ->remove_handler(SIGHUP);
 
   if (admind!=NULL) {
     admind->kill();
@@ -178,6 +184,15 @@ Manager::handle_signal (
 
     }
     return 0;
+  } if (signum==SIGHUP) {
+
+    if (admind!=NULL) 
+      admind->kill();
+    if (marketd!=NULL)
+      marketd->kill();
+    if (observerd!=NULL)
+      observerd->kill();
+    
   } else
     ACE_ERROR_RETURN((LM_ERROR, "Unknown signal: %d\n", signum), -1);
 }
@@ -208,7 +223,7 @@ int Manager::run_marketd()
 {
   // Preveri, ali naj trg ¹e teèe:
   time_t t = time(NULL);
-  if (t>=CLOSING_TIME)
+  if ((t>=CLOSING_TIME) || (t<=STARTING_TIME))
     return 0;
 
   ACE_Process_Options options;

@@ -1,4 +1,4 @@
-# $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
+# $ProjectHeader: volitve 0.28 Sat, 27 Dec 1997 16:06:49 +0100 andrej $
 #
 # $Id: Uporabniki.py 1.5 Mon, 03 Nov 1997 13:25:50 +0000 andrej $
 #

@@ -1,0 +1,2118 @@
+/BEGIN_TABLE AMCHEAD
+NAME A30
+VERS A8
+USER A30
+/BEGIN_DATA AMCHEAD
+PowerDesigner/PAM
+6.0.0
+
+/END_TABLE AMCHEAD
+
+/BEGIN_TABLE AMCMODL
+@       N5
+OID     N8
+MODL    N8
+NAME    A80
+CODE    A80
+LABL    A254
+DESC    TXT
+NOTE    TXT
+POID    N8
+PNAM    A80
+PCOD    A80
+USER    A80
+VERS    A8
+CDAT    N12
+MDAT    N12
+EDAT    N12
+PART    N1
+ACCS    N5
+/BEGIN_DATA AMCMODL
+3
+23
+23
+Publication
+PUBLICATION
+
+
+
+0
+Publication analisys
+PUBLICATION_ANALISYS
+
+1
+881758222
+881834082
+0
+0
+0
+/END_TABLE AMCMODL
+
+/BEGIN_TABLE AMCPRCS
+@       N5
+OID     N8
+PRCS    N8
+NAME    A80
+CODE    A80
+LABL    A254
+DESC    TXT
+NOTE    TXT
+NUMR    N8
+LLVL    N1
+SUBM    N8
+SPEC    TXT
+/BEGIN_DATA AMCPRCS
+3
+1
+1
+Publish
+PUBLISH
+
+
+
+1
+0
+24
+
+3
+8
+8
+Select
+SELECT
+
+
+
+1
+1
+0
+
+3
+9
+9
+Print
+PRINT
+
+
+
+2
+1
+0
+
+/END_TABLE AMCPRCS
+
+/BEGIN_TABLE AMCENTT
+@       N5
+OID     N8
+ENTT    N8
+NAME    A80
+CODE    A80
+LABL    A254
+DESC    TXT
+NOTE    TXT
+/BEGIN_DATA AMCENTT
+3
+2
+2
+Author
+AUTHOR
+
+
+
+3
+3
+3
+Bookstore
+BOOKSTORE
+
+
+
+1
+61
+61
+Entt_61
+ENTT_61
+
+
+
+/END_TABLE AMCENTT
+
+/BEGIN_TABLE AMCSTOR
+@       N5
+OID     N8
+STOR    N8
+NAME    A80
+CODE    A80
+LABL    A254
+DESC    TXT
+NOTE    TXT
+NUMR    N8
+TYPE    N8
+/BEGIN_DATA AMCSTOR
+3
+43
+43
+Manuscript pending
+MANUSCRIPT_PENDING
+
+
+
+1
+0
+/END_TABLE AMCSTOR
+
+/BEGIN_TABLE AMCSPMG
+@       N5
+OID     N8
+SPMG    N8
+NAME    A80
+CODE    A80
+DESC    TXT
+NOTE    TXT
+LABL    A254
+FULL    N1
+/BEGIN_DATA AMCSPMG
+/END_TABLE AMCSPMG
+
+/BEGIN_TABLE AMCMIGR
+@       N5
+OID     N8
+MIGR    N8
+PRNT    N8
+/BEGIN_DATA AMCMIGR
+/END_TABLE AMCMIGR
+
+/BEGIN_TABLE AMCDOMN
+@       N5
+OID     N8
+DOMN    N8
+NAME    A80
+CODE    A80
+DESC    TXT
+NOTE    TXT
+LABL    A254
+DTTP    A30
+MLEN    N8
+PREC    N2
+UNIT    A8
+FRMT    A20
+LVAL    A20
+HVAL    A20
+DVAL    A30
+UPPR    N1
+LOWR    N1
+NMDF    N1
+VALS    TXT
+CRUL    TXT
+SRUL    TXT
+/BEGIN_DATA AMCDOMN
+3
+23
+23
+Date
+DATE
+
+
+
+D
+0
+0
+
+
+
+
+
+0
+0
+0
+
+
+
+3
+24
+24
+Name
+NAME
+
+
+
+A
+80
+0
+
+
+
+
+
+0
+0
+0
+
+
+
+/END_TABLE AMCDOMN
+
+/BEGIN_TABLE AMCINFO
+@       N5
+OID     N8
+INFO    N8
+NAME    A80
+CODE    A80
+LABL    A254
+DESC    TXT
+NOTE    TXT
+DOMN    N8
+DTTP    A30
+MLEN    N8
+PREC    N2
+UNIT    A8
+FRMT    A20
+LVAL    A20
+HVAL    A20
+DVAL    A30
+UPPR    N1
+LOWR    N1
+NMDF    N1
+VALS    TXT
+CRUL    TXT
+SRUL    TXT
+/BEGIN_DATA AMCINFO
+3
+12
+12
+Title
+TITLE
+
+
+
+0
+A
+40
+0
+
+
+
+
+
+0
+0
+0
+
+
+
+3
+13
+13
+Price
+PRICE
+
+
+
+0
+MN
+5
+2
+
+
+
+
+
+0
+0
+0
+
+
+
+3
+14
+14
+Collection
+COLLECTION
+
+
+
+0
+VA
+30
+0
+
+
+
+
+
+0
+0
+0
+
+
+
+3
+15
+15
+Issue date
+ISSUE_DATE
+
+
+
+23
+D
+0
+0
+
+
+
+
+
+0
+0
+0
+
+
+
+3
+16
+16
+Publication deadline
+PUBLICATION_DEADLINE
+
+
+
+23
+D
+0
+0
+
+
+
+
+
+0
+0
+0
+
+
+
+3
+17
+17
+Format
+FORMAT
+
+
+
+0
+N
+5
+2
+cm
+
+10
+50
+
+0
+0
+0
+
+
+
+3
+18
+18
+ISBN
+ISBN
+
+
+
+0
+N
+20
+0
+
+
+
+
+
+0
+0
+0
+
+
+
+3
+19
+19
+Bookstore name
+BOOKSTORE_NAME
+
+
+
+24
+A
+80
+0
+
+
+
+
+
+0
+0
+0
+
+
+
+3
+20
+20
+Author name
+AUTHOR_NAME
+
+
+
+24
+A
+80
+0
+
+
+
+
+
+0
+0
+0
+
+
+
+3
+21
+21
+Special price
+SPECIAL_PRICE
+
+
+
+0
+MN
+5
+2
+
+
+
+
+
+0
+0
+0
+
+
+
+3
+22
+22
+Number of copies
+NUMBER_OF_COPIES
+
+
+
+0
+N
+6
+0
+
+
+
+
+
+0
+0
+0
+
+
+
+/END_TABLE AMCINFO
+
+/BEGIN_TABLE AMCFLOW
+@       N5
+OID     N8
+FLOW    N8
+OBJ1    N8
+OBJ2    N8
+NAME    A80
+CODE    A80
+DESC    TXT
+NOTE    TXT
+LABL    A254
+ENB1    N1
+ENB2    N1
+TYPE    N5
+PRNT    N8
+TOPP    N8
+REVR    N5
+/BEGIN_DATA AMCFLOW
+3
+4
+4
+2
+1
+Manuscript proposal
+MANUSCRIPT_PROPOSAL
+
+
+
+0
+1
+0
+0
+0
+32
+3
+5
+5
+1
+3
+Send books
+SEND_BOOKS
+
+
+
+0
+1
+0
+0
+0
+32
+3
+6
+6
+2
+8
+Manuscript proposal
+MANUSCRIPT_PROPOSAL
+
+
+
+0
+1
+0
+4
+4
+32
+3
+7
+7
+3
+9
+Send books
+SEND_BOOKS
+
+
+
+1
+0
+0
+5
+5
+42
+3
+10
+10
+8
+9
+Send direct
+SEND_DIRECT
+
+
+
+0
+1
+0
+0
+0
+32
+3
+11
+11
+8
+9
+Order to print
+ORDER_TO_PRINT
+
+
+
+0
+1
+1
+0
+0
+32
+3
+44
+44
+8
+43
+Accepted manuscript
+ACCEPTED_MANUSCRIPT
+
+
+
+0
+1
+258
+0
+0
+32
+3
+55
+55
+43
+9
+Send manuscripts
+SEND_MANUSCRIPTS
+
+
+
+0
+1
+512
+0
+0
+32
+/END_TABLE AMCFLOW
+
+/BEGIN_TABLE AMCDFDI
+@       N5
+OID     N8
+DFDI    N8
+FLOW    N8
+INFO    N8
+NUMR    N8
+DISP    N5
+/BEGIN_DATA AMCDFDI
+3
+33
+33
+4
+20
+2
+1
+3
+34
+34
+4
+12
+3
+1
+3
+25
+25
+5
+19
+2
+1
+3
+26
+26
+5
+14
+3
+1
+3
+27
+27
+5
+18
+4
+1
+3
+28
+28
+5
+15
+5
+1
+3
+29
+29
+5
+22
+6
+1
+3
+30
+30
+5
+13
+7
+1
+3
+31
+31
+5
+16
+8
+1
+3
+32
+32
+5
+21
+9
+1
+3
+35
+35
+10
+14
+2
+1
+3
+36
+36
+10
+17
+3
+1
+3
+37
+37
+10
+18
+4
+1
+3
+38
+38
+10
+15
+5
+1
+3
+39
+39
+10
+22
+6
+1
+3
+40
+40
+10
+13
+7
+1
+3
+41
+41
+10
+16
+8
+1
+3
+42
+42
+10
+12
+9
+1
+3
+45
+45
+44
+14
+2
+1
+3
+46
+46
+44
+17
+3
+1
+3
+47
+47
+44
+22
+4
+1
+3
+48
+48
+44
+16
+5
+1
+3
+49
+49
+44
+12
+6
+1
+3
+56
+56
+55
+14
+2
+1
+3
+57
+57
+55
+17
+3
+1
+3
+58
+58
+55
+22
+4
+1
+3
+59
+59
+55
+16
+5
+1
+3
+60
+60
+55
+12
+6
+1
+/END_TABLE AMCDFDI
+
+/BEGIN_TABLE AMCDSDI
+@       N5
+OID     N8
+DSDI    N8
+STOR    N8
+INFO    N8
+NUMR    N8
+/BEGIN_DATA AMCDSDI
+3
+50
+50
+43
+14
+2
+3
+51
+51
+43
+17
+3
+3
+52
+52
+43
+22
+4
+3
+53
+53
+43
+16
+5
+3
+54
+54
+43
+12
+6
+/END_TABLE AMCDSDI
+
+/BEGIN_TABLE AMCRULE
+@       N5
+OID     N8
+RULE    N8
+NAME    A80
+CODE    A80
+LABL    A254
+DESC    TXT
+NOTE    TXT
+TYPE    N5
+FLAG    N5
+CEXP    TXT
+SEXP    TXT
+LOBJ    TXT
+NUMR    N8
+/BEGIN_DATA AMCRULE
+/END_TABLE AMCRULE
+
+/BEGIN_TABLE AMCSUBM
+@       N5
+OID     N8
+SUBM    N8
+MODL    N8
+NAME    A80
+CODE    A80
+LABL    A254
+DESC    TXT
+NOTE    TXT
+POID    N8
+PNAM    A80
+PCOD    A80
+USER    A80
+VERS    A8
+CDAT    N12
+MDAT    N12
+ACCS    N5
+SMID    N8
+NUMR    N8
+/BEGIN_DATA AMCSUBM
+3
+24
+24
+23
+Publish
+PUBLISH
+
+
+
+0
+Publication analisys
+PUBLICATION_ANALISYS
+
+
+881758747
+881758747
+0
+0
+1
+/END_TABLE AMCSUBM
+
+/BEGIN_TABLE AMCSUBO
+@       N5
+OID     N8
+SUBO    N8
+MODL    N8
+SUBM    N8
+NUMR    N8
+/BEGIN_DATA AMCSUBO
+3
+2
+2
+23
+24
+1
+3
+6
+6
+23
+24
+2
+3
+3
+3
+23
+24
+3
+3
+7
+7
+23
+24
+4
+3
+8
+8
+23
+24
+5
+3
+9
+9
+23
+24
+6
+3
+10
+10
+23
+24
+7
+3
+11
+11
+23
+24
+8
+3
+43
+43
+23
+24
+9
+3
+44
+44
+23
+24
+10
+3
+55
+55
+23
+24
+11
+1
+61
+61
+23
+24
+12
+/END_TABLE AMCSUBO
+
+/BEGIN_TABLE AMCRPRT
+@       N5
+OID     N8
+RPRT    N8
+FLGS    N8
+NAME    A64
+DESC    A254
+TMLT    BIN
+/BEGIN_DATA AMCRPRT
+/END_TABLE AMCRPRT
+
+/BEGIN_TABLE AMCSLCT
+RPRT    N8
+MODL    N8
+LOBJ    TXT
+/BEGIN_DATA AMCSLCT
+/END_TABLE AMCSLCT
+
+/BEGIN_TABLE AMCFONT
+FONT    N5
+FNAM    A32
+FSIZ    N5
+FSTY    N5
+/BEGIN_DATA AMCFONT
+1
+Arial
+8
+0
+2
+Times New Roman
+12
+1
+/END_TABLE AMCFONT
+
+/BEGIN_TABLE AMCPENS
+PENS    N5
+PSTY    N5
+PCLR    N8
+PWID    N5
+/BEGIN_DATA AMCPENS
+1
+1
+0
+0
+2
+7
+0
+0
+3
+6
+255
+0
+4
+1
+255
+0
+5
+3
+255
+0
+6
+2
+255
+0
+7
+1
+65535
+0
+8
+1
+4194368
+0
+9
+1
+16711680
+0
+10
+2
+0
+0
+/END_TABLE AMCPENS
+
+/BEGIN_TABLE AMCBRSH
+BRSH    N5
+BSTY    N5
+BCLR    N8
+BHAT    N5
+/BEGIN_DATA AMCBRSH
+1
+0
+16777215
+0
+2
+0
+12632256
+0
+3
+0
+255
+0
+4
+0
+65280
+0
+5
+0
+4227200
+0
+6
+0
+65535
+0
+7
+0
+16711680
+0
+8
+0
+0
+0
+9
+0
+65408
+0
+10
+0
+65344
+0
+11
+0
+16777088
+0
+12
+0
+16776960
+0
+/END_TABLE AMCBRSH
+
+/BEGIN_TABLE AMCPROP
+PROP    N5
+MODL    N8
+SUBM    N8
+SECT    A50
+NPRO    A30
+VPRO    A80
+/BEGIN_DATA AMCPROP
+0
+23
+0
+ProcessAnalyst
+Shadow
+no
+1
+23
+0
+ProcessAnalyst
+AutoAdjust
+no
+2
+23
+0
+ProcessAnalyst
+LineStyle
+0
+3
+23
+0
+ProcessAnalyst
+PrnScale
+100
+4
+23
+0
+ProcessAnalyst
+Orientation
+1
+5
+23
+0
+ProcessAnalyst
+LengthName
+80
+6
+23
+0
+ProcessAnalyst
+UpprCaseName
+no
+7
+23
+0
+ProcessAnalyst
+LowrCaseName
+no
+8
+23
+0
+ProcessAnalyst
+AllowAllName
+yes
+9
+23
+0
+ProcessAnalyst
+AllowChrName
+
+10
+23
+0
+ProcessAnalyst
+InvldChrName
+"+-*/\.,!:;"
+11
+23
+0
+ProcessAnalyst
+NoAccentName
+no
+12
+23
+0
+ProcessAnalyst
+LengthCode
+80
+13
+23
+0
+ProcessAnalyst
+UpprCaseCode
+yes
+14
+23
+0
+ProcessAnalyst
+LowrCaseCode
+no
+15
+23
+0
+ProcessAnalyst
+AllowAllCode
+no
+16
+23
+0
+ProcessAnalyst
+AllowChrCode
+'a'-'z', 'A'-'Z', '0'-'9', "_"
+17
+23
+0
+ProcessAnalyst
+InvldChrCode
+
+18
+23
+0
+ProcessAnalyst
+NoAccentCode
+yes
+19
+23
+0
+ProcessAnalyst
+NoSplitting
+yes
+20
+23
+0
+ProcessAnalyst
+Truncation
+no
+21
+23
+0
+ProcessAnalyst
+Wrapping
+no
+22
+23
+0
+ProcessAnalyst
+WrapLength
+80
+23
+23
+0
+ProcessAnalyst
+WrapChar
+" !""#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
+24
+23
+0
+ProcessAnalyst
+Method
+0
+25
+23
+0
+ProcessAnalyst
+ContextModel
+no
+26
+23
+0
+ProcessAnalyst
+StorAdjust
+yes
+27
+23
+0
+ProcessAnalyst
+InfoAllowDmnDiv
+yes
+28
+23
+0
+ProcessAnalyst
+InfoDmnDivInd
+1
+29
+23
+0
+ProcessAnalyst
+DttpDefValue
+<UNDEF>
+30
+23
+0
+ProcessAnalyst
+ShowName
+yes
+31
+23
+0
+ProcessAnalyst
+ShowPrcsNumber
+yes
+32
+23
+0
+ProcessAnalyst
+ShowPrcsDecomp
+yes
+33
+23
+0
+ProcessAnalyst
+ShowOffpName
+yes
+34
+23
+0
+ProcessAnalyst
+ShowFlowName
+yes
+35
+23
+0
+ProcessAnalyst
+ShowFlowContents
+no
+36
+23
+0
+ProcessAnalyst
+ShowFlowMigrated
+yes
+37
+23
+0
+ProcessAnalyst
+PrcsTreeShowName
+yes
+38
+23
+0
+ProcessAnalyst
+PrcsTreeShowNumb
+yes
+39
+23
+0
+ProcessAnalyst
+PrcsTreeSortNumb
+yes
+40
+23
+0
+ProcessAnalyst
+TreePosition
+0,1,-1,-1,-1,-1,157,99,657,474
+41
+23
+0
+ProcessAnalyst
+Language
+1033
+/END_TABLE AMCPROP
+
+/BEGIN_TABLE AMCSYMB
+@       N5
+SID     N8
+TSYM    N5
+SSYM    N8
+NUMR    N8
+CSID    N8
+SID1    N8
+SID2    N8
+CLND    N8
+CLNN    N5
+RCX1    N8
+RCY1    N8
+RCX2    N8
+RCY2    N8
+PENS    N5
+BRSH    N5
+CTXT    N8
+FONT    N5
+JUST    N5
+WOVL    N8
+HOVL    N8
+SARR    N5
+CARR    N5
+TARR    N5
+NBPT    N8
+LSPT    BIN
+LSTY    N5
+TEXT    TXT
+PICT    PIC
+BTMP    BMP
+GRPH    N8
+OID     N8
+OLE     BIN
+/BEGIN_DATA AMCSYMB
+3
+1022
+513
+0
+1
+0
+0
+0
+0
+0
+-4838
+3625
+161
+8624
+4
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+0
+
+
+
+1021
+1
+
+3
+1023
+514
+0
+2
+0
+0
+0
+0
+0
+-20526
+4050
+-16377
+8199
+4
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+0
+
+
+
+1021
+2
+
+3
+1024
+514
+0
+3
+0
+0
+0
+0
+0
+-4413
+-8300
+-264
+-4151
+4
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+0
+
+
+
+1021
+3
+
+3
+1203
+21
+32
+4
+0
+0
+0
+0
+0
+6824
+10133
+20173
+15067
+4
+12
+0
+1
+0
+0
+0
+0
+0
+0
+0
+
+0
+
+
+
+1021
+0
+
+3
+1025
+516
+0
+5
+0
+1023
+1022
+0
+0
+0
+0
+0
+0
+4
+3
+0
+0
+0
+0
+0
+0
+0
+3
+2
+ecb7ffffec170000ddf6ffffec1700000000000000000000
+0
+
+
+
+1021
+4
+
+3
+1044
+516
+0
+6
+0
+1022
+1024
+0
+0
+0
+0
+0
+0
+4
+3
+0
+0
+0
+0
+0
+0
+0
+3
+2
+29f7ffff8d0e000029f7ffff83e6ffff0000000000000000
+0
+
+
+
+1021
+5
+
+/END_TABLE AMCSYMB
+
+/BEGIN_TABLE AMCSUBG
+@       N5
+SUBG    N8
+SUBM    N8
+SGID    N8
+/BEGIN_DATA AMCSUBG
+2
+1058
+24
+0
+/END_TABLE AMCSUBG
+
+/BEGIN_TABLE AMCSUBS
+@       N5
+SID     N8
+TSYM    N5
+SSYM    N8
+NUMR    N8
+CSID    N8
+SID1    N8
+SID2    N8
+CLND    N8
+CLNN    N5
+RCX1    N8
+RCY1    N8
+RCX2    N8
+RCY2    N8
+PENS    N5
+BRSH    N5
+CTXT    N8
+FONT    N5
+JUST    N5
+WOVL    N8
+HOVL    N8
+SARR    N5
+CARR    N5
+TARR    N5
+NBPT    N8
+LSPT    BIN
+LSTY    N5
+TEXT    TXT
+PICT    PIC
+BTMP    BMP
+GRPH    N8
+OID     N8
+OLE     BIN
+/BEGIN_DATA AMCSUBS
+3
+1059
+514
+512
+1
+0
+0
+0
+0
+0
+-19624
+10751
+-15475
+14900
+4
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+0
+
+
+
+1058
+2
+
+3
+1064
+514
+512
+2
+0
+0
+0
+0
+0
+5864
+-12636
+11138
+-7362
+4
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+0
+
+
+
+1058
+3
+
+3
+1074
+513
+512
+3
+0
+0
+0
+0
+0
+-11201
+5000
+-6202
+9999
+4
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+0
+
+
+
+1058
+8
+
+3
+1075
+513
+512
+4
+0
+0
+0
+0
+0
+-6026
+-11950
+-1027
+-6951
+4
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+0
+
+
+
+1058
+9
+
+3
+1141
+515
+512
+5
+0
+0
+0
+0
+0
+-176
+1675
+7823
+3724
+4
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+0
+
+
+
+1058
+43
+
+3
+1076
+516
+512
+7
+0
+1074
+1075
+0
+0
+0
+0
+0
+0
+4
+3
+0
+0
+0
+0
+0
+0
+0
+3
+3
+27d8ffff7d190000e1d5ffffccf7ffffa9ecffffead9ffff
+0
+
+
+
+1058
+10
+
+3
+1061
+516
+512
+8
+0
+1059
+1074
+0
+0
+0
+0
+0
+0
+4
+3
+0
+0
+0
+0
+0
+0
+0
+3
+2
+72bbffff19320000bed8ffffea2400000000000000000000
+0
+
+
+
+1058
+6
+
+3
+1066
+516
+512
+9
+0
+1064
+1075
+0
+0
+0
+0
+0
+0
+4
+3
+0
+0
+0
+0
+0
+3
+0
+0
+2
+35210000f1d8ffff9af7fffff0d8ffff0000000000000000
+0
+
+
+
+1058
+7
+
+3
+1094
+516
+512
+10
+0
+1074
+1075
+0
+0
+0
+0
+0
+0
+6
+3
+0
+0
+0
+0
+0
+0
+0
+3
+2
+18e7ffffc819000016f8ffffb4e2ffff0000000000000000
+0
+
+
+
+1058
+11
+
+3
+1142
+516
+512
+11
+0
+1074
+1141
+0
+0
+0
+0
+0
+0
+4
+3
+0
+0
+0
+0
+0
+0
+0
+7
+2
+fee2ffffe21d0000fd1000002f0d00000000000000000000
+0
+
+
+
+1058
+44
+
+3
+1178
+516
+512
+12
+0
+1141
+1075
+0
+0
+0
+0
+0
+0
+4
+3
+0
+0
+0
+0
+0
+0
+0
+3
+2
+ef0e00008b0a000039f2ffff15dbffff0000000000000000
+0
+
+
+
+1058
+55
+
+/END_TABLE AMCSUBS
+
+

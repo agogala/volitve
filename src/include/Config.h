@@ -1,8 +1,8 @@
 // -*- C++ -*-
 /* 
- * $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
+ * $ProjectHeader: volitve 0.28 Sat, 27 Dec 1997 16:06:49 +0100 andrej $
  *
- * $Id: Config.h 1.16 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
+ * $Id: Config.h 1.17 Sat, 27 Dec 1997 15:06:49 +0000 andrej $
  *
  * Konfiguracija.
 */
@@ -58,7 +58,7 @@
 #define FORMATER_DEFAULT_PATH "/tmp/format_market"
 
 /* Ime baze: */
-#define DB_NAME "volitve"
+#define DB_NAME "zupani"
 #endif
 
 /* Velikosti polj: */
@@ -77,8 +77,11 @@
 /* Najveèja dovoljena kolièina */
 #define MAX_KOL 25
 
+/* Èas odprtja: */
+#define STARTING_TIME 881139600 // 'Wed Dec  3 10:00:00 1997' 
+
 /* Èas zaprtja: */
-#define CLOSING_TIME 880153200 // 'Sat Nov 22 00:00:00 1997' :-)))
+#define CLOSING_TIME 882572400 // 'Sat Dec 20 00:00:00 1997'
 //#define CLOSING_TIME 880117058
 
 #endif

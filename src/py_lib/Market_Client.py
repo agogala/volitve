@@ -1,4 +1,4 @@
-# $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
+# $ProjectHeader: volitve 0.28 Sat, 27 Dec 1997 16:06:49 +0100 andrej $
 #
 # $Id: Market_Client.py 1.3 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
 #

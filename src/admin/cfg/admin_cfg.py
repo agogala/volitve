@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
+# $ProjectHeader: volitve 0.28 Sat, 27 Dec 1997 16:06:49 +0100 andrej $
 #
-# $Id: admin_cfg.py 1.2.2.7 Fri, 21 Nov 1997 17:06:57 +0000 andrej $
+# $Id: admin_cfg.py 1.2.2.8 Sat, 27 Dec 1997 15:06:49 +0000 andrej $
 #
 # Konfiguracija za administracijo:
 
@@ -24,7 +24,8 @@ templates = {"Dodaj": {'dir': '/narocila', 'ime': 'dodaj.html'},
 	     "Pogodbe": {'dir': '/uporabniki', 'ime': 'pogodbe.html'}}
 
 # Baza:
-DB_Name = "volitve_d"
+#DB_Name = "volitve_d"
+DB_Name = "zupani"
 
 # Sendmail
 SENDMAIL = "/usr/lib/sendmail -t -em"
@@ -39,9 +40,12 @@ def ReadCfg():
     return
 
 # Trgovanje teèe, ali je ustavljeno:
-_ClosingTime = 880153200 # 'Sat Nov 22 00:00:00 1997' :-)))
-#_ClosingTime = 880117058 # 'Sat Nov 22 00:00:00 1997' :-)))
+_StartingTime = 881139600 # 'Wed Dec  3 10:00:00 1997'
+_ClosingTime = 882572400 # 'Sat Dec 20 00:00:00 1997'
+
+def StartingTime():
+    return _StartingTime
 
 def MarketClosed():
     import time
-    return time.time()>=_ClosingTime
+    return (time.time()>=_ClosingTime) or (time.time()<_StartingTime)

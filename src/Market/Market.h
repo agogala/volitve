@@ -1,6 +1,6 @@
 // -*- C++ -*-
 /*
- * $ProjectHeader: volitve 0.27 Fri, 21 Nov 1997 18:06:57 +0100 andrej $
+ * $ProjectHeader: volitve 0.28 Sat, 27 Dec 1997 16:06:49 +0100 andrej $
  *
  * $Id: Market.h 1.6 Sun, 19 Oct 1997 17:07:54 +0000 andrej $
  *
