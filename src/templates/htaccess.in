@@ -1,4 +1,4 @@
-# Access:
+# .htaccess za uporabnikov direktorij
 AuthUserFile  /home/andrej/sola/volitve/src/admin/cfg/htpasswd
 AuthGroupFile /dev/null
 AuthName      "Borza kandidatov"
@@ -6,5 +6,7 @@ AuthType      Basic
  
 Options All
 <Limit GET POST PUT>
-require valid-user
+require user %(username)s
 </Limit>
+
+allow from all

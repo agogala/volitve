@@ -1,6 +1,6 @@
--- $ProjectHeader: volitve 0.10 Thu, 11 Sep 1997 18:28:32 +0200 andrej $
+-- $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
 --
--- $Id: baza.sql 1.3.2.2 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
+-- $Id: baza.sql 1.3.2.3 Thu, 11 Sep 1997 21:18:12 +0000 andrej $
 --
 -- Skreira bazo.
 
@@ -26,7 +26,7 @@ CREATE UNIQUE INDEX Stranka_ID
 -- Podatki o prispelih registracijah:
 CREATE TABLE Registracije
 	(EMail		text,
-	hash		char(8),
+	hash		char(32),
 	accessed	bool);
 
 -- Stanje na raèunu:

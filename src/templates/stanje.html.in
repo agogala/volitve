@@ -1,0 +1,16 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Stanje - %(username)s</title>
+  </head>
+
+  <body>
+    <h1>Stanje %(username)s</h1>
+
+    Tu se bo kazalo stane na raèunu. Za vsak papir, kjer je kolièina
+    razlièna od 0 + izkupièek + stanje glede na zadnji povpreèni
+    teèaj.
+
+    <hr>
+  </body>
+</html>

@@ -1,3 +1,13 @@
+0.11
+Admind v glavnih obrisih dokonèan. Potrebno ¹e precej stestirat. 
+Ostalo ¹e precej problemov: 
+  * napake se ne prena¹ajo do klientov, t.j. protokol bi moral bolje 
+    definirati (vsaj za registracijo)
+  * dodati je potrebno ¹e popravljanje gesel
+  * preveriti je potrebno, èe gesla sploh pravilno generira
+  * dodati je potrebno primer, èe je e-mail ¾e registriran
+  * ...
+
 0.10
 Dodal admind, vse v zvezi z registracijo in uporabniki poteka prek njega.
 

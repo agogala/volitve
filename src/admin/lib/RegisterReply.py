@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.10 Thu, 11 Sep 1997 18:28:32 +0200 andrej $
+# $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
 #
-# $Id: RegisterReply.py 1.2 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
+# $Id: RegisterReply.py 1.3 Thu, 11 Sep 1997 21:18:12 +0000 andrej $
 # Pripravi vse za registracijo - direktorij + odgovor
 
 import rfc822
@@ -15,12 +15,18 @@ def NormalizeAddress(addr):
     import string
     return string.lower(addr)
 
+def byte2string(instr):
+    result = ''
+    for l in range(len(instr)):
+	result = result + ('%02x' % ord(instr[l]))
+    return result
+    
 def MakeUrl(name):
     import md5, time
     md5hash = md5.new()
     md5hash.update(name)
     md5hash.update(time.asctime(time.gmtime(time.time())))
-    result = "%08u" % hash(md5hash)
+    result = "%s" % byte2string(md5hash.digest())
     return result
 
 def run(srcdir, templates):
@@ -45,10 +51,10 @@ def run(srcdir, templates):
 	filekey = 'RegisterNew'
 
     # Preveri, èe ¾e obstaja tak e-mail v ¹e ne izkori¹èenih registracijah
-    rereg = conn.query("SELECT url FROM Registracije WHERE EMail='%s'" % email)
+    rereg = conn.query("SELECT hash FROM Registracije WHERE EMail='%s'" % email)
     
     if rereg:
-	urlkey = rereg[0]
+	urlkey = rereg[0][0]
     else:
 	urlkey = MakeUrl(replyto)
 	conn.query(
@@ -73,3 +79,6 @@ def run(srcdir, templates):
     pipe = os.popen(admin_cfg.SENDMAIL, "w")
     pipe.write(message)
     pipe.close()
+
+if __name__ == '__main__':
+    print MakeUrl('andrej') 

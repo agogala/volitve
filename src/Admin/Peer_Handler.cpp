@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.10 Thu, 11 Sep 1997 18:28:32 +0200 andrej $
+ * $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
  *
- * $Id: Peer_Handler.cpp 1.1 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
+ * $Id: Peer_Handler.cpp 1.2 Thu, 11 Sep 1997 21:18:12 +0000 andrej $
  *
  * Sprejema zahtevke od klientov.
  */
@@ -81,10 +81,14 @@ Peer_Handler::handle_input (ACE_HANDLE)
 	      break;
 	    }
 	    case 'R': {
-	      ACE_Tokenizer tokens(rs);
-	      tokens.delimiter(' ');
+	      ACE_Tokenizer tokens(&rs[1]);
+	      tokens.delimiter_replace(' ', '\0');
+	      char *hash = tokens.next();
+	      char *username = tokens.next();
+	      char *passwd = tokens.next();
+
 	      if (REGISTRATOR::instance()-> Register
-		  (RegRec(tokens.next(), tokens.next(), tokens.next()))==-1) {
+		  (RegRec(hash, username, passwd))==-1) {
 		ACE_OS::strncpy(&rs[1], "FAIL", sizeof(rs)-2);
 	      } else {
 		ACE_OS::strncpy(&rs[1], "OK", sizeof(rs)-2);

@@ -1,10 +1,11 @@
-# $ProjectHeader: volitve 0.10 Thu, 11 Sep 1997 18:28:32 +0200 andrej $
+# $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
 #
-# $Id: MakeDodaj.py 1.3 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
+# $Id: MakeDodaj.py 1.4 Thu, 11 Sep 1997 21:18:12 +0000 andrej $
 # Naredi dokument dodaj.html: zares opravi delo.
 
 import pg95
 import admin_cfg
+import Util
 
 def run(srcdir, destdir, templates):
     pg95.set_defbase(admin_cfg.DB_Name)
@@ -24,21 +25,8 @@ def run(srcdir, destdir, templates):
 
     # Preberi obrazec:
     templname = srcdir + '/' + templates['Dodaj']['ime'] + '.in'
-
-    f = open(templname, "r")
-    content = f.read()
-    f.close();
-
-#    print content
-
-#    print locals()
-
-#    print content % locals()
-    
     destname = destdir + templates['Dodaj']['dir'] + '/' + \
-		templates['Dodaj']['ime'] 
-    g = open(destname, "w")
-    g.write(content % locals())
-    g.close
-
+	       templates['Dodaj']['ime'] 
+    Util.MakeTemplate(templname, destname, locals())
+    
 

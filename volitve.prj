@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 3 3)
 (Project-Description "Blagovna borza predsednikov")
-(Project-Version volitve 0 10)
-(Parent-Version volitve 0 9)
+(Project-Version volitve 0 11)
+(Parent-Version volitve 0 10)
 
-(Version-Log "Dodal admind, vse okoli registracije poteka prek njega.")
+(Version-Log "Admind v glavnih obrisih dela - protokol je slab.")
 (New-Version-Log "")
-(Checkin-Time "Thu, 11 Sep 1997 18:28:32 +0200")
+(Checkin-Time "Thu, 11 Sep 1997 23:18:12 +0200")
 (Checkin-Login andrej)
 (Populate-Ignore ("~$" "^apache" "^Proto/" "^Tmp/"
                   "^test-cpp/" ".obj/"  ".shobj/" "^Bookmarks"
@@ -20,7 +20,7 @@
 ;; Files added by populate at Thu, 28 Aug 1997 18:56:22 +0200:
 
 ;; Kronologija in TODO
-  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.9 644))
+  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.10 644))
   (TODO (volitve/32_TODO 1.2 644))
   (tips (volitve/41_tips 1.1 644))
 
@@ -28,7 +28,7 @@
 ;; Poisci ustrezen posel
   (SQL/match.sql (volitve/1_match.sql 1.1 640))
 ;; Naredi bazo
-  (SQL/baza.sql (volitve/2_baza.sql 1.3.2.2 640))
+  (SQL/baza.sql (volitve/2_baza.sql 1.3.2.3 640))
 
 ;; Napolni bazo
   (SQL/pop-stranke.sql (volitve/3_pop-strank 1.2 640))
@@ -39,7 +39,7 @@
   (SQL/zah2fifo.sql (volitve/b/0_zah2fifo.sql 1.1 644))
  
 ;; Testni podatki
-  (SQL/fifo.txt (volitve/5_fifo.txt 1.1 644))
+  (SQL/fifo.txt (volitve/5_fifo.txt 1.1 640))
   (SQL/stranke.txt (volitve/6_stranke.tx 1.2 644))
   (SQL/papirji.txt (volitve/b/8_papirji.tx 1.1 644))
 
@@ -86,7 +86,7 @@
 
 ;;Primer:
   (src/HTML/uporabniki/147736/.htaccess (volitve/c/2_.htaccess 1.1 644))
-  (src/HTML/narocila/.htaccess (volitve/c/3_.htaccess 1.1 644))
+  (src/HTML/narocila/.htaccess (volitve/c/3_.htaccess 1.2 644))
 
 
 ;; Konfiguracija
@@ -114,8 +114,18 @@
   (src/Manager/manager.cpp (volitve/b/44_manager.cp 1.1 644))
   (src/Manager/Makefile (volitve/b/45_Makefile 1.1 644))
 
+;; Admin:
+  (src/Admin/initadm.py (volitve/b/0_initadm.py 1.1 644))
+  (src/Admin/Peer_Handler.cpp (volitve/c/0_Peer_Handler.cpp 1.2 644))
+  (src/Admin/Peer_Handler.h (volitve/c/12_Peer_Handl 1.1 644))
+  (src/Admin/Registrator.cpp (volitve/c/13_Registrato 1.2 644))
+  (src/Admin/Registrator.h (volitve/c/14_Registrato 1.1 644))
+  (src/Admin/admind.cpp (volitve/c/15_admind.cpp 1.1 644))
+  (src/Admin/admind.h (volitve/c/16_admind.h 1.1 644))
+  (src/Admin/Makefile (volitve/c/17_Makefile 1.1 644))
+
 ;; CGI
-  (src/cgi/.htaccess (volitve/35_.htaccess 1.3.2.1 644))
+  (src/cgi/.htaccess (volitve/35_.htaccess 1.3.2.2 644))
   (src/cgi/broker (volitve/b/20_broker 1.2 755))
   (src/cgi/vhod (volitve/c/4_vhod 1.1 755))
 ;; Javno dostopen cgi:
@@ -131,14 +141,15 @@
 ;; Preusmeri uporabnika:
   (src/py_lib/Redirect.py (volitve/c/5_Redirect.p 1.1 644))
   (src/py_lib/Uporabniki.py (volitve/c/6_Uporabniki 1.2 644))
+  (src/py_lib/Admin_Client.py (volitve/c/18_Admin_Clie 1.1 644))
 ;; Gesla:
-  (src/py_lib/.htpasswd (volitve/c/7_.htpasswd 1.1 644))
+  (src/admin/cfg/htpasswd (volitve/c/7_.htpasswd 1.2 644))
 
 ;; Testni programi:
   (test/Observer_Client/oc.py (volitve/30_oc.py 1.2 755))
   (test/Market_Client/mc.py (volitve/31_mc.py 1.4 755))
   (src/cgi/testpy.py (volitve/40_testpy.py 1.1 755))
-  (test/Sock-Test/sock.cpp (volitve/42_sock.cpp 1.1 644))
+  (test/Sock-Test/sock.cpp (volitve/42_sock.cpp 1.1 664))
   (test/Sock-Test/Makefile (volitve/43_Makefile 1.1 644))
 ;; Request:
   (test/Request/testR.cpp (volitve/33_testR.cpp 1.3 644))
@@ -164,38 +175,28 @@
   (src/admin/mk-dodaj.py (volitve/b/26_mk-dodaj.p 1.2 755))
   (src/admin/reg-mail.py (volitve/c/8_reg-mail.p 1.1 755))
 ;; Konfiguracija
-  (src/admin/cfg/admin_cfg.py (volitve/b/27_admin_cfg. 1.2.2.1 644))
+  (src/admin/cfg/admin_cfg.py (volitve/b/27_admin_cfg. 1.2.2.2 644))
 ;; Knji¾nica
-  (src/admin/lib/MakePregled.py (volitve/b/28_MakePregle 1.3 644))
+  (src/admin/lib/MakePregled.py (volitve/b/28_MakePregle 1.4 644))
   (src/admin/lib/Observer.py (volitve/b/29_Observer.p 1.2 644))
-  (src/admin/lib/MakeDodaj.py (volitve/b/30_MakeDodaj. 1.3 644))
-  (src/admin/lib/RegisterReply.py (volitve/c/9_RegisterRe 1.2 644))
+  (src/admin/lib/MakeDodaj.py (volitve/b/30_MakeDodaj. 1.4 644))
+  (src/admin/lib/RegisterReply.py (volitve/c/9_RegisterRe 1.3 644))
+  (src/admin/lib/Registrator.py (volitve/c/19_Registrato 1.2 644))
+  (src/admin/lib/Util.py (volitve/51_Util.py 1.1 664))
 
 ;; Obrazci:
   (src/templates/pregled.html.in (volitve/b/31_pregled.ht 1.2 644))
   (src/templates/dodaj.html.in (volitve/b/32_dodaj.html 1.3 644))
   (src/templates/register-old.txt (volitve/c/10_register-o 1.1 644))
   (src/templates/register-new.txt (volitve/c/11_register-n 1.1 644))
+  (src/templates/stanje.html.in (volitve/b/0_stanje.html.in 1.1 664))
+  (src/templates/htaccess.in (volitve/b/1_htaccess.i 1.1 664))
 
 ;; HTTP konfiguracija:
   (apache_1.2.4/conf/httpd.conf (volitve/b/33_httpd.conf 1.1 644))
   (apache_1.2.4/conf/srm.conf (volitve/b/34_srm.conf 1.2 644))
   (apache_1.2.4/conf/access.conf (volitve/b/35_access.con 1.2 644))
   (apache_1.2.4/conf/mime.types (volitve/b/36_mime.types 1.1 644))
-
-  (src/Admin/initadm.py (volitve/b/0_initadm.py 1.1 644))
-  (src/Admin/Peer_Handler.cpp (volitve/c/0_Peer_Handler.cpp 1.1 644))
-  (src/Admin/Peer_Handler.h (volitve/c/12_Peer_Handl 1.1 644))
-  (src/Admin/Registrator.cpp (volitve/c/13_Registrato 1.1 644))
-  (src/Admin/Registrator.h (volitve/c/14_Registrato 1.1 644))
-  (src/Admin/admind.cpp (volitve/c/15_admind.cpp 1.1 644))
-  (src/Admin/admind.h (volitve/c/16_admind.h 1.1 644))
-  (src/Admin/Makefile (volitve/c/17_Makefile 1.1 644))
-
-  (src/py_lib/Admin_Client.py (volitve/c/18_Admin_Clie 1.1 644))
-
-  (src/admin/lib/Registrator.py (volitve/c/19_Registrato 1.1 644))
-
 )
 (Merge-Parents)
 (New-Merge-Parents)

@@ -1,7 +1,7 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.10 Thu, 11 Sep 1997 18:28:32 +0200 andrej $
+ * $ProjectHeader: volitve 0.11 Thu, 11 Sep 1997 23:18:12 +0200 andrej $
  *
- * $Id: Registrator.cpp 1.1 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
+ * $Id: Registrator.cpp 1.2 Thu, 11 Sep 1997 21:18:12 +0000 andrej $
  *
  * Oblikuje HTML datoteke.
  */
@@ -112,7 +112,7 @@ int Registrator::Register(RegRec &regrec)
   if (!initialized_)
     init();
 
-  static char CmdLine[] = "Registrator.Register('%s','%s','%s')";
+  static char CmdLine[] = "Registrator.Registriraj('%s','%s','%s')";
 
   char buff[strlen(CmdLine) + strlen(regrec.hash()) +
 	   strlen(regrec.username()) + strlen(regrec.passwd()) + 1];
