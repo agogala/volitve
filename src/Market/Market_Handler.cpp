@@ -1,8 +1,9 @@
 // Default constructor.
 
 #include "marketd.h"
-#include "Request.h"
 #include "Market.h"
+#include "Request.h"
+#include "Market_Handler.h"
 #include "Notifier.h"
 
 Market_Handler::Market_Handler (void)

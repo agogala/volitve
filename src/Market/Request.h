@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve D.2 Wed, 03 Sep 1997 07:39:11 +0200 andrej $
+ * $ProjectHeader: volitve 0.4 Thu, 04 Sep 1997 04:15:14 +0200 andrej $
  *
- * $Id: Request.h 1.1 Wed, 03 Sep 1997 05:39:11 +0000 andrej $
+ * $Id: Request.h 1.2 Thu, 04 Sep 1997 02:15:14 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
@@ -20,25 +20,27 @@ public:
   // Konstruktorji:
   Request();
   // Preberi string
-  Request(char * rs);
+  Request(const char * rs);
   // Preberi iz trenutne vrstice:
-  Request(PgDatabase &db);
+  Request(PgDatabase &db, int tup_num);
   ~Request();
 
   // Preveri veljavnost (glede na trenutno bazo):
   bool IsValid(PgDatabase &db) const;
   
   // Preberi iz tabele:
-  int Read(PgDatabase &db);
-  // Shrani v tabelo:
-  int Store(PgDatabase &db) const;
+  int Read(PgDatabase &db, int tup_num);
+  // Shrani v tabelo, doloèi oid
+  int Store(PgDatabase &db);
 
   // Atributi:
   const char *Ponudnik() const;
   const char *Papir_ID() const;
   // Vrne negativno vrednost, ce je nakup, pozitivno ce je prodaja.
-  unsigned int Kolicina() const;
+  int Kolicina() const;
   double Cena() const;
+
+  const char *ID() const;
 
   // Vrne razlog zakaj zadeva ni veljavna
   //  char *LastError() const;
@@ -46,19 +48,21 @@ public:
 private:
   bool Valid_;
 
-  char Ponudnik_[MAX_PONUDNIK];
-  char Papir_ID_[MAX_PAPIR_ID];
-  unsigned int Kolicina_;
+  char Ponudnik_[MAX_PONUDNIK + 1];
+  char Papir_ID_[MAX_PAPIR_ID + 1];
+  int Kolicina_;
   double Cena_;
-  char Vrsta_;
+  //  char Vrsta_;
+  // Tole je potrebno ¹e razmisliti [...]
   //  date Datum_;
   //  time Ura_;
 
-  //  String LastError_;
+  // Enolièna oznaka.
+  char ID_[MAX_ID + 1];
 
   // Interne funkcije 
-  int Read_i(PgDatabase &db);
-  int Read_i(char * rs);
+  int Read_i(PgDatabase &db, int tup_num);
+  int Read_i(const char * rs);
 };
 
 #endif REQUEST_H

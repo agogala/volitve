@@ -1,6 +1,5 @@
 CREATE TABLE Fifo 
-	(Vrsta		char(1),
-	Cena 		float,	
+	(Cena 		float,	
 	Kolicina	int,
 	Papir_ID	char(4),
 	Datum		date,
@@ -8,8 +7,7 @@ CREATE TABLE Fifo
 	Ponudnik	char(10));
 
 CREATE TABLE Zahtevki
-	(Vrsta		char(1),
-	Cena 		float,	
+	(Cena 		float,	
 	Kolicina	int,
 	Papir_ID	char(4),
 	Datum		date,
@@ -38,3 +36,4 @@ CREATE TABLE Posli
 	Kolicina	int,
 	Kupec		char(10),
 	Prodajalec	char(10));
+

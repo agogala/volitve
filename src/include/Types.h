@@ -1,6 +1,6 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve D.2 Wed, 03 Sep 1997 07:39:11 +0200 andrej $
+ * $ProjectHeader: volitve 0.4 Thu, 04 Sep 1997 04:15:14 +0200 andrej $
  *
  * $Id: Types.h 1.1 Wed, 03 Sep 1997 05:39:11 +0000 andrej $
  *

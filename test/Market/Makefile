@@ -9,9 +9,11 @@
 #	Local macros
 #----------------------------------------------------------------------------
 
-BIN   	= testR
+BIN   	= testM
 
 FILES	= Request \
+	  Market \
+	  VectorRequest \
 	  Query
 
 LSRC	= $(addsuffix .cpp,$(FILES))

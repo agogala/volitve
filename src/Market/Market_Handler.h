@@ -1,15 +1,15 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve D.2 Wed, 03 Sep 1997 07:39:11 +0200 andrej $
+ * $ProjectHeader: volitve 0.4 Thu, 04 Sep 1997 04:15:14 +0200 andrej $
  *
- * $Id: Market_Handler.h 1.1 Wed, 03 Sep 1997 05:39:11 +0000 andrej $
+ * $Id: Market_Handler.h 1.2 Thu, 04 Sep 1997 02:15:14 +0000 andrej $
  *
  * Blagovna borza. Market_Handler sprejema in dela z odjemalci.
  *
  */
 
-#if !defined (MARKET_H)
-#define MARKET_H
+#if !defined (MARKET_HANDLER)
+#define MARKET_HANDLER
 
 #include <ace/Acceptor.h>
 #include <ace/LSOCK_Acceptor.h>
@@ -55,4 +55,4 @@ private:
 typedef ACE_Acceptor <Market_Handler, ACE_LSOCK_ACCEPTOR>
 	Market_Acceptor;
 
-#endif /* MARKET_H */
+#endif /* MARKET_HANDLER */

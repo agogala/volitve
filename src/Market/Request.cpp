@@ -1,14 +1,15 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve D.2 Wed, 03 Sep 1997 07:39:11 +0200 andrej $
+ * $ProjectHeader: volitve 0.4 Thu, 04 Sep 1997 04:15:14 +0200 andrej $
  *
- * $Id: Request.cpp 1.1 Wed, 03 Sep 1997 05:39:11 +0000 andrej $
+ * $Id: Request.cpp 1.2 Thu, 04 Sep 1997 02:15:14 +0000 andrej $
  *
  * Zahtevek za blagovno borzo.
  *
  */
 
 #include <String.h>
+#include <ace/OS.h>
 #include <ace/Log_Msg.h>
 #include "Request.h"
 #include "Query.h"
@@ -18,7 +19,7 @@ Request::Request()
   Valid_ = false;
 }
 
-Request::Request(char * rs)
+Request::Request(const char * rs)
 {
 
   Valid_ = this->Read_i(rs) == 0;
@@ -26,9 +27,9 @@ Request::Request(char * rs)
 }
 
 // Preberi iz trenutne vrstice:
-Request::Request(PgDatabase &db)
+Request::Request(PgDatabase &db, const int tup_num)
 {
-  Valid_ = this->Read_i(db);
+  Valid_ = this->Read_i(db, tup_num) == 0;
 }
 
 Request::~Request()
@@ -40,7 +41,8 @@ bool Request::IsValid(PgDatabase &db) const
   if (this-> Valid_) {
     ((Request*)this)->Valid_ = (0 < this-> Cena_) && (this-> Cena_ <= 100);
     if (!this-> Valid_)
-      ACE_ERROR_RETURN((LM_ERROR, "Price %f out of range\n", this->Cena_),-1);
+      ACE_ERROR_RETURN((LM_ERROR, "Price %f out of range\n", this->Cena_),
+		       this->Valid_);
     // Preveri kolièino: (to je potrebno ¹e razmisliti)
 
     // Itd...
@@ -48,26 +50,41 @@ bool Request::IsValid(PgDatabase &db) const
   return Valid_;
 }
   
-int Request::Store(PgDatabase &db) const
+// Preberi iz tabele:
+int Request::Read(PgDatabase &db, const int tup_num)
+{
+  return Read_i(db, tup_num);
+}
+
+
+int Request::Store(PgDatabase &db) 
 {
   // Èe ni veljaven zahtevek, zavrnemo shranjevanje...
   // Kako enostavno bi to bilo, èe bi lahko vrgel kak exception!
   if (!IsValid(db)) {
-    ACE_ERROR_RETURN((LM_ERROR, "Request not valid. Can't save\n"), -1);
+    ACE_ERROR_RETURN((LM_ERROR, "Request not valid. Can't store.\n"), -1);
   }
+
+  /* Vstavi v zahtevke: 
+     Parametri:
+     Cena
+     Kolicina
+     Papir_ID
+     Ponudnik
+   */
 
   Query insert(
-    "INSERT INTO zahtevki"
-    "VALUES ('%s', %f, %d, %s, TODAY, NOW, %s)");
+    "INSERT INTO zahtevki\n"
+    "\tVALUES (%f, %d, '%s', 'today', 'now', '%s')");
 
-  int status;
-
-  if ((status = db.Exec
-      (insert.Params(NULL, this->Vrsta_, this->Cena_, this->Kolicina_, 
-		     this->Papir_ID_, this->Ponudnik_))) != PGRES_COMMAND_OK) {
-    ACE_ERROR_RETURN((LM_ERROR, "Error inserting requests: %d, %s\n",
-		      status, db.ErrorMessage()),-1);
+  if (!db.ExecCommandOk
+      (insert.Params(NULL, this->Cena_, this->Kolicina_, 
+		     this->Papir_ID_, this->Ponudnik_))) {
+    ACE_ERROR_RETURN((LM_ERROR, "Error inserting requests: %s\n",
+		      db.ErrorMessage()),-1);
   }
+
+  ACE_OS::strcpy(this->ID_, db.OidStatus());
 
   return 0;
 }
@@ -83,15 +100,21 @@ const char *Request::Papir_ID() const
 }
 
 // Vrne negativno vrednost, ce je nakup, pozitivno ce je prodaja.
-unsigned int Request::Kolicina() const
+int Request::Kolicina() const
 {
   return this->Kolicina_;
 }
 
 double Request::Cena() const
 {
-  return this->Cena_ * (this->Vrsta_ == 'N' ? -1 : 1) ;
+  return this->Cena_;
 }
+
+const char *Request::ID() const
+{
+  return this->ID_;
+}
+
 
 // Vrne razlog zakaj zadeva ni veljavna
 /*char *Request::LastError() const
@@ -99,12 +122,37 @@ double Request::Cena() const
   return this->LastError_;
 }*/
 
-int Request::Read_i(PgDatabase &db)
+int Request::Read_i(PgDatabase &db, const int tup_num)
 {
+  
+  // Predpostavimo, da je iskanje po imenih dolgotrajnej¹e, zato raje 
+  // izraèunamo indekse kar na zaèetku. Hkrati preverimo, èe so vsa polja
+  // na voljo:
+  //  int indVrsta = db.FieldNum("vrsta");
+  int indPonudnik = db.FieldNum("ponudnik");
+  int indPapir_ID = db.FieldNum("papir_id");
+  int indKolicina = db.FieldNum("kolicina");
+  int indCena = db.FieldNum("cena");
+  int indID = db.FieldNum("oid");
+
+  Valid_ = (indPonudnik>=0) &&
+           (indKolicina>=0) && (indCena>=0) &&
+           (indID>=0) && (indPapir_ID>=0);
+
+  if (!Valid_) 
+    ACE_ERROR_RETURN((LM_ERROR, "Missing fields in table\n"), -1);
+
+  this->Kolicina_ = atoi(db.GetValue(tup_num, indKolicina));      // Kolièina
+  this->Cena_ = atof(db.GetValue(tup_num, indCena));     // Cena
+  //  this->Vrsta_ = db.GetValue(tup_num, indVrsta)[0];
+  ACE_OS::strcpy(this->Ponudnik_, db.GetValue(tup_num, indPonudnik));
+  ACE_OS::strcpy(this->Papir_ID_, db.GetValue(tup_num, indPapir_ID));
+  ACE_OS::strcpy(this->ID_, db.GetValue(tup_num, indID));
+
   return 0;
 }
 
-int Request::Read_i(char * rs)
+int Request::Read_i(const char * rs)
 {
 
   Valid_ = false;
@@ -119,16 +167,17 @@ int Request::Read_i(char * rs)
   int n = split(String(rs), words, 5, String(" "));
 
   if (n!=5) {
-    ACE_ERROR_RETURN((LM_ERROR, "Wrong number of words"), -1);
+    ACE_ERROR_RETURN((LM_ERROR, "Wrong number of words: %d\n", n), -1);
   }
   
   // BUY ali SELL
   // Zaenkrat uporabljamo kar tele funkcije - ne glede na Locale ipd.
-  this->Kolicina_ = atoi(words[SHARES].chars());      // Kolièina
+  this->Kolicina_ = atoi(words[SHARES].chars()) 
+    * (words[KIND][0] == 'B' ? -1 : 1); // Kolièina
   this->Cena_ = atof(words[PRICE].chars());     // Cena
-  this->Vrsta_ = words[KIND][0] == 'B' ? 'N' : 'P';
-  strcpy(this->Ponudnik_, words[ACCOUNT].chars());
-  strcpy(this->Papir_ID_, words[SYMBOL].chars());
+  //  this->Vrsta_ = words[KIND][0] == 'B' ? 'N' : 'P';
+  ACE_OS::strcpy(this->Ponudnik_, words[ACCOUNT].chars());
+  ACE_OS::strcpy(this->Papir_ID_, words[SYMBOL].chars());
 
   return 0;
 }

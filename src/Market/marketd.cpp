@@ -1,16 +1,17 @@
 /*
- * $ProjectId$
+ * $ProjectHeader: volitve 0.4 Thu, 04 Sep 1997 04:15:14 +0200 andrej $
  *
- * $Id: marketd.cpp 1.4 Wed, 03 Sep 1997 05:39:11 +0000 andrej $
+ * $Id: marketd.cpp 1.5 Thu, 04 Sep 1997 02:15:14 +0000 andrej $
  *
  */
 
 #include <ace/INET_Addr.h>
+#include <ace/Get_Opt.h>
 
 #include "marketd.h"
-#include "Market_Handler.h"
 #include "Notifier.h"
 #include "Market.h"
+#include "Market_Handler.h"
 
 class Options
 {
@@ -47,6 +48,7 @@ main (int argc, char *argv[])
   // Zbri¹i socket.
   ACE_OS::unlink(OPTIONS::instance ()->market_path());
 
+  return rc;
 }
 
 // Handles all work:

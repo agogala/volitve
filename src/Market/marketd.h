@@ -1,14 +1,14 @@
 /* -*- C++ -*- */
 /*
- * $ProjectHeader: volitve D.2 Wed, 03 Sep 1997 07:39:11 +0200 andrej $
+ * $ProjectHeader: volitve 0.4 Thu, 04 Sep 1997 04:15:14 +0200 andrej $
  *
- * $Id: marketd.h 1.2 Wed, 03 Sep 1997 05:39:11 +0000 andrej $
+ * $Id: marketd.h 1.3 Thu, 04 Sep 1997 02:15:14 +0000 andrej $
  *
  * Blagovna borza deamon.
  *
  */
 
-#ifndef (MARKETD_H)
+#if !defined (MARKETD_H)
 #define MARKETD_H
 
 #include <ace/Singleton.h>
@@ -23,4 +23,4 @@ typedef ACE_Singleton<ACE_Reactor, ACE_Null_Mutex>
 typedef ACE_Singleton<ACE_Test_and_Set <ACE_Null_Mutex, sig_atomic_t>, ACE_Null_Mutex>
 	QUIT_HANDLER;
 
-#endif
+#endif // MARKETD_H
