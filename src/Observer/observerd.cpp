@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
+ * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
  *
- * $Id: observerd.cpp 1.5 Tue, 09 Sep 1997 22:58:50 +0000 andrej $
+ * $Id: observerd.cpp 1.6 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
  *
  * Observer deamon. 
  */
@@ -19,6 +19,13 @@ int
 main (int argc, char *argv[])
 {  
 
+
+  ACE_Sig_Set signals;
+
+  signals.sig_add(SIGINT);
+  signals.sig_add(SIGTERM);
+  signals.sig_add(SIGHUP);
+
   State state;
 
   Notification_Handler notification(ACE_INET_Addr(NOTIFIER_DEFAULT_PORT), 
@@ -26,7 +33,7 @@ main (int argc, char *argv[])
   Formater formater(&state);
 
   if (REACTOR::instance ()->register_handler
-      (SIGINT, QUIT_HANDLER::instance()) == -1)
+      (signals, QUIT_HANDLER::instance()) == -1)
    ACE_ERROR_RETURN ((LM_ERROR,
 		      "registering service with ACE_Reactor\n"), -1);
   else if (REACTOR::instance ()->register_handler

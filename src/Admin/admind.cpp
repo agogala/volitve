@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
+ * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
  *
- * $Id: admind.cpp 1.1 Thu, 11 Sep 1997 16:28:32 +0000 andrej $
+ * $Id: admind.cpp 1.2 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
  *
  * Observer deamon. 
  */
@@ -46,6 +46,13 @@ main (int argc, char *argv[])
 
 int ReactorLoop()
 {  
+
+  ACE_Sig_Set signals;
+
+  signals.sig_add(SIGINT);
+  signals.sig_add(SIGTERM);
+  signals.sig_add(SIGHUP);
+
   Peer_Acceptor peer_acceptor;
 
   if (peer_acceptor.open
@@ -57,7 +64,7 @@ int ReactorLoop()
     ACE_ERROR_RETURN ((LM_ERROR,
 		       "can'(%P|%t) can't register with reactor\n"), -1);
   else if (REACTOR::instance ()->register_handler
-	   (SIGINT, QUIT_HANDLER::instance()) == -1)
+	   (signals, QUIT_HANDLER::instance()) == -1)
     ACE_ERROR_RETURN ((LM_ERROR,
 		       "registering service with ACE_Reactor\n"), -1);
 

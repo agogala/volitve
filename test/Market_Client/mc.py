@@ -14,12 +14,19 @@ sock.connect("/tmp/market")
 
 sock.setsockopt(SOL_SOCKET, SO_KEEPALIVE, 1)
 
-s="BUY KUCA 10 60.1 Crt"
+b="BUY KUCA 10 60.1 andrej"
+
+s="SELL KUCA 5 58 miha"
 
 while 1:
     sock.send(chr(len(s)) + s)
     response = sock.recv(1024)
     print "Response was: %s" % response
+
+    sock.send(chr(len(b)) + b)
+    response = sock.recv(1024)
+    print "Response was: %s" % response
+
     if sys.stdin.readline()[0]=='.':
 	break
 #    time.sleep(0.1)

@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
+ * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
  *
  * $Id: Registrator.h 1.2 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
  *

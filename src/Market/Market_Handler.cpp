@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
+ * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
  *
- * $Id: Market_Handler.cpp 1.6 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
+ * $Id: Market_Handler.cpp 1.7 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
  *
  * Sprejema zahtevke od klientov.
  */
@@ -11,6 +11,7 @@
 #include "Request.h"
 #include "Market_Handler.h"
 #include "Notifier.h"
+#include "StrSet.h"
 
 Market_Handler::Market_Handler (void)
 {
@@ -69,7 +70,9 @@ Market_Handler::handle_input (ACE_HANDLE)
 	  {
 	    ACE_DEBUG ((LM_DEBUG, "(%P|%t) Request: length %d content '%s'\n", n, rs));
 	    Request req(rs);
-	    int rc = MARKET::instance ()-> Add(req);
+	    strset userset;
+
+	    int rc = MARKET::instance ()-> Add(req, &userset);
 
 	    /* report back */
 	    ACE_OS::sprintf(&rs[1], "%03d", rc);
@@ -80,6 +83,12 @@ Market_Handler::handle_input (ACE_HANDLE)
 	    if (rc == 0) {
 	      /* notify observers */
 	      NOTIFIER::instance ()-> notify();
+	      while (userset.size()>0) {
+		NOTIFIER::instance ()-> notify(*userset.begin());
+		const char *ime = *userset.begin();
+		userset.erase(userset.begin());
+		delete ime;
+	      }	      
 	    } 
 	  }
 	else

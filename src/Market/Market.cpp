@@ -1,7 +1,7 @@
 /*
- * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
+ * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
  *
- * $Id: Market.cpp 1.6 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
+ * $Id: Market.cpp 1.7 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
  *
  * Trg. Zna dodajati zahtevke.
  */
@@ -14,7 +14,6 @@
 #include "Request.h"
 #include "Query.h"
 #include "Config.h"
-
 
 Market::Market()
 {
@@ -56,7 +55,7 @@ int Market::open()
      LastRC_ = Y; \
      strcpy(this->Result_, X)
 
-int Market::Add(Request &req)
+int Market::Add(Request &req, strset *userset = NULL)
 {
   // oznaka, ki pove èe je pri¹lo do napake.
   bool error = false;
@@ -140,9 +139,9 @@ int Market::Add(Request &req)
       "INSERT INTO posli\n"
       "VALUES('today', 'now', '%s', %f, %d, '%s', '%s')";
   
-  // Zbri¹i iz FIFO:
-  // Parametri:
-  // oid
+    // Zbri¹i iz FIFO:
+    // Parametri:
+    // oid
     Query DeleteFIFO = "DELETE FROM fifo WHERE oid=%s";
 
     // Popravi kolièino v FIFO
@@ -151,9 +150,12 @@ int Market::Add(Request &req)
     // oid
     Query UpdateFIFO = "UPDATE fifo SET kolicina=%d WHERE oid=%s";
 
-  // ©tevilo ¹e ne zaprtih poslov
+    // ©tevilo ¹e ne zaprtih poslov
     int Odprti = req.Kolicina();
 
+    // Ime stranke:
+    char *ime;
+    
     {
 
       int n = vecreq.size();
@@ -209,11 +211,76 @@ int Market::Add(Request &req)
 		     db->ErrorMessage()));
 	  break;
 	}
+
 	// Popravi stanje:
+	Query UpdateStanje =
+	  "UPDATE stanje\n"
+	  "SET kolicina=kolicina + %f\n"
+	  "WHERE papir_id='%s' AND\n"
+	  "      stranka_id='%s'";
 	
+	// Kupec:
+	// Papir:
+	if (error = (!db->ExecCommandOk(UpdateStanje.Params
+			       (NULL, 
+				(double)Kolicina,
+				buy->Papir_ID(), 
+				buy->Ponudnik())))) {
+	  ACE_ERROR((LM_ERROR, "Error updating stanje: %s\n", 
+		     db->ErrorMessage()));
+	  break;
+	}
+
+	// Denar:
+	if (error = (!db->ExecCommandOk(UpdateStanje.Params
+			       (NULL, 
+				-(double)Kolicina * vecreq[i].Cena(),
+				"denar", 
+				buy->Ponudnik())))) {
+	  ACE_ERROR((LM_ERROR, "Error updating stanje: %s\n", 
+		     db->ErrorMessage()));
+	  break;
+	}
+	
+	// Prodajalec:
+	// Papir:
+	if (error = (!db->ExecCommandOk(UpdateStanje.Params
+			       (NULL, 
+				(double)-Kolicina,
+				sell->Papir_ID(), 
+				sell->Ponudnik())))) {
+	  ACE_ERROR((LM_ERROR, "Error updating stanje: %s\n", 
+		     db->ErrorMessage()));
+	  break;
+	}
+
+	// Denar:
+	if (error = (!db->ExecCommandOk(UpdateStanje.Params
+			       (NULL, 
+				(double)Kolicina * vecreq[i].Cena(),
+				"denar", 
+				sell->Ponudnik())))) {
+	  ACE_ERROR((LM_ERROR, "Error updating stanje: %s\n", 
+		     db->ErrorMessage()));
+	  break;
+	}
+
+	// Shrani ime v mno¾ico:
+	if (userset!=NULL) {
+	  // Kupec:
+	  ime = new char[strlen(buy->Ponudnik()+1)];
+	  ACE_OS::strcpy(ime, buy->Ponudnik());
+	  userset->insert(ime);
+	  
+	  // Prodajalec:
+	  ime = new char[strlen(sell->Ponudnik()+1)];
+	  ACE_OS::strcpy(ime, sell->Ponudnik());
+	  userset->insert(ime);
+	}
+
       } 
 
-      // Vstavi posel v FIFO:
+      // Vstavi zahtevek v FIFO:
       // Parametri:
       //  Kolièina
       //  oid zahtevka.

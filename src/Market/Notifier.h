@@ -1,8 +1,8 @@
 /* -*- C++ -*- */
 /* 
- * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
+ * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
  *
- * $Id: Notifier.h 1.3 Thu, 04 Sep 1997 14:58:57 +0000 andrej $
+ * $Id: Notifier.h 1.4 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
  *
  * Zaznava spremembe na trgu in po¹ilja broadcast sporoèila o tem.
  */
@@ -34,6 +34,8 @@ public:
  
   //  virtual int handle_output (ACE_HANDLE handle);
   int notify();
+
+  int notify(const char* user);
  
   /*  virtual int handle_timeout (const ACE_Time_Value & tv, 
                               const void *arg = 0);*/

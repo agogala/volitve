@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 3 3)
 (Project-Description "Blagovna borza predsednikov")
-(Project-Version volitve 0 13)
-(Parent-Version volitve 0 12)
+(Project-Version volitve 0 14)
+(Parent-Version volitve 0 13)
 
-(Version-Log "Registracija uporabna, popravil Market protokol.")
+(Version-Log "")
 (New-Version-Log "")
-(Checkin-Time "Wed, 24 Sep 1997 19:03:46 +0200")
+(Checkin-Time "Thu, 25 Sep 1997 21:32:05 +0200")
 (Checkin-Login andrej)
 (Populate-Ignore ("~$" "^apache" "^Proto/" "^Tmp/"
                   "^test-cpp/" ".obj/"  ".shobj/" "^Bookmarks"
@@ -20,7 +20,7 @@
 ;; Files added by populate at Thu, 28 Aug 1997 18:56:22 +0200:
 
 ;; Kronologija in TODO
-  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.12 644))
+  (KRONOLOGIJA (volitve/0_KRONOLOGIJ 1.13 644))
   (TODO (volitve/32_TODO 1.2 644))
   (tips (volitve/41_tips 1.1 644))
 
@@ -28,7 +28,7 @@
 ;; Poisci ustrezen posel
   (SQL/match.sql (volitve/1_match.sql 1.1 640))
 ;; Naredi bazo
-  (SQL/baza.sql (volitve/2_baza.sql 1.3.2.4 640))
+  (SQL/baza.sql (volitve/2_baza.sql 1.3.2.5 640))
 
 ;; Napolni bazo
   (SQL/pop-stranke.sql (volitve/3_pop-strank 1.2 640))
@@ -60,7 +60,7 @@
   
 ;; Source:
 ;; Observer
-  (src/Observer/observerd.cpp (volitve/16_observer.c 1.5 644))
+  (src/Observer/observerd.cpp (volitve/16_observer.c 1.6 644))
   (src/Observer/observerd.h (volitve/b/0_observerd.h 1.1 644))
   (src/Observer/initfmt.py (volitve/b/37_initfmt.py 1.2 644))
   (src/Observer/State.cpp (volitve/b/38_State.cpp 1.1.2.1 644))
@@ -74,7 +74,7 @@
 ;; HTML:
   (src/HTML/index.html (volitve/18_index.html 1.4.2.1 644))
   (src/HTML/pregled/.htaccess (volitve/b/9_.htaccess 1.3 644))
-  (src/HTML/pregled/pregled.html (volitve/b/10_pregled.ht 1.7 644))
+  (src/HTML/pregled/pregled.html (volitve/b/10_pregled.ht 1.8 644))
   (src/HTML/pregled/kazalo.html (volitve/b/11_kazalo.htm 1.2 644))
   (src/HTML/pregled/index.html (volitve/b/12_index.html 1.2 644))
   (src/HTML/registracija.html (volitve/b/15_index.html 1.1.2.2 644))
@@ -94,22 +94,25 @@
 ;; Skupne zadeve
 
 ;; Trg:
-  (src/Market/Notifier.cpp (volitve/22_Notifier.c 1.4 644))
-  (src/Market/Notifier.h (volitve/23_Notifier.h 1.3 644))
+  (src/Market/Notifier.cpp (volitve/22_Notifier.c 1.5 644))
+  (src/Market/Notifier.h (volitve/23_Notifier.h 1.4 644))
   (src/Market/marketd.h (volitve/24_market.h 1.3 644)) 
   (src/Market/marketd.cpp (volitve/25_market.cpp 1.8 644))
-  (src/Market/Market.h (volitve/26_Request.h 1.3 644))
-  (src/Market/Market.cpp (volitve/27_Request.cp 1.6 644))
+  (src/Market/Market.h (volitve/26_Request.h 1.4 644))
+  (src/Market/Market.cpp (volitve/27_Request.cp 1.7 644))
   (src/Market/Market_Handler.h (volitve/47_Market_Han 1.2 644))
-  (src/Market/Market_Handler.cpp (volitve/28_Market_Han 1.6 644))
+  (src/Market/Market_Handler.cpp (volitve/28_Market_Han 1.7 644))
   (src/Market/Request.cpp (volitve/48_Request.cp 1.4 644))
   (src/Market/Request.h (volitve/49_Request.h 1.4 644))
-  (src/Market/Makefile (volitve/29_Makefile 1.8 644)) 
+  (src/Market/Makefile (volitve/29_Makefile 1.9 644)) 
   (src/Market/VectorRequest.cpp (volitve/b/4_VectorRequ 1.3 644))
   (src/Market/VectorRequest.h (volitve/b/5_VectorRequ 1.1 644))
   (src/Market/Query.cpp (volitve/44_Query.cpp 1.2 644))
   (src/Market/Query.h (volitve/45_Query.h 1.1 644))
   (src/Market/MarketErrors.h (volitve/b/0_MarketErrors.h 1.1 644))
+  (src/Market/StrSet.cpp (volitve/b/0_StrSet.cpp 1.1 644))
+  (src/Market/StrSet.h (volitve/b/48_StrSet.h 1.1 644))
+
 
 ;; Manager:
   (src/Manager/manager.cpp (volitve/b/44_manager.cp 1.1 644))
@@ -121,7 +124,7 @@
   (src/Admin/Peer_Handler.h (volitve/c/12_Peer_Handl 1.1 644))
   (src/Admin/Registrator.cpp (volitve/c/13_Registrato 1.3 644))
   (src/Admin/Registrator.h (volitve/c/14_Registrato 1.2 644))
-  (src/Admin/admind.cpp (volitve/c/15_admind.cpp 1.1 644))
+  (src/Admin/admind.cpp (volitve/c/15_admind.cpp 1.2 644))
   (src/Admin/admind.h (volitve/c/16_admind.h 1.1 644))
   (src/Admin/Makefile (volitve/c/17_Makefile 1.2 644))
 
@@ -145,13 +148,13 @@
   (src/py_lib/Redirect.py (volitve/c/5_Redirect.p 1.1 644))
   (src/py_lib/Uporabniki.py (volitve/c/6_Uporabniki 1.4 644))
   (src/py_lib/Admin_Client.py (volitve/c/18_Admin_Clie 1.1 644))
-  (src/py_lib/Reg_Client.py (volitve/b/3_Reg_Client 1.2 644))
+  (src/py_lib/Reg_Client.py (volitve/b/3_Reg_Client 1.3 644))
 ;; Gesla:
-  (src/admin/cfg/htpasswd (volitve/c/7_.htpasswd 1.4 644))
+  (src/admin/cfg/htpasswd (volitve/c/7_.htpasswd 1.5 644))
 
 ;; Testni programi:
   (test/Observer_Client/oc.py (volitve/30_oc.py 1.2 755))
-  (test/Market_Client/mc.py (volitve/31_mc.py 1.4 755))
+  (test/Market_Client/mc.py (volitve/31_mc.py 1.5 755))
   (src/cgi/testpy.py (volitve/40_testpy.py 1.1 755))
   (test/Sock-Test/sock.cpp (volitve/42_sock.cpp 1.1 644))
   (test/Sock-Test/Makefile (volitve/43_Makefile 1.1 644))
@@ -185,7 +188,7 @@
   (src/admin/lib/Observer.py (volitve/b/29_Observer.p 1.2 644))
   (src/admin/lib/MakeDodaj.py (volitve/b/30_MakeDodaj. 1.4 644))
   (src/admin/lib/RegisterReply.py (volitve/c/9_RegisterRe 1.4 644))
-  (src/admin/lib/Registrator.py (volitve/c/19_Registrato 1.3 644))
+  (src/admin/lib/Registrator.py (volitve/c/19_Registrato 1.4 644))
   (src/admin/lib/Util.py (volitve/51_Util.py 1.1 644))
   (src/admin/lib/AdminConst.py (volitve/b/46_AdminConst 1.1 644))
 
@@ -203,7 +206,6 @@
   (apache_1.2.4/conf/srm.conf (volitve/b/34_srm.conf 1.4 644))
   (apache_1.2.4/conf/access.conf (volitve/b/35_access.con 1.2 644))
   (apache_1.2.4/conf/mime.types (volitve/b/36_mime.types 1.1 644))
-
 
 )
 (Merge-Parents)

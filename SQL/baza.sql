@@ -1,6 +1,6 @@
--- $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
+-- $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
 --
--- $Id: baza.sql 1.3.2.4 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
+-- $Id: baza.sql 1.3.2.5 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
 --
 -- Skreira bazo.
 
@@ -30,12 +30,14 @@ CREATE TABLE Registracije
 	accessed	bool);
 
 -- Stanje na raèunu:
--- Papir_ID je lahko prazen, to pomeni izkupicek.
+-- Papir_ID je lahko prazen, to pomeni ,,izkupièek''.
 CREATE TABLE Stanje
 	(Stranka_ID	char(10),
 	Papir_ID	char(8),
-	Kolicina	int,
-	Cena		float));	
+	Kolicina	float);	
+-- enolièen indeks
+CREATE UNIQUE INDEX Stanje_indx
+	ON Stanje (Stranka_ID, Papir_ID);
 
 -- Sklenjeni posli:
 CREATE TABLE Posli

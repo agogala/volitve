@@ -1,8 +1,8 @@
 // -*- C++ -*-
 /*
- * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
+ * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
  *
- * $Id: Market.h 1.3 Wed, 03 Sep 1997 05:39:11 +0000 andrej $
+ * $Id: Market.h 1.4 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
  *
  * Trg. Zna dodajati zahtevke.
  */
@@ -14,6 +14,7 @@
 #include <ace/Singleton.h>
 #include <libpq++.h>
 #include "Request.h"
+#include "StrSet.h"
 
 class Market
 {
@@ -25,7 +26,7 @@ class Market
   int open(void);
 
   /* Dodaj zahtevek */
-  int Add(Request &req);
+  int Add(Request &req, strset *userset = NULL);
 
   char *Result();
 

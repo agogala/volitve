@@ -1,4 +1,4 @@
-# $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
+# $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
 #
 # $Id: cgi_config.py 1.3.2.3 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
 #

@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
+# $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
 #
-# $Id: Registrator.py 1.3 Mon, 22 Sep 1997 13:21:03 +0000 andrej $
+# $Id: Registrator.py 1.4 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
 # Se ukvarja z registracijo uporabnikov
 
 import pg95
@@ -95,9 +95,18 @@ def Registriraj(hash, username, passwd):
 	return AdminConst.Register.DuplicateUser
     try:
 	db_conn.query("BEGIN")
+	# Dodaj stranko:
 	db_conn.query(
 	    "INSERT INTO stranke (stranka_id, email) VALUES('%s','%s')" % \
 	    (username, email))
+	# Dodaj stanje:
+	db_conn.query(
+	    "INSERT INTO stanje (stranka_id, papir_id, kolicina) SELECT '%s' \
+AS Stranka_ID, Papir_ID, 0 AS kolicina FROM Papirji" % username)
+	db_conn.query(
+	    "INSERT INTO stanje (stranka_id, papir_id, kolicina) \
+VALUES('%s','denar',0)" % username)
+
 	# Dodaj password v htpasswd:
 	cpasswd = EncryptPasswd(passwd)
 	fname = admin_cfg.PasswdFile
@@ -133,6 +142,7 @@ def Registriraj(hash, username, passwd):
 	# Naredimo kopijo:
 	os.system('cp %s %s' % (tmpname, fname))
 	os.unlink(tmpname)
+
 	# Ustvari home direktorij:
 	rc, ID = UserID(username)
 	userdir = admin_cfg.htmldir + \

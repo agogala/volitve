@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
+ * $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
  *
  * $Id: Formater.cpp 1.1.2.1 Wed, 10 Sep 1997 16:15:50 +0000 andrej $
  *

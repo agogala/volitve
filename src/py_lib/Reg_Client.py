@@ -1,6 +1,6 @@
-# $ProjectHeader: volitve 0.13 Wed, 24 Sep 1997 19:03:46 +0200 andrej $
+# $ProjectHeader: volitve 0.14 Thu, 25 Sep 1997 21:32:05 +0200 andrej $
 #
-# $Id: Reg_Client.py 1.2 Wed, 24 Sep 1997 17:03:46 +0000 andrej $
+# $Id: Reg_Client.py 1.3 Thu, 25 Sep 1997 19:32:05 +0000 andrej $
 #
 # Registriraj uporabnika:
 
@@ -43,7 +43,7 @@ def HandleGet(form):
 
 rel_msg = \
 "Status: 302 relocate\n" \
-"Location: /trg/vhod\n" \
+"Location: /narocila\n" \
 "Content-Type: text/plain\n" \
 "\n" \
 "Document relocated\n" \
