@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
-# $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
+# $ProjectHeader: volitve 0.7 Mon, 08 Sep 1997 17:37:41 +0200 andrej $
 #
-# $Id: Makefile 1.6 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+# $Id: Makefile 1.7 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
 #
 # Makefile za market deamon.
 # 
@@ -34,7 +34,11 @@ INCLDIRS += -I$(PG_ROOT)/include
 
 LDLIBS += -lpq++ -lpq -lg++
 
-LDFLAGS += -L$(PG_ROOT)/lib -R$(ACE_ROOT)/ace
+LDFLAGS += -L$(PG_ROOT)/lib 
+
+# Tole potrebujemo samo zaradi debugiranja na Solarisu.
+LDFLAGS += -R$(ACE_ROOT)/ace
+
 INCLDIRS += -I../include
 
 #----------------------------------------------------------------------------

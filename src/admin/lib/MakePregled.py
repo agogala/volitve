@@ -1,10 +1,14 @@
-# $ProjectHeader: volitve 0.6 Fri, 05 Sep 1997 16:43:33 +0200 andrej $
+# $ProjectHeader: volitve 0.7 Mon, 08 Sep 1997 17:37:41 +0200 andrej $
 #
-# $Id: MakePregled.py 1.2 Fri, 05 Sep 1997 14:43:33 +0000 andrej $
+# $Id: MakePregled.py 1.3 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
 # Naredi dokument pregled.html: zares opravi delo.
 
 import pg95
 import admin_cfg
+
+# Imamo kar stalno povezavo z bazo:
+pg95.set_defbase(admin_cfg.DB_Name)
+conn = pg95.connect()
 
 def CollectCols(list):
     val = ""
@@ -14,8 +18,6 @@ def CollectCols(list):
 	
 
 def run(srcdir, destdir, templates):
-    pg95.set_defbase(admin_cfg.DB_Name)
-    conn = pg95.connect()
     db_fifo = conn.query("SELECT * FROM fifo ORDER BY papir_id, cena, datum, ura ")
     FIFO = "<tr>" + CollectCols(conn.listfields()) + "</tr>\n"
     for f in db_fifo:

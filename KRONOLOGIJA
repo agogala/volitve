@@ -1,3 +1,8 @@
+0.7
+Observer vsebuje python interpreter.
+Observer dela nove datoteke v regularnih intervalih.
+Razdelil observer v vec delov.
+
 0.6
 Malce popravil HTML strani, 
 Market::Add predelal tako, da ima malce bolj¹a sporoèila.

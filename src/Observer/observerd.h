@@ -1,26 +1,31 @@
-/* -*- C++ -*- */
-/*
+/* -*- C++ -*-
  * $ProjectHeader: volitve 0.7 Mon, 08 Sep 1997 17:37:41 +0200 andrej $
  *
- * $Id: marketd.h 1.3 Thu, 04 Sep 1997 02:15:14 +0000 andrej $
+ * $Id: observerd.h 1.1 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
  *
- * Blagovna borza deamon.
- *
+ * Observer deamon.
  */
 
-#if !defined (MARKETD_H)
-#define MARKETD_H
+#if !defined(OBSERVERD_H)
+#define OBSERVERD_H
 
-#include <ace/Singleton.h>
 #include <ace/Reactor.h>
 #include <ace/Synch.h>
+#include <ace/Singleton.h>
+
+// ---------------------------------------------
 
 // Our Reactor Singleton.
 typedef ACE_Singleton<ACE_Reactor, ACE_Null_Mutex>
 	REACTOR;
 
+// ---------------------------------------------
+
 // Our ACE_Test_and_Set Singleton.
 typedef ACE_Singleton<ACE_Test_and_Set <ACE_Null_Mutex, sig_atomic_t>, ACE_Null_Mutex>
 	QUIT_HANDLER;
 
-#endif // MARKETD_H
+// ---------------------------------------------
+
+
+#endif // OBSERVERD_H

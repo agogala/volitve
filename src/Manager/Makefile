@@ -1,28 +1,18 @@
 #----------------------------------------------------------------------------
 # $ProjectHeader: volitve 0.7 Mon, 08 Sep 1997 17:37:41 +0200 andrej $
 #
-# $Id: Makefile 1.3 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
+# $Id: Makefile 1.1 Mon, 08 Sep 1997 15:37:41 +0000 andrej $
 #
-# Makefile za opazovalca.
+# Makefile za nadziralca.
 #----------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------
 #	Local macros
 #----------------------------------------------------------------------------
 
-BIN   	= observerd
+BIN   	= manager
 
-FILES   = Notification_Handler \
-	  Formater \
-	  State
-
-LSRC	= $(addsuffix .cpp,$(FILES))
-LOBJ	= $(addsuffix .o,$(FILES))
-SHOBJ	= $(addsuffix .so,$(FILES))
-
-LSRC    += .obj/config.o
-
-LDLIBS	= $(addprefix $(VSHDIR),$(SHOBJ))
+LSRC 	= $(addsuffix .cpp,$(BIN))
 
 VLDLIBS = $(LDLIBS:%=%$(VAR))
 
@@ -30,16 +20,6 @@ BUILD 	= $(VBIN)
 
 # Include local configuration:
 INCLDIRS += -I../include
-
-
-# Python:
-LDFLAGS  += .obj/config.o -L$(PYTHON_ROOT)/lib/python1.4/config -lModules -lPython -lObjects -lParser -lm $(PYTHON_ROOT)/lib/python1.4/config/getpath.o
-INCLDIRS += -I$(PYTHON_ROOT)/include/python1.4 -I$(PYTHON_ROOT)/lib/python1.4/config
-
-#Postgres:
-LDLIBS += -lpq++ -lpq -lg++
-LDFLAGS += -L$(PG_ROOT)/lib 
-
 
 #----------------------------------------------------------------------------
 #	Include macros and targets
@@ -49,17 +29,12 @@ include	$(ACE_ROOT)/include/makeinclude/wrapper_macros.GNU
 include	$(ACE_ROOT)/include/makeinclude/macros.GNU
 include	$(ACE_ROOT)/include/makeinclude/rules.common.GNU
 include	$(ACE_ROOT)/include/makeinclude/rules.nonested.GNU
-include	$(ACE_ROOT)/include/makeinclude/rules.lib.GNU
 include	$(ACE_ROOT)/include/makeinclude/rules.bin.GNU
 include	$(ACE_ROOT)/include/makeinclude/rules.local.GNU
 
 #----------------------------------------------------------------------------
 #	Local targets
 #----------------------------------------------------------------------------
-
-.obj/config.o: $(PYTHON_ROOT)/lib/python1.4/config/config.c
-	$(CC) $(CFLAGS) $(INCLDIRS) -DHAVE_CONFIG -DNO_MAIN -c $(PYTHON_ROOT)/lib/python1.4/config/config.c -o .obj/config.o
-
  
 #----------------------------------------------------------------------------
 #	Dependencies
